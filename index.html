@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Minds | Student-Led Financial Literacy</title>
+    
+    <!-- Browser Tab Brand Favicon -->
+    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/pw/AP1GczM7dpwqAoD3jtUidsgOIQFPZDEIKJ7EGbftLFTFiav-DhaJgi0Q11HiGT4W356SuFpAhDLxDeVI4xhP1eEt8IeylLovcNhQXZ90Rw_q2fkQpnOo6JsnYH42l8TxXwCZ4WtBqKrM7AHyn1ozyKZBnQSq=w992-h992-s-no-gm?authuser=0">
+
+    <!-- Google Fonts: Instrument Serif & Playfair Display (Headings) & Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --bg-start: #F0F4F9;
+            --bg-end: #E4ECF5;
+            --accent-primary: #6C88C4;
+            --accent-dark: #4A607A;
+            --accent-brand-blue: #729aad;
+            --text-dark: #141B2D;
+            --text-muted: #4A5568;
+            --glass-bg: rgba(255, 255, 255, 0.92);
+            --glass-border: rgba(255, 255, 255, 0.75);
+            --font-serif: 'Instrument Serif', 'Playfair Display', serif;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: linear-gradient(to bottom, var(--bg-start), var(--bg-end));
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* ==========================================================================
+           CONSISTENT MEDIUM-BOLD HEADINGS
+           ========================================================================== */
+        h1, h2, h3, .heading-serif {
+            font-family: var(--font-serif);
+            text-transform: uppercase;
+            letter-spacing: 0.015em;
+            line-height: 1.08;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: 0.01em;
+            text-shadow: 0 1px 2px rgba(20, 27, 45, 0.05);
+        }
+
+        /* BUTTON SPECIFICATIONS ("ARTISTIC RETRO-TECH") */
+        .btn-retro {
+            border: 2px solid var(--text-dark);
+            border-radius: 12px;
+            box-shadow: 4px 4px 0px var(--text-dark);
+            transition: all 0.2s ease;
+            font-family: var(--font-sans);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .btn-retro:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--accent-dark);
+        }
+
+        .btn-primary {
+            background-color: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-outline {
+            background-color: white;
+            color: var(--text-dark);
+        }
+
+        /* GLASSMORPHISM CONTAINERS */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 2px solid var(--text-dark);
+            border-radius: 24px;
+            box-shadow: 4px 4px 0px var(--text-dark);
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        /* Clean Hero Badge */
+        .retro-badge {
+            display: inline-flex;
+            align-items: center;
+            border: 2px solid var(--text-dark);
+            border-radius: 8px;
+            box-shadow: 3px 3px 0px var(--text-dark);
+            padding: 0.4rem 1.25rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            background: white;
+            color: var(--text-dark);
+        }
+
+        /* Stat Card Style */
+        .stat-card {
+            background: white;
+            border: 2px solid var(--text-dark);
+            border-radius: 16px;
+            box-shadow: 4px 4px 0px var(--text-dark);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--accent-primary);
+        }
+
+        /* Hero Area Photo Scatter Canvas */
+        #hero-scatter-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .hero-scatter-img {
+            position: absolute;
+            object-fit: cover;
+            border: none !important;
+            box-shadow: none !important;
+            border-radius: 0px !important; /* Sharp rectangular edges */
+            transition: transform 0.3s ease, opacity 0.5s ease;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- SECTION 1: Navigation Header -->
+    <nav class="glass-nav fixed w-full top-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center">
+                <img src="https://lh3.googleusercontent.com/pw/AP1GczNsoqlPUEDJuh6m6J5ROUJS5meKcDo2Lu7D2LH93YTpEQpL7jF4X4-HvoKSn3blk9gKJHwWo5b6U0ODJ8ef518iTImmMffKDjDJzIJEsSkgtwrvqNcYY6Ginzh5f4uqKyu-U9rZFuxbSD8ejhHzzax2=w964-h190-s-no-gm?authuser=0" 
+                     alt="Market Minds Logo" 
+                     class="h-8 md:h-10 w-auto object-contain">
+            </a>
+            
+            <!-- Desktop Links -->
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#about" class="text-[#141B2D] font-bold text-sm tracking-wider hover:text-[#6C88C4] transition-colors">ABOUT US</a>
+                <a href="#programs" class="text-[#141B2D] font-bold text-sm tracking-wider hover:text-[#6C88C4] transition-colors">PROGRAMS</a>
+                <a href="#resources" class="text-[#141B2D] font-bold text-sm tracking-wider hover:text-[#6C88C4] transition-colors">RESOURCES</a>
+                <a href="#get-involved" class="btn-retro btn-primary px-6 py-2" style="padding: 0.5rem 1.25rem;">GET INVOLVED</a>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-[#141B2D]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- TOP HERO REGION (WITH SCATTER CANVAS) -->
+    <div class="relative w-full overflow-hidden">
+        <!-- TOP SECTION EVENLY DISTRIBUTED BACKGROUND SCATTER -->
+        <div id="hero-scatter-canvas"></div>
+
+        <div class="relative z-10 pt-28 pb-16 px-4 sm:px-6 max-w-7xl mx-auto space-y-20">
+            <!-- SECTION 2: Hero Section -->
+            <header class="glass-panel p-6 sm:p-10 md:p-12 text-center max-w-3xl mx-auto mt-6 md:mt-10">
+                <div class="mb-6">
+                    <div class="retro-badge">
+                        STUDENT-LED NONPROFIT • FOUNDED 2024
+                    </div>
+                </div>
+                
+                <h1 class="text-4xl sm:text-6xl md:text-7xl mb-6 hero-title max-w-2xl mx-auto">
+                    EXPANDING FINANCIAL LITERACY THROUGH COMMUNITY
+                </h1>
+                
+                <p class="text-base sm:text-lg text-[#4A5568] mb-8 max-w-xl mx-auto leading-relaxed font-medium">
+                    Market Minds is a student-led nonprofit bringing practical money skills, real-world simulations, and zero-intimidation discussions to youth across 7 states.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="#get-involved" class="btn-retro btn-primary w-full sm:w-auto text-xs sm:text-sm">START A SCHOOL CHAPTER</a>
+                    <a href="#get-involved" class="btn-retro btn-outline w-full sm:w-auto text-xs sm:text-sm">JOIN NATIONAL TEAM</a>
+                </div>
+            </header>
+
+            <!-- SECTION 3: Live Impact Metrics Bar -->
+            <section class="max-w-4xl mx-auto">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center">
+                    
+                    <!-- Stat 1 -->
+                    <div class="stat-card p-5 flex flex-col justify-center items-center">
+                        <span class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#141B2D] mb-1 tracking-tight font-sans">7</span>
+                        <span class="text-[#6C88C4] font-extrabold text-xs uppercase tracking-wider">States Reached</span>
+                    </div>
+
+                    <!-- Stat 2 -->
+                    <div class="stat-card p-5 flex flex-col justify-center items-center">
+                        <span class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#6C88C4] mb-1 tracking-tight font-sans">100+</span>
+                        <span class="text-[#141B2D] font-extrabold text-xs uppercase tracking-wider">Competition Participants</span>
+                    </div>
+
+                    <!-- Stat 3 -->
+                    <div class="stat-card p-5 flex flex-col justify-center items-center">
+                        <span class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#141B2D] mb-1 tracking-tight font-sans">60+</span>
+                        <span class="text-[#6C88C4] font-extrabold text-xs uppercase tracking-wider">Club Meetings Hosted</span>
+                    </div>
+
+                    <!-- Stat 4 -->
+                    <div class="stat-card p-5 flex flex-col justify-center items-center">
+                        <span class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#6C88C4] mb-1 tracking-tight font-sans">2024</span>
+                        <span class="text-[#141B2D] font-extrabold text-xs uppercase tracking-wider">Year Founded</span>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- SECTION 4: Community Section (SIGNATURE ICE BLUE FULL BLEED BAND: #F0F4F9 to #E4ECF5) -->
+    <section id="about" class="w-full bg-gradient-to-r from-[#F0F4F9] to-[#E4ECF5] border-t-2 border-b-2 border-[#141B2D] py-14 sm:py-20 px-4 sm:px-6 relative z-20">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12 max-w-3xl mx-auto">
+                <h2 class="text-3xl sm:text-5xl mb-4 text-[#141B2D]">REAL STUDENTS. REAL COMMUNITY.</h2>
+                <p class="text-[#4A5568] text-base sm:text-lg font-medium">Financial education shouldn't be dry lectures. Here is what learning together at Market Minds actually looks like in our chapters.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-white p-6 rounded-2xl border-2 border-[#141B2D] shadow-[4px_4px_0px_#141B2D] flex flex-col h-full transform transition duration-300 hover:-translate-y-2">
+                    <div class="h-48 rounded-xl mb-6 overflow-hidden border-2 border-[#141B2D]">
+                        <img src="https://lh3.googleusercontent.com/d/17MZMCrUfizCHFBUw0OtNUNIMEQbcNEhY" 
+                             onerror="this.src='https://placehold.co/600x400/E4ECF5/141B2D?text=Peer+Mentorship'" 
+                             alt="Peer Mentorship" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-2xl mb-2 text-[#141B2D]">PEER-TO-PEER MENTORSHIP</h3>
+                    <p class="text-[#4A5568] text-sm font-medium leading-relaxed">Students breaking down complex market trends together.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-6 rounded-2xl border-2 border-[#141B2D] shadow-[4px_4px_0px_#141B2D] flex flex-col h-full transform transition duration-300 hover:-translate-y-2">
+                    <div class="h-48 rounded-xl mb-6 overflow-hidden border-2 border-[#141B2D]">
+                        <img src="https://lh3.googleusercontent.com/d/1brb7w3Q6bzx_EORYMc6KOGO_YbLnu5xI" 
+                             onerror="this.src='https://placehold.co/600x400/E4ECF5/141B2D?text=Simulations'" 
+                             alt="Interactive Simulations" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-2xl mb-2 text-[#141B2D]">INTERACTIVE SIMULATIONS</h3>
+                    <p class="text-[#4A5568] text-sm font-medium leading-relaxed">Stock picking challenges, business simulations, and Kahoot trivia.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white p-6 rounded-2xl border-2 border-[#141B2D] shadow-[4px_4px_0px_#141B2D] flex flex-col h-full transform transition duration-300 hover:-translate-y-2">
+                    <div class="h-48 rounded-xl mb-6 overflow-hidden border-2 border-[#141B2D]">
+                        <img src="https://lh3.googleusercontent.com/d/1CG-kfB6Ij3DwBt-SMBu2R7_p9o0zz0p4" 
+                             onerror="this.src='https://placehold.co/600x400/E4ECF5/141B2D?text=Meetings'" 
+                             alt="Open Meetings" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-2xl mb-2 text-[#141B2D]">OPEN & INCLUSIVE MEETINGS</h3>
+                    <p class="text-[#4A5568] text-sm font-medium leading-relaxed">Zero prior knowledge required! Everyone is welcome from day one.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: Vertical Stacked Q&A + Newsletter Section (NATURAL LIGHT BLUE GRADIENT) -->
+    <section id="resources" class="w-full bg-gradient-to-r from-[#D0E2EE] to-[#A3C2D4] border-b-2 border-[#141B2D] py-14 sm:py-20 px-4 sm:px-6 relative z-20">
+        <div class="max-w-5xl mx-auto space-y-8">
+            
+            <!-- Box 1: Student Q&A Submission -->
+            <div class="glass-panel p-8 sm:p-12 text-center">
+                <h2 class="text-2xl sm:text-4xl mb-3 text-[#141B2D]">WHAT'S ONE THING YOU'VE ALWAYS WANTED TO ASK ABOUT MONEY?</h2>
+                <p class="text-[#4A5568] mb-8 text-base font-medium max-w-2xl mx-auto">Submit your question below! Our editorial team breaks down student questions in our upcoming monthly releases.</p>
+                
+                <form class="flex flex-col sm:flex-row gap-3 justify-center max-w-3xl mx-auto">
+                    <input type="text" placeholder="e.g., How does interest work on a high-yield savings account?" 
+                           class="flex-1 px-5 py-3.5 rounded-xl border-2 border-[#141B2D] focus:outline-none focus:border-[#6C88C4] font-medium placeholder-gray-400 text-gray-800 text-sm bg-white">
+                    <button type="button" class="btn-retro btn-primary whitespace-nowrap text-xs sm:text-sm">SUBMIT QUESTION</button>
+                </form>
+            </div>
+
+            <!-- Box 2: Newsletter Signup -->
+            <div class="glass-panel p-8 sm:p-12 text-center">
+                <h2 class="text-2xl sm:text-4xl mb-3 text-[#141B2D]">STAY IN THE LOOP</h2>
+                <p class="text-[#4A5568] mb-8 text-base font-medium max-w-2xl mx-auto">Subscribe to receive monthly student financial literacy breakdowns and organization updates straight to your inbox.</p>
+                
+                <form class="flex flex-col sm:flex-row gap-3 justify-center max-w-3xl mx-auto">
+                    <input type="email" placeholder="Enter your email address..." 
+                           class="flex-1 px-5 py-3.5 rounded-xl border-2 border-[#141B2D] focus:outline-none focus:border-[#6C88C4] font-medium placeholder-gray-400 text-gray-800 text-sm bg-white">
+                    <button type="button" class="btn-retro btn-primary whitespace-nowrap text-xs sm:text-sm">JOIN NEWSLETTER</button>
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 6: Audience Pathways ("How to Get Involved" - SIGNATURE ICE BLUE FULL BLEED BAND) -->
+    <section id="get-involved" class="w-full bg-gradient-to-r from-[#F0F4F9] to-[#E4ECF5] border-b-2 border-[#141B2D] py-14 sm:py-20 px-4 sm:px-6 relative z-20">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-10 glass-panel p-5 max-w-md mx-auto">
+                <h2 class="text-3xl text-[#141B2D]">HOW TO GET INVOLVED</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Pathway 1: High Schoolers -->
+                <div class="bg-white p-6 rounded-2xl border-2 border-[#141B2D] shadow-[4px_4px_0px_#141B2D] flex flex-col h-full text-center">
+                    <h3 class="text-2xl text-[#6C88C4] mb-3">FOR HIGH SCHOOLERS</h3>
+                    <p class="text-[#4A5568] flex-grow mb-6 font-medium text-sm">Launch an official Market Minds chapter at your high school with our turnkey toolkit, or apply to join our National Team.</p>
+                    <div class="flex flex-col gap-3">
+                        <a href="#" class="btn-retro btn-primary w-full text-xs">START A CHAPTER</a>
+                        <a href="#" class="btn-retro btn-outline w-full text-xs">JOIN NATIONAL TEAM</a>
+                    </div>
+                </div>
+
+                <!-- Pathway 2: Educators -->
+                <div class="bg-white p-6 rounded-2xl border-2 border-[#141B2D] shadow-[4px_4px_0px_#141B2D] flex flex-col h-full text-center">
+                    <h3 class="text-2xl text-[#6C88C4] mb-3">FOR EDUCATORS</h3>
+                    <p class="text-[#4A5568] flex-grow mb-6 font-medium text-sm">Host our free Youth Financial Literacy Workshops at your elementary, middle, or high school, library, or youth center.</p>
+                    <div class="flex flex-col gap-3">
+                        <a href="#" class="btn-retro btn-primary w-full text-xs">REQUEST A WORKSHOP</a>
+                        <a href="#" class="btn-retro btn-outline w-full text-xs">VIEW OUR RESOURCES</a>
+                    </div>
+                </div>
+
+                <!-- Pathway 3: Speakers & Partners -->
+                <div class="bg-white p-6 rounded-2xl border-2 border-[#141B2D] shadow-[4px_4px_0px_#141B2D] flex flex-col h-full text-center">
+                    <h3 class="text-2xl text-[#6C88C4] mb-3">SPEAKERS & PARTNERS</h3>
+                    <p class="text-[#4A5568] flex-grow mb-6 font-medium text-sm">Collaborate with us as an organization or share your career insights with students through our guest speaker series.</p>
+                    <div class="flex flex-col gap-3">
+                        <a href="#" class="btn-retro btn-primary w-full text-xs">PARTNER WITH US</a>
+                        <a href="#" class="btn-retro btn-outline w-full text-xs">SHARE YOUR STORY</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: Footer -->
+    <footer class="w-full bg-white/80 backdrop-blur-md py-12 relative z-20">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="md:col-span-1">
+                <!-- Original Brand Logo in Footer -->
+                <img src="https://lh3.googleusercontent.com/pw/AP1GczNsoqlPUEDJuh6m6J5ROUJS5meKcDo2Lu7D2LH93YTpEQpL7jF4X4-HvoKSn3blk9gKJHwWo5b6U0ODJ8ef518iTImmMffKDjDJzIJEsSkgtwrvqNcYY6Ginzh5f4uqKyu-U9rZFuxbSD8ejhHzzax2=w964-h190-s-no-gm?authuser=0" 
+                     alt="Market Minds Logo" 
+                     class="h-8 w-auto mb-4 object-contain filter grayscale contrast-200">
+                <p class="text-[#4A5568] text-xs font-medium leading-relaxed mb-3">
+                    Empowering young people with the financial knowledge, confidence, and community needed to navigate their futures.
+                </p>
+                <a href="#about" class="text-xs font-bold text-[#141B2D] underline hover:text-[#6C88C4] transition-colors uppercase tracking-wider">
+                    Learn About Us &rarr;
+                </a>
+            </div>
+            
+            <div>
+                <h4 class="font-extrabold text-[#141B2D] mb-4 uppercase text-xs tracking-widest">Programs</h4>
+                <ul class="space-y-2 text-[#4A5568] text-xs font-medium">
+                    <li><a href="#get-involved" class="hover:text-[#6C88C4] transition-colors">High School Chapters</a></li>
+                    <li><a href="#get-involved" class="hover:text-[#6C88C4] transition-colors">Youth Workshops</a></li>
+                    <li><a href="#get-involved" class="hover:text-[#6C88C4] transition-colors">Connect Series</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-extrabold text-[#141B2D] mb-4 uppercase text-xs tracking-widest">Resources</h4>
+                <ul class="space-y-2 text-[#4A5568] text-xs font-medium">
+                    <li><a href="#resources" class="hover:text-[#6C88C4] transition-colors">Newsletter Archive</a></li>
+                    <li><a href="#resources" class="hover:text-[#6C88C4] transition-colors">Lesson Decks</a></li>
+                    <li><a href="#about" class="hover:text-[#6C88C4] transition-colors">About Our Story</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-extrabold text-[#141B2D] mb-4 uppercase text-xs tracking-widest">Connect</h4>
+                <ul class="space-y-2 text-[#4A5568] text-xs font-medium">
+                    <li><a href="https://instagram.com/marketmindsyouth" target="_blank" class="hover:text-[#6C88C4] transition-colors">Instagram (@marketmindsyouth)</a></li>
+                    <li><a href="https://tiktok.com/@marketmindsyouth" target="_blank" class="hover:text-[#6C88C4] transition-colors">TikTok (@marketmindsyouth)</a></li>
+                    <li><a href="https://youtube.com/@marketmindsyouth" target="_blank" class="hover:text-[#6C88C4] transition-colors">YouTube (@marketmindsyouth)</a></li>
+                    <li><a href="mailto:contact@marketmindsyouth.org" class="hover:text-[#6C88C4] transition-colors">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 mt-12 pt-6 border-t border-gray-300 text-center md:text-left text-[#4A5568] font-medium text-xs">
+            © 2026 Market Minds Organization. Student-Led Nonprofit Organization. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- CELLULAR JITTER EVENLY DISTRIBUTED BACKGROUND SCATTER ENGINE -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const canvas = document.getElementById('hero-scatter-canvas');
+            if (!canvas) return;
+
+            // 20 distinct student photos, arranged so group photos and action shots alternate
+            const photoPool = [
+                "https://lh3.googleusercontent.com/d/17MZMCrUfizCHFBUw0OtNUNIMEQbcNEhY", // Mentorship / Laptop
+                "https://lh3.googleusercontent.com/d/1UzKvgG8D6LaXWK3zM9XIvmFhmvafHgvS", // Kahoot winner
+                "https://lh3.googleusercontent.com/d/1HG9FYDGPu9VZux-vs2w7KE-O-odrwACV", // Classroom action
+                "https://lh3.googleusercontent.com/d/1oO56jVCJlCVcyDV7kEhddXbBrSCTCj0G", // Group 1 (top-right side)
+                "https://lh3.googleusercontent.com/d/1AQmMwKfsJxWgTqiYyadkfPpTgdGeLJar", // Full classroom
+                "https://lh3.googleusercontent.com/d/145nMnjIn8JTHR_wjmziqNAx9SSQKrtgP", // Activity
+                "https://lh3.googleusercontent.com/d/1vs6TuTFUlhJ0B0jCQNg9ADMCgRnna1Tp", // Discussion
+                "https://lh3.googleusercontent.com/d/1wvw8rAvhxZRgoS2KV4Wh50UEef8GDPg7", // Working together
+                "https://lh3.googleusercontent.com/d/11C8Nxgpd-AV818Nyqe8_p8-XawefxZhk", // Fair table smiling
+                "https://lh3.googleusercontent.com/d/10owr3dXjTXG_WLLpt7p7HE13MAPuRm72", // Student presentation
+                "https://lh3.googleusercontent.com/d/1nPipqPkLzhauHa20dU6HBIQW0g2THAgC", // Student interaction
+                "https://lh3.googleusercontent.com/d/1Ewb5zbi4emRlInbLujpMiFbntzv-ZsoV", // Hands-on workshop
+                "https://lh3.googleusercontent.com/d/1G5bk2zpWmpel9iEx1Iv9fi0Ytl0jBBfx", // Group classroom activity
+                "https://lh3.googleusercontent.com/d/1BcBDkNQ-q7wmHwZosrIr-So9GOiCNuG4", // Group 2 (lower-middle)
+                "https://lh3.googleusercontent.com/d/15CpZS7g8eeNPdF5NjYYGsrdsm4D1tAav", // Poster presentation
+                "https://lh3.googleusercontent.com/d/1hrwLZds_yenMjrPr0ru1woU-XSmQ7X84", // Meeting discussion
+                "https://lh3.googleusercontent.com/d/1rF_WLe8UhO_64NqakKRUiMUQH1Sf2enL", // Collaboration
+                "https://lh3.googleusercontent.com/d/165IQdtrF6JWdB0kETxT477h5rx_8JJ9f", // Workshop presentation
+                "https://lh3.googleusercontent.com/d/1zo9VIuyypFtOWdIeftfiBf16Xex--flN", // Pair activity
+                "https://lh3.googleusercontent.com/d/1jEkDKHcgF4_XeJAYdzNe28_0EwlzRmJM"  // Club event
+            ];
+
+            // Stable pseudo-random generator for consistent layout
+            const seededRandom = (seed) => {
+                const x = Math.sin(seed++) * 10000;
+                return x - Math.floor(x);
+            };
+
+            const renderScatter = () => {
+                canvas.innerHTML = '';
+                const screenWidth = window.innerWidth;
+                const canvasWidth = canvas.clientWidth || screenWidth;
+                const canvasHeight = canvas.clientHeight || 1000;
+
+                // Responsive Grid Structure: 5 columns x 4 rows on desktop
+                const cols = screenWidth >= 1100 ? 5 : (screenWidth >= 640 ? 4 : 2);
+                const rows = 4;
+
+                const cellW = canvasWidth / cols;
+                const cellH = canvasHeight / rows;
+
+                let seed = 42;
+                let photoIndex = 0;
+
+                for (let r = 0; r < rows; r++) {
+                    for (let c = 0; c < cols; c++) {
+                        const photoUrl = photoPool[photoIndex % photoPool.length];
+                        photoIndex++;
+
+                        // Controlled jitter within cell bounds
+                        const jitterX = (seededRandom(seed++) - 0.5) * (cellW * 0.45);
+                        const jitterY = (seededRandom(seed++) - 0.5) * (cellH * 0.4);
+
+                        const posX = (c * cellW) + (cellW / 2) + jitterX;
+                        const posY = (r * cellH) + (cellH / 2) + jitterY;
+
+                        // Default tilt range (-8.5° to +8.5°)
+                        let rotation = (seededRandom(seed++) * 17) - 8.5;
+
+                        // Tweak: For top row (r=0), 3rd photo (c=2), tilt right instead of left
+                        if (r === 0 && c === 2) {
+                            rotation = Math.abs(rotation);
+                            if (rotation < 3) rotation = 5.5; // Ensure clean rightward tilt
+                        }
+
+                        // Larger image sizes
+                        const baseWidth = Math.floor(cellW * 0.92);
+                        const finalWidth = Math.min(Math.max(baseWidth, 180), 320);
+
+                        const img = document.createElement('img');
+                        img.src = photoUrl;
+                        img.className = 'hero-scatter-img';
+                        img.style.width = `${finalWidth}px`;
+                        img.style.left = `${posX}px`;
+                        img.style.top = `${posY}px`;
+                        img.style.transform = `translate(-50%, -50%) rotate(${rotation.toFixed(1)}deg)`;
+
+                        img.onerror = () => { img.style.display = 'none'; };
+                        img.onload = () => { img.style.opacity = '1'; };
+
+                        canvas.appendChild(img);
+                    }
+                }
+            };
+
+            renderScatter();
+            window.addEventListener('resize', renderScatter);
+        });
+    </script>
+</body>
+</html>
