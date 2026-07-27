@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Market Minds Non-Profit</title>
+    
+    <!-- Browser Tab Brand Favicon -->
+    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/pw/AP1GczM7dpwqAoD3jtUidsgOIQFPZDEIKJ7EGbftLFTFiav-DhaJgi0Q11HiGT4W356SuFpAhDLxDeVI4xhP1eEt8IeylLovcNhQXZ90Rw_q2fkQpnOo6JsnYH42l8TxXwCZ4WtBqKrM7AHyn1ozyKZBnQSq=w992-h992-s-no-gm?authuser=0">
+
+    <!-- Google Fonts: Instrument Serif & Playfair Display (Headings) & Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --bg-start: #F0F4F9;
+            --bg-end: #E4ECF5;
+            --accent-primary: #6C88C4;
+            --accent-dark: #4A607A;
+            --accent-brand-blue: #729aad;
+            --text-dark: #141B2D;
+            --text-muted: #4A5568;
+            --glass-bg: rgba(255, 255, 255, 0.92);
+            --glass-border: rgba(255, 255, 255, 0.75);
+            --font-serif: 'Instrument Serif', 'Playfair Display', serif;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: linear-gradient(to bottom, var(--bg-start), var(--bg-end));
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* ==========================================================================
+           CONSISTENT HEADINGS
+           ========================================================================== */
+        h1, h2, h3, .heading-serif {
+            font-family: var(--font-serif);
+            text-transform: uppercase;
+            letter-spacing: 0.015em;
+            line-height: 1.08;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* BUTTON SPECIFICATIONS ("ARTISTIC RETRO-TECH") */
+        .btn-retro {
+            border: 2px solid var(--text-dark);
+            border-radius: 12px;
+            box-shadow: 4px 4px 0px var(--text-dark);
+            transition: all 0.2s ease;
+            font-family: var(--font-sans);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .btn-retro:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--accent-dark);
+        }
+
+        .btn-primary {
+            background-color: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-outline {
+            background-color: white;
+            color: var(--text-dark);
+        }
+
+        /* GLASSMORPHISM CONTAINERS */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 2px solid var(--text-dark);
+            border-radius: 24px;
+            box-shadow: 4px 4px 0px var(--text-dark);
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        /* Clean Rounded State Badge */
+        .state-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #E4ECF5;
+            border: 1.5px solid var(--text-dark);
+            border-radius: 999px;
+            padding: 2px 10px;
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        /* Highlighted text styling */
+        .text-highlight {
+            color: var(--text-dark);
+            font-weight: 800;
+            background: linear-gradient(120deg, rgba(108, 136, 196, 0.2) 0%, rgba(108, 136, 196, 0.3) 100%);
+            padding: 0 4px;
+            border-radius: 4px;
+        }
+
+        /* Hero Area Photo Scatter Canvas */
+        #hero-scatter-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .hero-scatter-img {
+            position: absolute;
+            object-fit: cover;
+            border: none !important;
+            box-shadow: none !important;
+            border-radius: 0px !important;
+            transition: transform 0.3s ease, opacity 0.5s ease;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- SECTION 1: Navigation Header -->
+    <nav class="glass-nav fixed w-full top-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            
+            <!-- Brand Logo -->
+            <a href="index.html" class="flex items-center">
+                <img src="https://lh3.googleusercontent.com/pw/AP1GczNsoqlPUEDJuh6m6J5ROUJS5meKcDo2Lu7D2LH93YTpEQpL7jF4X4-HvoKSn3blk9gKJHwWo5b6U0ODJ8ef518iTImmMffKDjDJzIJEsSkgtwrvqNcYY6Ginzh5f4uqKyu-U9rZFuxbSD8ejhHzzax2=w964-h190-s-no-gm?authuser=0" 
+                     alt="Market Minds Logo" 
+                     class="h-8 md:h-10 w-auto object-contain">
+            </a>
+            
+            <!-- Desktop Links -->
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="text-[#141B2D] font-bold text-sm tracking-wider hover:text-[#6C88C4] transition-colors">HOME</a>
+                <a href="about.html" class="text-[#6C88C4] font-bold text-sm tracking-wider hover:text-[#6C88C4] transition-colors">ABOUT US</a>
+                <a href="index.html#programs" class="text-[#141B2D] font-bold text-sm tracking-wider hover:text-[#6C88C4] transition-colors">PROGRAMS</a>
+                <a href="index.html#resources" class="text-[#141B2D] font-bold text-sm tracking-wider hover:text-[#6C88C4] transition-colors">RESOURCES</a>
+                <a href="index.html#get-involved" class="btn-retro btn-primary px-6 py-2" style="padding: 0.5rem 1.25rem;">GET INVOLVED</a>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-[#141B2D]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- TOP HERO REGION (WITH SCATTER CANVAS) -->
+    <div class="relative w-full overflow-hidden">
+        <div id="hero-scatter-canvas"></div>
+
+        <div class="relative z-10 pt-28 pb-16 px-4 sm:px-6 max-w-7xl mx-auto space-y-12">
+            <!-- PAGE HEADER -->
+            <header class="glass-panel p-8 sm:p-12 text-center max-w-3xl mx-auto mt-6">
+                <h1 class="text-4xl sm:text-6xl text-[#141B2D] mb-4">HOW MARKET MINDS CAME TO BE</h1>
+                <p class="text-base sm:text-lg text-[#4A5568] font-medium leading-relaxed">
+                    Market Minds began with a simple observation: financial habits are inherited, not taught. We built a student-led space to make money skills free, approachable, and grounded in real community.
+                </p>
+            </header>
+
+            <!-- EDITORIAL STORY & MISSION LAYOUT -->
+            <section class="glass-panel p-8 sm:p-12 max-w-5xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                    
+                    <!-- Callout Box (4 Cols) -->
+                    <div class="md:col-span-5 bg-gradient-to-br from-[#F0F4F9] to-[#E4ECF5] p-6 sm:p-8 rounded-2xl border-2 border-[#141B2D] shadow-[4px_4px_0px_#141B2D] flex flex-col justify-between h-full">
+                        <div>
+                            <p class="text-xl sm:text-2xl font-serif text-[#141B2D] uppercase leading-tight font-bold mb-4 pt-2">
+                                You can search stock definitions anywhere. What was missing was a <span class="text-[#6C88C4]">real community</span> to learn together.
+                            </p>
+                        </div>
+                        <p class="text-xs text-[#4A5568] font-extrabold uppercase tracking-widest pt-4 border-t border-[#141B2D]/20">
+                            BROOKLINE, MA • FOUNDED 2024
+                        </p>
+                    </div>
+
+                    <!-- Story Paragraphs (7 Cols) -->
+                    <div class="md:col-span-7 space-y-6 text-[#4A5568] font-medium text-sm sm:text-base leading-relaxed">
+                        <div>
+                            <h2 class="text-2xl sm:text-3xl mb-2 text-[#141B2D]">THE SPARK</h2>
+                            <p>
+                                Growing up, we noticed how <span class="text-highlight">differently people approached money</span> based on where they lived or what was talked about at dinner. Some peers grew up in homes where financial choices were rarely discussed, while others faced daily economic stress where long-term saving or investing was never an option.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h2 class="text-2xl sm:text-3xl mb-2 text-[#141B2D]">OUR FOCUS: COMMUNITY FIRST</h2>
+                            <p>
+                                Financial education shouldn't feel like a high-stress competition where you're expected to know complex terms on day one. We created Market Minds to build a <span class="text-highlight">supportive peer community</span> where any student can sit down, ask fundamental questions without judgment, and apply real-world money choices together.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- FOUNDER SPOTLIGHT SECTION -->
+    <section class="w-full bg-gradient-to-r from-[#F0F4F9] to-[#E4ECF5] border-t-2 border-b-2 border-[#141B2D] py-16 px-4 sm:px-6 relative z-20">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl sm:text-5xl text-[#141B2D]">MEET THE FOUNDER</h2>
+            </div>
+
+            <div class="bg-white p-8 sm:p-12 rounded-3xl border-2 border-[#141B2D] shadow-[6px_6px_0px_#141B2D] grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                <!-- Headshot Frame (Annie's Headshot) -->
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-48 h-48 rounded-2xl border-2 border-[#141B2D] overflow-hidden shadow-[4px_4px_0px_#141B2D] mb-4 bg-[#E4ECF5]">
+                        <img src="https://lh3.googleusercontent.com/pw/AP1GczO4y5xC2q1gLeLfflul5FhB4UsZ-izsaffYUVU4uVVnNMltsdxX4p3Bagasflk7UdXkCavNh8_KNLktLpaDVnKOItd74CloFHhO3wV-3zUtTwoBRD01drHK-pAVmtEJIcdoLZUzr7h_0Ox7UlfDSCZ7=w1529-h1529-s-no-gm?authuser=0" 
+                             onerror="this.src='https://placehold.co/400x400/E4ECF5/141B2D?text=Annie+Shi'" 
+                             alt="Annie Shi Headshot" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-2xl text-[#141B2D] mb-1">ANNIE SHI</h3>
+                    <p class="text-[#6C88C4] font-extrabold text-xs uppercase tracking-wider mb-2">FOUNDER & PRESIDENT</p>
+                    <span class="state-badge">MASSACHUSETTS</span>
+                </div>
+
+                <!-- Founder Bio Copy -->
+                <div class="md:col-span-2 space-y-4 text-[#4A5568] text-sm sm:text-base font-medium">
+                    <p class="leading-relaxed">
+                        Annie founded Market Minds in 2024 in Room 359 at Brookline High School after noticing how unevenly financial habits were passed down among students.
+                    </p>
+                    <p class="leading-relaxed">
+                        She wanted to eliminate the intimidation around finance by building an open community where peers learn together. Today, Annie guides Market Minds’ national initiatives, workshop programs, and chapter outreach while keeping the focus on accessible, student-driven education.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROGRAM LEADERSHIP (3 PRIMARY BOXES WITH REAL HEADSHOTS) -->
+    <section class="w-full bg-gradient-to-r from-[#D0E2EE] to-[#A3C2D4] border-b-2 border-[#141B2D] py-16 px-4 sm:px-6 relative z-20">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-5xl text-[#141B2D]">PROGRAM LEADERSHIP</h2>
+                <p class="text-[#4A5568] font-medium text-sm sm:text-base mt-2">The core directors guiding Market Minds' national initiatives.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Program Head 1: Sara Borkar (Empty Placeholder for now) -->
+                <div class="bg-white p-6 rounded-2xl border-2 border-[#141B2D] shadow-[4px_4px_0px_#141B2D] flex flex-col items-center text-center">
+                    <div class="w-36 h-36 rounded-xl border-2 border-dashed border-[#141B2D] overflow-hidden mb-4 bg-[#F0F4F9] flex items-center justify-center text-[#4A607A] font-extrabold text-xs tracking-wider">
+                        <span>PHOTO COMING SOON</span>
+                    </div>
+                    <span class="state-badge mb-2">NEW JERSEY</span>
+                    <h3 class="text-2xl text-[#141B2D] mb-1">SARA BORKAR</h3>
+                    <p class="text-[#6C88C4] font-extrabold text-xs uppercase tracking-wider mb-3">DIRECTOR OF MARKETING & GROWTH</p>
+                    <p class="text-[#4A5568] text-xs font-medium leading-relaxed">
+                        Leads national growth, strategic partnerships, and the Connect Series connecting students with career mentors.
+                    </p>
+                </div>
+
+                <!-- Program Head 2: Sriya Donthiri -->
+                <div class="bg-white p-6 rounded-2xl border-2 border-[#141B2D] shadow-[4px_4px_0px_#141B2D] flex flex-col items-center text-center">
+                    <div class="w-36 h-36 rounded-xl border-2 border-[#141B2D] overflow-hidden mb-4 bg-gray-100 shadow-[2px_2px_0px_#141B2D]">
+                        <img src="https://lh3.googleusercontent.com/pw/AP1GczNa9ynvrds0-lAYu-USgxoAIsp46Mec8GyVhZG1n_kv1pWuShxm9mOonlRyFvW311G2naWbEvJ6OlMMsvI_S11SzJ0xfNUe0UUFuHeyZM2mY2CvnKdI_XIE7nEMq8w_-u3gPGOmg6UaljDO0WB-TxsX=w1682-h1624-s-no-gm?authuser=0" 
+                             onerror="this.src='https://placehold.co/300x300/E4ECF5/141B2D?text=Sriya+Donthiri'" 
+                             alt="Sriya Donthiri" class="w-full h-full object-cover">
+                    </div>
+                    <span class="state-badge mb-2">TEXAS</span>
+                    <h3 class="text-2xl text-[#141B2D] mb-1">SRIYA DONTHIRI</h3>
+                    <p class="text-[#6C88C4] font-extrabold text-xs uppercase tracking-wider mb-3">DIRECTOR OF YOUTH FINANCIAL LITERACY</p>
+                    <p class="text-[#4A5568] text-xs font-medium leading-relaxed">
+                        Directs youth workshops, elementary/middle school bootcamps, and interactive curriculum development.
+                    </p>
+                </div>
+
+                <!-- Program Head 3: Harrison Chan -->
+                <div class="bg-white p-6 rounded-2xl border-2 border-[#141B2D] shadow-[4px_4px_0px_#141B2D] flex flex-col items-center text-center">
+                    <div class="w-36 h-36 rounded-xl border-2 border-[#141B2D] overflow-hidden mb-4 bg-gray-100 shadow-[2px_2px_0px_#141B2D]">
+                        <img src="https://lh3.googleusercontent.com/pw/AP1GczOIh6e6GEgpVZJUnYf_XcdswPJsFcgYxPCu6-PXj12q1R9wNzqnhZTupOwC2fuz0c1oktfYdKs1qQDrXfjp3izLCTODTUpxiY1Zxat_Fxar2yUW3YeZfyoDSzb8ClhDT7UdF75W-FtJm3Hmyb1g0b5J=w1624-h1624-s-no-gm?authuser=0" 
+                             onerror="this.src='https://placehold.co/300x300/E4ECF5/141B2D?text=Harrison+Chan'" 
+                             alt="Harrison Chan" class="w-full h-full object-cover">
+                    </div>
+                    <span class="state-badge mb-2">MASSACHUSETTS</span>
+                    <h3 class="text-2xl text-[#141B2D] mb-1">HARRISON CHAN</h3>
+                    <p class="text-[#6C88C4] font-extrabold text-xs uppercase tracking-wider mb-3">COMMUNICATIONS & CHAPTER OUTREACH LEAD</p>
+                    <p class="text-[#4A5568] text-xs font-medium leading-relaxed">
+                        Manages educational messaging, program approvals, and supports student chapter expansion efforts.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NATIONAL DIGITAL TEAM ROSTER (LIGHTWEIGHT & SCANNABLE) -->
+    <section class="w-full bg-gradient-to-r from-[#F0F4F9] to-[#E4ECF5] border-b-2 border-[#141B2D] py-16 px-4 sm:px-6 relative z-20">
+        <div class="max-w-6xl mx-auto space-y-10">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-3xl sm:text-5xl text-[#141B2D]">MEET OUR NATIONAL DIGITAL TEAM</h2>
+                <p class="text-[#4A5568] text-sm sm:text-base font-medium mt-2">
+                    Students working together across Massachusetts, Texas, Pennsylvania, California, New Jersey, Maryland, and Greece.
+                </p>
+            </div>
+
+            <!-- Department Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- Department 1: Youth Financial Literacy -->
+                <div class="glass-panel p-6">
+                    <h3 class="text-xl text-[#6C88C4] font-bold mb-4 border-b-2 border-[#141B2D] pb-2">YOUTH FINANCIAL LITERACY</h3>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-white rounded-xl border-2 border-[#141B2D] flex justify-between items-center">
+                            <div>
+                                <h4 class="font-bold text-sm text-[#141B2D]">Sriya Donthiri</h4>
+                                <p class="text-xs text-[#6C88C4] font-bold">Director of Youth Financial Literacy</p>
+                            </div>
+                            <span class="state-badge">TX</span>
+                        </div>
+                        <div class="p-3 bg-white rounded-xl border-2 border-[#141B2D] flex justify-between items-center">
+                            <div>
+                                <h4 class="font-bold text-sm text-[#141B2D]">Ava Bagley</h4>
+                                <p class="text-xs text-[#6C88C4] font-bold">Marketing & Partnerships Coordinator</p>
+                            </div>
+                            <span class="state-badge">PA</span>
+                        </div>
+                        <div class="p-3 bg-white rounded-xl border-2 border-[#141B2D] flex justify-between items-center">
+                            <div>
+                                <h4 class="font-bold text-sm text-[#141B2D]">Harrison Chan</h4>
+                                <p class="text-xs text-[#6C88C4] font-bold">Financial Literacy Instructor</p>
+                            </div>
+                            <span class="state-badge">MA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Department 2: Education & Content -->
+                <div class="glass-panel p-6">
+                    <h3 class="text-xl text-[#6C88C4] font-bold mb-4 border-b-2 border-[#141B2D] pb-2">EDUCATION & CONTENT</h3>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-white rounded-xl border-2 border-[#141B2D] flex justify-between items-center">
+                            <div>
+                                <h4 class="font-bold text-sm text-[#141B2D]">Maya Yogya</h4>
+                                <p class="text-xs text-[#6C88C4] font-bold">Newsletter Editor</p>
+                            </div>
+                            <span class="state-badge">CA</span>
+                        </div>
+                        <div class="p-3 bg-white rounded-xl border-2 border-[#141B2D] flex justify-between items-center">
+                            <div>
+                                <h4 class="font-bold text-sm text-[#141B2D]">Ailin</h4>
+                                <p class="text-xs text-[#6C88C4] font-bold">Educational Content Associate</p>
+                            </div>
+                            <span class="state-badge">CA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Department 3: Marketing & Growth -->
+                <div class="glass-panel p-6 md:col-span-2">
+                    <h3 class="text-xl text-[#6C88C4] font-bold mb-4 border-b-2 border-[#141B2D] pb-2">MARKETING & GROWTH</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="p-3 bg-white rounded-xl border-2 border-[#141B2D] flex justify-between items-center">
+                            <div>
+                                <h4 class="font-bold text-sm text-[#141B2D]">Sara Borkar</h4>
+                                <p class="text-xs text-[#6C88C4] font-bold">Director of Marketing & Growth</p>
+                            </div>
+                            <span class="state-badge">NJ</span>
+                        </div>
+                        <div class="p-3 bg-white rounded-xl border-2 border-[#141B2D] flex justify-between items-center">
+                            <div>
+                                <h4 class="font-bold text-sm text-[#141B2D]">Celine YL</h4>
+                                <p class="text-xs text-[#6C88C4] font-bold">Social Media Associate</p>
+                            </div>
+                            <span class="state-badge">CA</span>
+                        </div>
+                        <div class="p-3 bg-white rounded-xl border-2 border-[#141B2D] flex justify-between items-center">
+                            <div>
+                                <h4 class="font-bold text-sm text-[#141B2D]">Helena Chaleplis</h4>
+                                <p class="text-xs text-[#6C88C4] font-bold">Social Media Associate</p>
+                            </div>
+                            <span class="state-badge">GREECE</span>
+                        </div>
+                        <div class="p-3 bg-white rounded-xl border-2 border-[#141B2D] flex justify-between items-center">
+                            <div>
+                                <h4 class="font-bold text-sm text-[#141B2D]">Shirley</h4>
+                                <p class="text-xs text-[#6C88C4] font-bold">Social Media Associate</p>
+                            </div>
+                            <span class="state-badge">CA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Department 4: Founding Chapter -->
+                <div class="glass-panel p-6 md:col-span-2">
+                    <h3 class="text-xl text-[#141B2D] font-bold mb-4 border-b-2 border-[#141B2D] pb-2">BROOKLINE HIGH SCHOOL FOUNDING CHAPTER</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="p-3 bg-white rounded-xl border-2 border-[#141B2D] flex justify-between items-center">
+                            <div>
+                                <p class="font-bold text-xs text-[#141B2D]">Annie Shi</p>
+                                <p class="text-[11px] text-[#6C88C4] font-bold">President</p>
+                            </div>
+                            <span class="state-badge">MA</span>
+                        </div>
+                        <div class="p-3 bg-white rounded-xl border-2 border-[#141B2D] flex justify-between items-center">
+                            <div>
+                                <p class="font-bold text-xs text-[#141B2D]">Noah Harwin</p>
+                                <p class="text-[11px] text-[#6C88C4] font-bold">Operations Manager</p>
+                            </div>
+                            <span class="state-badge">MA</span>
+                        </div>
+                        <div class="p-3 bg-white rounded-xl border-2 border-[#141B2D] flex justify-between items-center">
+                            <div>
+                                <p class="font-bold text-xs text-[#141B2D]">Emma Bar</p>
+                                <p class="text-[11px] text-[#6C88C4] font-bold">Outreach Manager</p>
+                            </div>
+                            <span class="state-badge">MA</span>
+                        </div>
+                        <div class="p-3 bg-white rounded-xl border-2 border-[#141B2D] flex justify-between items-center">
+                            <div>
+                                <p class="font-bold text-xs text-[#141B2D]">Harrison Chan</p>
+                                <p class="text-[11px] text-[#6C88C4] font-bold">Communications Manager</p>
+                            </div>
+                            <span class="state-badge">MA</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: Footer -->
+    <footer class="w-full bg-white/80 backdrop-blur-md py-12 relative z-20">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="md:col-span-1">
+                <img src="https://lh3.googleusercontent.com/pw/AP1GczNsoqlPUEDJuh6m6J5ROUJS5meKcDo2Lu7D2LH93YTpEQpL7jF4X4-HvoKSn3blk9gKJHwWo5b6U0ODJ8ef518iTImmMffKDjDJzIJEsSkgtwrvqNcYY6Ginzh5f4uqKyu-U9rZFuxbSD8ejhHzzax2=w964-h190-s-no-gm?authuser=0" 
+                     alt="Market Minds Logo" 
+                     class="h-8 w-auto mb-4 object-contain filter grayscale contrast-200">
+                <p class="text-[#4A5568] text-xs font-medium leading-relaxed mb-3">
+                    Empowering young people with the financial knowledge, confidence, and community needed to navigate their futures.
+                </p>
+                <a href="index.html" class="text-xs font-bold text-[#141B2D] underline hover:text-[#6C88C4] transition-colors uppercase tracking-wider">
+                    Back to Home &rarr;
+                </a>
+            </div>
+            
+            <div>
+                <h4 class="font-extrabold text-[#141B2D] mb-4 uppercase text-xs tracking-widest">Programs</h4>
+                <ul class="space-y-2 text-[#4A5568] text-xs font-medium">
+                    <li><a href="index.html#get-involved" class="hover:text-[#6C88C4] transition-colors">High School Chapters</a></li>
+                    <li><a href="index.html#get-involved" class="hover:text-[#6C88C4] transition-colors">Youth Workshops</a></li>
+                    <li><a href="index.html#get-involved" class="hover:text-[#6C88C4] transition-colors">Connect Series</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-extrabold text-[#141B2D] mb-4 uppercase text-xs tracking-widest">Resources</h4>
+                <ul class="space-y-2 text-[#4A5568] text-xs font-medium">
+                    <li><a href="index.html#resources" class="hover:text-[#6C88C4] transition-colors">Newsletter Archive</a></li>
+                    <li><a href="index.html#resources" class="hover:text-[#6C88C4] transition-colors">Lesson Decks</a></li>
+                    <li><a href="about.html" class="hover:text-[#6C88C4] transition-colors">About Our Story</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-extrabold text-[#141B2D] mb-4 uppercase text-xs tracking-widest">Connect</h4>
+                <ul class="space-y-2 text-[#4A5568] text-xs font-medium">
+                    <li><a href="https://instagram.com/marketmindsyouth" target="_blank" class="hover:text-[#6C88C4] transition-colors">Instagram (@marketmindsyouth)</a></li>
+                    <li><a href="https://tiktok.com/@marketmindsyouth" target="_blank" class="hover:text-[#6C88C4] transition-colors">TikTok (@marketmindsyouth)</a></li>
+                    <li><a href="https://youtube.com/@marketmindsyouth" target="_blank" class="hover:text-[#6C88C4] transition-colors">YouTube (@marketmindsyouth)</a></li>
+                    <li><a href="mailto:contact@marketmindsyouth.org" class="hover:text-[#6C88C4] transition-colors">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 mt-12 pt-6 border-t border-gray-300 text-center md:text-left text-[#4A5568] font-medium text-xs">
+            © 2026 Market Minds Organization. Student-Led Nonprofit Organization. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- BACKGROUND PHOTO SCATTER ENGINE -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const canvas = document.getElementById('hero-scatter-canvas');
+            if (!canvas) return;
+
+            const photoPool = [
+                "https://lh3.googleusercontent.com/d/17MZMCrUfizCHFBUw0OtNUNIMEQbcNEhY",
+                "https://lh3.googleusercontent.com/d/1UzKvgG8D6LaXWK3zM9XIvmFhmvafHgvS",
+                "https://lh3.googleusercontent.com/d/1HG9FYDGPu9VZux-vs2w7KE-O-odrwACV",
+                "https://lh3.googleusercontent.com/d/1oO56jVCJlCVcyDV7kEhddXbBrSCTCj0G",
+                "https://lh3.googleusercontent.com/d/1AQmMwKfsJxWgTqiYyadkfPpTgdGeLJar",
+                "https://lh3.googleusercontent.com/d/145nMnjIn8JTHR_wjmziqNAx9SSQKrtgP",
+                "https://lh3.googleusercontent.com/d/1vs6TuTFUlhJ0B0jCQNg9ADMCgRnna1Tp",
+                "https://lh3.googleusercontent.com/d/1wvw8rAvhxZRgoS2KV4Wh50UEef8GDPg7",
+                "https://lh3.googleusercontent.com/d/11C8Nxgpd-AV818Nyqe8_p8-XawefxZhk",
+                "https://lh3.googleusercontent.com/d/10owr3dXjTXG_WLLpt7p7HE13MAPuRm72",
+                "https://lh3.googleusercontent.com/d/1nPipqPkLzhauHa20dU6HBIQW0g2THAgC",
+                "https://lh3.googleusercontent.com/d/1Ewb5zbi4emRlInbLujpMiFbntzv-ZsoV"
+            ];
+
+            const seededRandom = (seed) => {
+                const x = Math.sin(seed++) * 10000;
+                return x - Math.floor(x);
+            };
+
+            const renderScatter = () => {
+                canvas.innerHTML = '';
+                const screenWidth = window.innerWidth;
+                const canvasWidth = canvas.clientWidth || screenWidth;
+                const canvasHeight = canvas.clientHeight || 800;
+
+                const cols = screenWidth >= 1100 ? 4 : 2;
+                const rows = 3;
+
+                const cellW = canvasWidth / cols;
+                const cellH = canvasHeight / rows;
+
+                let seed = 99;
+                let photoIndex = 0;
+
+                for (let r = 0; r < rows; r++) {
+                    for (let c = 0; c < cols; c++) {
+                        const photoUrl = photoPool[photoIndex % photoPool.length];
+                        photoIndex++;
+
+                        const jitterX = (seededRandom(seed++) - 0.5) * (cellW * 0.4);
+                        const jitterY = (seededRandom(seed++) - 0.5) * (cellH * 0.4);
+
+                        const posX = (c * cellW) + (cellW / 2) + jitterX;
+                        const posY = (r * cellH) + (cellH / 2) + jitterY;
+
+                        const rotation = (seededRandom(seed++) * 16) - 8;
+                        const baseWidth = Math.floor(cellW * 0.85);
+                        const finalWidth = Math.min(Math.max(baseWidth, 180), 300);
+
+                        const img = document.createElement('img');
+                        img.src = photoUrl;
+                        img.className = 'hero-scatter-img';
+                        img.style.width = `${finalWidth}px`;
+                        img.style.left = `${posX}px`;
+                        img.style.top = `${posY}px`;
+                        img.style.transform = `translate(-50%, -50%) rotate(${rotation.toFixed(1)}deg)`;
+
+                        img.onerror = () => { img.style.display = 'none'; };
+                        img.onload = () => { img.style.opacity = '1'; };
+
+                        canvas.appendChild(img);
+                    }
+                }
+            };
+
+            renderScatter();
+            window.addEventListener('resize', renderScatter);
+        });
+    </script>
+</body>
+</html>
