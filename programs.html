@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programs | Market Minds Non-Profit</title>
+    
+    <!-- Browser Tab Brand Favicon -->
+    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/pw/AP1GczM7dpwqAoD3jtUidsgOIQFPZDEIKJ7EGbftLFTFiav-DhaJgi0Q11HiGT4W356SuFpAhDLxDeVI4xhP1eEt8IeylLovcNhQXZ90Rw_q2fkQpnOo6JsnYH42l8TxXwCZ4WtBqKrM7AHyn1ozyKZBnQSq=w992-h992-s-no-gm?authuser=0">
+
+    <!-- Google Fonts: Instrument Serif & Playfair Display (Headings) & Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --bg-start: #F0F4F9;
+            --bg-end: #E4ECF5;
+            --accent-primary: #6C88C4;
+            --accent-dark: #4A607A;
+            --accent-brand-blue: #729aad;
+            --text-dark: #141B2D;
+            --text-muted: #4A5568;
+            --glass-bg: rgba(255, 255, 255, 0.92);
+            --glass-border: rgba(255, 255, 255, 0.75);
+            --font-serif: 'Instrument Serif', 'Playfair Display', serif;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: linear-gradient(to bottom, var(--bg-start), var(--bg-end));
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* ==========================================================================
+           CONSISTENT HEADINGS
+           ========================================================================== */
+        h1, h2, h3, .heading-serif {
+            font-family: var(--font-serif);
+            text-transform: uppercase;
+            letter-spacing: 0.015em;
+            line-height: 1.08;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: 0.01em;
+            text-shadow: 0 1px 2px rgba(20, 27, 45, 0.05);
+        }
+
+        /* BUTTON SPECIFICATIONS ("ARTISTIC RETRO-TECH") */
+        .btn-retro {
+            border: 2px solid var(--text-dark);
+            border-radius: 12px;
+            box-shadow: 4px 4px 0px var(--text-dark);
+            transition: all 0.2s ease;
+            font-family: var(--font-sans);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .btn-retro:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--accent-dark);
+        }
+
+        .btn-primary {
+            background-color: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-outline {
+            background-color: white;
+            color: var(--text-dark);
+        }
+
+        /* GLASSMORPHISM CONTAINERS */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 2px solid var(--text-dark);
+            border-radius: 24px;
+            box-shadow: 4px 4px 0px var(--text-dark);
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        /* Program Section Rectangular Pill Badges (No Shadow) */
+        .program-badge {
+            display: inline-block;
+            background-color: #ffffff;
+            border: 2px solid var(--text-dark);
+            border-radius: 8px;
+            padding: 0.35rem 0.85rem;
+            font-size: 0.725rem;
+            font-weight: 800;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            box-shadow: none !important;
+        }
+
+        /* Hero Photo Quick Jump Card with Dark Blue Contrast Overlay */
+        .program-jump-card {
+            border: 2px solid var(--text-dark);
+            border-radius: 20px;
+            box-shadow: 4px 4px 0px var(--text-dark);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .program-jump-card:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 7px 7px 0px var(--accent-primary);
+        }
+
+        /* Full Bleed Band Section */
+        .full-bleed-section {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            border-top: 2px solid var(--text-dark);
+            border-bottom: 2px solid var(--text-dark);
+            z-index: 20;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- SECTION 1: Navigation Header -->
+    <nav class="glass-nav fixed w-full top-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            
+            <!-- Brand Logo -->
+            <a href="index.html" class="flex items-center">
+                <img src="https://lh3.googleusercontent.com/pw/AP1GczNsoqlPUEDJuh6m6J5ROUJS5meKcDo2Lu7D2LH93YTpEQpL7jF4X4-HvoKSn3blk9gKJHwWo5b6U0ODJ8ef518iTImmMffKDjDJzIJEsSkgtwrvqNcYY6Ginzh5f4uqKyu-U9rZFuxbSD8ejhHzzax2=w964-h190-s-no-gm?authuser=0" 
+                     alt="Market Minds Logo" 
+                     class="h-8 md:h-10 w-auto object-contain">
+            </a>
+            
+            <!-- Desktop Links -->
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="text-[#141B2D] font-bold text-sm tracking-wider hover:text-[#6C88C4] transition-colors">HOME</a>
+                <a href="about.html" class="text-[#141B2D] font-bold text-sm tracking-wider hover:text-[#6C88C4] transition-colors">ABOUT US</a>
+                <a href="programs.html" class="text-[#6C88C4] font-bold text-sm tracking-wider hover:text-[#6C88C4] transition-colors">PROGRAMS</a>
+                <a href="resources.html" class="text-[#141B2D] font-bold text-sm tracking-wider hover:text-[#6C88C4] transition-colors">RESOURCES</a>
+                <a href="index.html#get-involved" class="btn-retro btn-primary px-6 py-2" style="padding: 0.5rem 1.25rem;">GET INVOLVED</a>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-[#141B2D]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- CONTENT WRAPPER -->
+    <div class="pt-28 pb-0 px-4 sm:px-6 max-w-7xl mx-auto space-y-12">
+
+        <!-- PAGE HERO HEADER -->
+        <header class="glass-panel p-8 sm:p-12 text-center max-w-3xl mx-auto mt-6">
+            <h1 class="text-4xl sm:text-6xl md:text-7xl mb-4 hero-title max-w-2xl mx-auto">OUR NATIONAL INITIATIVES</h1>
+            <p class="text-base sm:text-lg text-[#4A5568] font-medium leading-relaxed">
+                Market Minds operates three core initiatives designed to make financial education approachable, hands-on, and community-driven for students of all ages.
+            </p>
+        </header>
+
+        <!-- THREE BIG PROGRAM JUMP BUTTONS (WITH BACKGROUND PHOTOS + BLUE CONTRAST OVERLAY + WHITE TEXT) -->
+        <section class="max-w-6xl mx-auto pb-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Jump Card 1: High School Chapters -->
+                <a href="#chapters" class="program-jump-card p-6 flex flex-col justify-between min-h-[220px] group">
+                    <!-- Photo Background -->
+                    <img src="https://lh3.googleusercontent.com/d/17MZMCrUfizCHFBUw0OtNUNIMEQbcNEhY" alt="High School Chapters" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <!-- Blue Tint Overlay for High Contrast -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#141B2D] via-[#141B2D]/85 to-[#4A607A]/70 group-hover:bg-[#141B2D]/75 transition-colors duration-300"></div>
+
+                    <!-- Content Layer (White Text) -->
+                    <div class="relative z-10 flex flex-col justify-between h-full text-white">
+                        <div>
+                            <h3 class="text-2xl text-white font-bold mb-2 tracking-tight">HIGH SCHOOL CHAPTERS</h3>
+                            <p class="text-gray-200 text-xs font-medium leading-relaxed">
+                                Student-led school clubs featuring interactive lessons, stock market challenges, and peer mentorship.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-3 border-t border-white/20 flex items-center justify-between">
+                            <span class="text-xs font-extrabold uppercase tracking-wider text-white">EXPLORE CHAPTERS</span>
+                            <span class="text-lg text-white group-hover:translate-x-1.5 transition-transform">&rarr;</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Jump Card 2: Youth Workshops -->
+                <a href="#workshops" class="program-jump-card p-6 flex flex-col justify-between min-h-[220px] group">
+                    <!-- Photo Background -->
+                    <img src="https://lh3.googleusercontent.com/pw/AP1GczOoyx63HfwqYTcHTD5uR8_vysQudpeynxVkzIwFr6DSW3bGZ-T9cvAiXchHN_OsYxufbPhG-gXDnCxJ_OkpMa6cXURSa5fN2MQQ5j481t3XRrB8uTpK-WwsXG0P3KrV288r04s2BGphHIZuHRTlBjMN=w2166-h1624-s-no-gm?authuser=0" alt="Youth Workshops" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <!-- Blue Tint Overlay for High Contrast -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#141B2D] via-[#141B2D]/85 to-[#4A607A]/70 group-hover:bg-[#141B2D]/75 transition-colors duration-300"></div>
+
+                    <!-- Content Layer (White Text) -->
+                    <div class="relative z-10 flex flex-col justify-between h-full text-white">
+                        <div>
+                            <h3 class="text-2xl text-white font-bold mb-2 tracking-tight">YOUTH WORKSHOPS</h3>
+                            <p class="text-gray-200 text-xs font-medium leading-relaxed">
+                                Free, hands-on financial literacy bootcamps designed for elementary and middle school students.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-3 border-t border-white/20 flex items-center justify-between">
+                            <span class="text-xs font-extrabold uppercase tracking-wider text-white">EXPLORE WORKSHOPS</span>
+                            <span class="text-lg text-white group-hover:translate-x-1.5 transition-transform">&rarr;</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Jump Card 3: Connect Series -->
+                <a href="#connect-series" class="program-jump-card p-6 flex flex-col justify-between min-h-[220px] group">
+                    <!-- Photo Background -->
+                    <img src="https://lh3.googleusercontent.com/pw/AP1GczNxS3AEoT65keH0xVUgflpG3nHgjdOxVRUqAcnEQHor9QEYHSslb4KHRtsRlUtHVSXw5wiG-bOpD15ylUcyudk1n5Jq5oOhtQ8_t3NBNKJKol2_0Vg6ss-UozKT2CsEji0JAbx3I4ZiAId5BgpY6wbx=w2166-h1624-s-no-gm?authuser=0" alt="Connect Series" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <!-- Blue Tint Overlay for High Contrast -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#141B2D] via-[#141B2D]/85 to-[#4A607A]/70 group-hover:bg-[#141B2D]/75 transition-colors duration-300"></div>
+
+                    <!-- Content Layer (White Text) -->
+                    <div class="relative z-10 flex flex-col justify-between h-full text-white">
+                        <div>
+                            <h3 class="text-2xl text-white font-bold mb-2 tracking-tight">CONNECT SERIES</h3>
+                            <p class="text-gray-200 text-xs font-medium leading-relaxed">
+                                National guest speaker events connecting students directly with career mentors and industry leaders.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-3 border-t border-white/20 flex items-center justify-between">
+                            <span class="text-xs font-extrabold uppercase tracking-wider text-white">EXPLORE CONNECT SERIES</span>
+                            <span class="text-lg text-white group-hover:translate-x-1.5 transition-transform">&rarr;</span>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+    </div>
+
+    <!-- PROGRAM 1: HIGH SCHOOL CHAPTERS SECTION (SIGNATURE ICE BLUE BAND) -->
+    <section id="chapters" class="full-bleed-section bg-gradient-to-r from-[#F0F4F9] to-[#E4ECF5] py-16 sm:py-20 px-4 sm:px-6 relative z-20">
+        <div class="max-w-6xl mx-auto space-y-10">
+            
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                <div class="md:col-span-7 space-y-4">
+                    <span class="program-badge">
+                        HIGH SCHOOL CHAPTER PROGRAM
+                    </span>
+                    <h2 class="text-3xl sm:text-5xl text-[#141B2D]">BUILDING FINANCIAL CLUBS THAT STUDENTS ACTUALLY WANT TO JOIN</h2>
+                    <p class="text-[#4A5568] font-medium text-sm sm:text-base leading-relaxed">
+                        Our high school chapters are built to be approachable and community-centered from day one. While student chapter leaders receive comprehensive support and curriculum resources, general members don't need any prior background in stocks, economics, or business to join and participate.
+                    </p>
+                </div>
+
+                <div class="md:col-span-5 bg-white p-6 rounded-2xl border-2 border-[#141B2D] shadow-[4px_4px_0px_#141B2D] space-y-4">
+                    <!-- Photo Header inside Section Card -->
+                    <div class="h-44 rounded-xl overflow-hidden border-2 border-[#141B2D]">
+                        <img src="https://lh3.googleusercontent.com/pw/AP1GczNoX6SW1bxTXC_go0cBnqrH7mepD1rK9LWq6rBT8zrYtZI2uBmc2_h_uzF5PPYMNk7CUNmvXfteJAnXajhmqvqrEdtznpK1Bk9ZFdAlAxJLzlxdybCn5YnkOs81flsdVjuAIi3xoFrFHUaAeJsEV-z0=w2166-h1624-s-no-gm?authuser=0" alt="Chapter Meeting Photo" class="w-full h-full object-cover">
+                    </div>
+
+                    <h3 class="text-xl text-[#141B2D] font-bold border-b-2 border-[#141B2D] pb-2">WHAT A CHAPTER MEETING LOOKS LIKE</h3>
+                    <ul class="space-y-3 text-xs font-medium text-[#4A5568]">
+                        <li class="flex items-start gap-2">
+                            <span class="text-[#6C88C4] font-bold">•</span>
+                            <span><b>Investing & Market Simulations:</b> Practice stock-picking strategies in risk-free interactive challenges.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-[#6C88C4] font-bold">•</span>
+                            <span><b>Finance Trivia & Games:</b> Friendly competitions breaking down real-world financial headlines.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-[#6C88C4] font-bold">•</span>
+                            <span><b>Open Discussion:</b> Asking fundamental questions without feeling judged.</span>
+                        </li>
+                    </ul>
+                    <div class="pt-2">
+                        <a href="mailto:contact@marketmindsyouth.org?subject=Start%20a%20Market%20Minds%20Chapter" class="btn-retro btn-primary w-full text-xs">START A CHAPTER AT YOUR SCHOOL</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- PROGRAM 2: YOUTH WORKSHOPS SECTION (SOFT SLATE BLUE GRADIENT) -->
+    <section id="workshops" class="full-bleed-section bg-gradient-to-r from-[#D0E2EE] to-[#A3C2D4] py-16 sm:py-20 px-4 sm:px-6 relative z-20" style="border-top: none;">
+        <div class="max-w-6xl mx-auto space-y-10">
+            
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                
+                <div class="md:col-span-5 bg-white p-6 rounded-2xl border-2 border-[#141B2D] shadow-[4px_4px_0px_#141B2D] space-y-4 order-2 md:order-1">
+                    <!-- Workshop Image Banner -->
+                    <div class="h-44 rounded-xl overflow-hidden border-2 border-[#141B2D]">
+                        <img src="https://lh3.googleusercontent.com/pw/AP1GczNTV5eNtYyd1ECM2JlZlQ0Iv_0644tSMCFjsFz1EAcS2cdkfCfb4cmvXf67_BGc2-b1EQfvgaOZFr5u-QF2EcPFexAGSJmAExcqNDBvtDFR118NLYgStQJaLvByh8i6r7gXClNjSS5gfDT0C8_u7CWI=w1200-h630-s-no-gm?authuser=0" alt="Youth Workshop Classroom" class="w-full h-full object-cover">
+                    </div>
+
+                    <h3 class="text-xl text-[#141B2D] font-bold border-b-2 border-[#141B2D] pb-2">WORKSHOP TOPICS & MODULES</h3>
+                    
+                    <!-- Clean Bulleted List (No Emojis) -->
+                    <ul class="space-y-2.5 text-xs font-semibold text-[#141B2D] pt-1">
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#6C88C4]"></span>
+                            <span>Saving &amp; Spending Basics</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#6C88C4]"></span>
+                            <span>Budgeting Frameworks</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#6C88C4]"></span>
+                            <span>Banking &amp; Savings Accounts</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#6C88C4]"></span>
+                            <span>Intro to Investing &amp; Stocks</span>
+                        </li>
+                    </ul>
+
+                    <div class="pt-2">
+                        <a href="mailto:contact@marketmindsyouth.org?subject=Request%20a%20Youth%20Financial%20Literacy%20Workshop" class="btn-retro btn-primary w-full text-xs">REQUEST A WORKSHOP</a>
+                    </div>
+                </div>
+
+                <div class="md:col-span-7 space-y-4 order-1 md:order-2">
+                    <span class="program-badge">
+                        YOUTH FINANCIAL LITERACY INITIATIVE
+                    </span>
+                    <h2 class="text-3xl sm:text-5xl text-[#141B2D]">FREE WORKSHOPS FOR ELEMENTARY & MIDDLE SCHOOLS</h2>
+                    <p class="text-[#4A5568] font-medium text-sm sm:text-base leading-relaxed">
+                        We believe financial literacy should begin early before complex money choices happen. We partner with schools, public libraries, and youth centers to deliver interactive, zero-cost workshops that build early financial confidence.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- PROGRAM 3: CONNECT SERIES SECTION (SIGNATURE ICE BLUE BAND) -->
+    <section id="connect-series" class="full-bleed-section bg-gradient-to-r from-[#F0F4F9] to-[#E4ECF5] py-16 sm:py-20 px-4 sm:px-6 relative z-20" style="border-top: none;">
+        <div class="max-w-6xl mx-auto space-y-10">
+            
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                <div class="md:col-span-7 space-y-4">
+                    <span class="program-badge">
+                        CONNECT SERIES GUEST SPEAKER PROGRAM
+                    </span>
+                    <h2 class="text-3xl sm:text-5xl text-[#141B2D]">REAL CAREER INSIGHTS FROM REAL PROFESSIONALS</h2>
+                    <p class="text-[#4A5568] font-medium text-sm sm:text-base leading-relaxed">
+                        The Connect Series bridges the gap between high school students and professionals across finance, business, marketing, and entrepreneurship. Students gain direct access to candid career advice and Q&A sessions.
+                    </p>
+                </div>
+
+                <div class="md:col-span-5 bg-white p-6 rounded-2xl border-2 border-[#141B2D] shadow-[4px_4px_0px_#141B2D] space-y-4">
+                    <!-- Speaker Photo Banner -->
+                    <div class="h-44 rounded-xl overflow-hidden border-2 border-[#141B2D]">
+                        <img src="https://lh3.googleusercontent.com/pw/AP1GczOVM2H-xQhYUybL5PMlRyMcqumZSSZeMrqOwUTTTTZJJDujqVRhXq_8tEHigwxdxh2YiJbqBvLg4cxLeyJfK60V_-RPaA8sba--UXypspWFRZjXpS8D-hPWi4djHDcCL1cv9HPgjr_-B_TgfRhNEA5f=w1624-h1624-s-no-gm?authuser=0" alt="Connect Series Speaker Event" class="w-full h-full object-cover">
+                    </div>
+
+                    <h3 class="text-xl text-[#141B2D] font-bold border-b-2 border-[#141B2D] pb-2">FOR SPEAKERS & PARTNERS</h3>
+                    <p class="text-xs text-[#4A5568] font-medium leading-relaxed">
+                        Interested in sharing your journey or partnering with Market Minds? We collaborate with guest speakers and organizational partners across various industries to inspire student communities.
+                    </p>
+                    <div class="flex flex-col gap-3 pt-2">
+                        <a href="mailto:contact@marketmindsyouth.org?subject=Speak%20in%20Market%20Minds%20Connect%20Series" class="btn-retro btn-primary text-xs w-full">SHARE YOUR STORY / SPEAK</a>
+                        <a href="mailto:contact@marketmindsyouth.org?subject=Partner%20with%20Market%20Minds" class="btn-retro btn-outline text-xs w-full">PARTNER WITH US</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 7: Footer -->
+    <footer class="w-full bg-white/80 backdrop-blur-md py-12 relative z-20">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="md:col-span-1">
+                <img src="https://lh3.googleusercontent.com/pw/AP1GczNsoqlPUEDJuh6m6J5ROUJS5meKcDo2Lu7D2LH93YTpEQpL7jF4X4-HvoKSn3blk9gKJHwWo5b6U0ODJ8ef518iTImmMffKDjDJzIJEsSkgtwrvqNcYY6Ginzh5f4uqKyu-U9rZFuxbSD8ejhHzzax2=w964-h190-s-no-gm?authuser=0" 
+                     alt="Market Minds Logo" 
+                     class="h-8 w-auto mb-4 object-contain filter grayscale contrast-200">
+                <p class="text-[#4A5568] text-xs font-medium leading-relaxed mb-3">
+                    Empowering young people with the financial knowledge, confidence, and community needed to navigate their futures.
+                </p>
+                <a href="about.html" class="text-xs font-bold text-[#141B2D] underline hover:text-[#6C88C4] transition-colors uppercase tracking-wider">
+                    Learn About Us &rarr;
+                </a>
+            </div>
+            
+            <div>
+                <h4 class="font-extrabold text-[#141B2D] mb-4 uppercase text-xs tracking-widest">Programs</h4>
+                <ul class="space-y-2 text-[#4A5568] text-xs font-medium">
+                    <li><a href="programs.html#chapters" class="hover:text-[#6C88C4] transition-colors">High School Chapters</a></li>
+                    <li><a href="programs.html#workshops" class="hover:text-[#6C88C4] transition-colors">Youth Workshops</a></li>
+                    <li><a href="programs.html#connect-series" class="hover:text-[#6C88C4] transition-colors">Connect Series</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-extrabold text-[#141B2D] mb-4 uppercase text-xs tracking-widest">Resources</h4>
+                <ul class="space-y-2 text-[#4A5568] text-xs font-medium">
+                    <li><a href="resources.html" class="hover:text-[#6C88C4] transition-colors">Newsletter Archive</a></li>
+                    <li><a href="resources.html" class="hover:text-[#6C88C4] transition-colors">Lesson Decks</a></li>
+                    <li><a href="about.html" class="hover:text-[#6C88C4] transition-colors">About Our Story</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-extrabold text-[#141B2D] mb-4 uppercase text-xs tracking-widest">Connect</h4>
+                <ul class="space-y-2 text-[#4A5568] text-xs font-medium">
+                    <li><a href="https://instagram.com/marketmindsyouth" target="_blank" class="hover:text-[#6C88C4] transition-colors">Instagram (@marketmindsyouth)</a></li>
+                    <li><a href="https://tiktok.com/@marketmindsyouth" target="_blank" class="hover:text-[#6C88C4] transition-colors">TikTok (@marketmindsyouth)</a></li>
+                    <li><a href="https://youtube.com/@marketmindsyouth" target="_blank" class="hover:text-[#6C88C4] transition-colors">YouTube (@marketmindsyouth)</a></li>
+                    <li><a href="mailto:contact@marketmindsyouth.org" class="hover:text-[#6C88C4] transition-colors">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 mt-12 pt-6 border-t border-gray-300 text-center md:text-left text-[#4A5568] font-medium text-xs">
+            © 2026 Market Minds Organization. Student-Led Nonprofit Organization. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>
