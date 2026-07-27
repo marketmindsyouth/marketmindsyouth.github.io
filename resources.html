@@ -177,11 +177,20 @@
             </div>
             
             <!-- Mobile Menu Button -->
-            <button class="md:hidden text-[#141B2D]">
+            <button id="mobile-menu-btn" class="md:hidden text-[#141B2D] p-1 focus:outline-none" aria-label="Toggle Menu">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
                 </svg>
             </button>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-md border-b-2 border-[#141B2D] px-6 py-4 space-y-3">
+            <a href="index.html" class="block text-[#141B2D] font-bold text-sm hover:text-[#6C88C4]">HOME</a>
+            <a href="about.html" class="block text-[#141B2D] font-bold text-sm hover:text-[#6C88C4]">ABOUT US</a>
+            <a href="programs.html" class="block text-[#141B2D] font-bold text-sm hover:text-[#6C88C4]">PROGRAMS</a>
+            <a href="resources.html" class="block text-[#141B2D] font-bold text-sm hover:text-[#6C88C4]">RESOURCES</a>
+            <a href="index.html#get-involved" class="btn-retro btn-primary w-full text-center py-2 text-xs">GET INVOLVED</a>
         </div>
     </nav>
 
@@ -407,8 +416,8 @@
             <div>
                 <h4 class="font-extrabold text-[#141B2D] mb-4 uppercase text-xs tracking-widest">Resources</h4>
                 <ul class="space-y-2 text-[#4A5568] text-xs font-medium">
-                    <li><a href="resources.html#newsletter-archive" class="hover:text-[#6C88C4] transition-colors">Newsletter Archive</a></li>
-                    <li><a href="resources.html#lesson-decks" class="hover:text-[#6C88C4] transition-colors">Lesson Decks</a></li>
+                    <li><a href="resources.html" class="hover:text-[#6C88C4] transition-colors">Newsletter Archive</a></li>
+                    <li><a href="resources.html" class="hover:text-[#6C88C4] transition-colors">Lesson Decks</a></li>
                     <li><a href="about.html" class="hover:text-[#6C88C4] transition-colors">About Our Story</a></li>
                 </ul>
             </div>
@@ -428,5 +437,17 @@
         </div>
     </footer>
 
+    <!-- MOBILE MENU SCRIPT -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+        });
+    </script>
 </body>
 </html>
