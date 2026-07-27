@@ -380,11 +380,15 @@
                     </p>
                 </div>
 
-                <form class="flex flex-col sm:flex-row gap-3 justify-center max-w-2xl mx-auto pt-2">
-                    <input type="email" placeholder="Enter your email address..." 
+                <form id="newsletter-form" class="flex flex-col sm:flex-row gap-3 justify-center max-w-2xl mx-auto pt-2">
+                    <input type="hidden" name="_subject" value="New Newsletter Subscriber from Resources Page!">
+                    <input type="email" name="subscriber_email" required placeholder="Enter your email address..." 
                            class="flex-1 px-5 py-3.5 rounded-xl border-2 border-[#141B2D] focus:outline-none focus:border-[#6C88C4] font-medium placeholder-gray-400 text-gray-800 text-sm bg-white">
-                    <button type="button" class="btn-retro btn-primary whitespace-nowrap text-xs sm:text-sm">JOIN NEWSLETTER</button>
+                    <button type="submit" class="btn-retro btn-primary whitespace-nowrap text-xs sm:text-sm">JOIN NEWSLETTER</button>
                 </form>
+                <div id="newsletter-success" class="hidden mt-4 p-3 bg-white border-2 border-[#141B2D] rounded-xl text-xs font-bold text-[#141B2D] max-w-md mx-auto">
+                    Awesome! You've been added to our newsletter list.
+                </div>
             </div>
         </div>
     </section>
@@ -416,8 +420,8 @@
             <div>
                 <h4 class="font-extrabold text-[#141B2D] mb-4 uppercase text-xs tracking-widest">Resources</h4>
                 <ul class="space-y-2 text-[#4A5568] text-xs font-medium">
-                    <li><a href="resources.html" class="hover:text-[#6C88C4] transition-colors">Newsletter Archive</a></li>
-                    <li><a href="resources.html" class="hover:text-[#6C88C4] transition-colors">Lesson Decks</a></li>
+                    <li><a href="resources.html#newsletter-archive" class="hover:text-[#6C88C4] transition-colors">Newsletter Archive</a></li>
+                    <li><a href="resources.html#lesson-decks" class="hover:text-[#6C88C4] transition-colors">Lesson Decks</a></li>
                     <li><a href="about.html" class="hover:text-[#6C88C4] transition-colors">About Our Story</a></li>
                 </ul>
             </div>
@@ -428,7 +432,6 @@
                     <li><a href="https://instagram.com/marketmindsyouth" target="_blank" class="hover:text-[#6C88C4] transition-colors">Instagram (@marketmindsyouth)</a></li>
                     <li><a href="https://tiktok.com/@marketmindsyouth" target="_blank" class="hover:text-[#6C88C4] transition-colors">TikTok (@marketmindsyouth)</a></li>
                     <li><a href="https://youtube.com/@marketmindsyouth" target="_blank" class="hover:text-[#6C88C4] transition-colors">YouTube (@marketmindsyouth)</a></li>
-                    <li><a href="mailto:contact@marketmindsyouth.org" class="hover:text-[#6C88C4] transition-colors">Contact Us</a></li>
                 </ul>
             </div>
         </div>
@@ -437,14 +440,46 @@
         </div>
     </footer>
 
-    <!-- MOBILE MENU SCRIPT -->
+    <!-- MOBILE MENU SCRIPT & FORM HANDLING -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            // Mobile Menu Toggle
             const mobileBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
             if (mobileBtn && mobileMenu) {
                 mobileBtn.addEventListener('click', () => {
                     mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // AJAX Newsletter Form Submission via FormSubmit.co
+            const newsletterForm = document.getElementById('newsletter-form');
+            const newsletterSuccess = document.getElementById('newsletter-success');
+            
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(newsletterForm);
+
+                    fetch("https://formsubmit.co/ajax/bhsmarketminds@gmail.com", {
+                        method: "POST",
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(() => {
+                        newsletterForm.reset();
+                        if (newsletterSuccess) {
+                            newsletterSuccess.classList.remove('hidden');
+                            setTimeout(() => newsletterSuccess.classList.add('hidden'), 6000);
+                        }
+                    })
+                    .catch(() => {
+                        newsletterForm.reset();
+                        if (newsletterSuccess) {
+                            newsletterSuccess.classList.remove('hidden');
+                            setTimeout(() => newsletterSuccess.classList.add('hidden'), 6000);
+                        }
+                    });
                 });
             }
         });

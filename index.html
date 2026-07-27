@@ -227,8 +227,8 @@
                 </p>
                 
                 <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdvgVJ-WzR9v3w5VLW-gothnnUhW2q8Hdo_g97iuBgmJLgMAw/viewform" target="_blank" rel="noopener noreferrer" class="btn-retro btn-primary w-full sm:w-auto text-xs sm:text-sm">START A SCHOOL CHAPTER</a>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSc4-_DGhpnUuAtNUfGZLnJvxKyZTa9K95bBjTk01HwelQxRdA/viewform" target="_blank" rel="noopener noreferrer" class="btn-retro btn-outline w-full sm:w-auto text-xs sm:text-sm">JOIN NATIONAL TEAM</a>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfrj0Oj7GTAnCdgw-RyGFhAg2lV373im7LzXtm4ANtBuaPIgg/viewform" target="_blank" rel="noopener noreferrer" class="btn-retro btn-primary w-full sm:w-auto text-xs sm:text-sm">START A SCHOOL CHAPTER</a>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfvms0bIai6YduvO0D88XJ6vdUa7p58TCCkVW0rZVDIQvJOxQ/viewform" target="_blank" rel="noopener noreferrer" class="btn-retro btn-outline w-full sm:w-auto text-xs sm:text-sm">JOIN NATIONAL TEAM</a>
                 </div>
             </header>
 
@@ -319,11 +319,15 @@
                 <h2 class="text-2xl sm:text-4xl mb-3 text-[#141B2D]">WHAT'S ONE THING YOU'VE ALWAYS WANTED TO ASK ABOUT MONEY?</h2>
                 <p class="text-[#4A5568] mb-8 text-base font-medium max-w-2xl mx-auto">Submit your question below! Our editorial team breaks down student questions in our upcoming monthly releases.</p>
                 
-                <form class="flex flex-col sm:flex-row gap-3 justify-center max-w-3xl mx-auto">
-                    <input type="text" placeholder="e.g., How does interest work on a high-yield savings account?" 
+                <form id="qa-form" class="flex flex-col sm:flex-row gap-3 justify-center max-w-3xl mx-auto">
+                    <input type="hidden" name="_subject" value="New Student Question Submission!">
+                    <input type="text" name="student_question" required placeholder="e.g., How does interest work on a high-yield savings account?" 
                            class="flex-1 px-5 py-3.5 rounded-xl border-2 border-[#141B2D] focus:outline-none focus:border-[#6C88C4] font-medium placeholder-gray-400 text-gray-800 text-sm bg-white">
-                    <button type="button" class="btn-retro btn-primary whitespace-nowrap text-xs sm:text-sm">SUBMIT QUESTION</button>
+                    <button type="submit" class="btn-retro btn-primary whitespace-nowrap text-xs sm:text-sm">SUBMIT QUESTION</button>
                 </form>
+                <div id="qa-success" class="hidden mt-4 p-3 bg-white border-2 border-[#141B2D] rounded-xl text-xs font-bold text-[#141B2D] max-w-md mx-auto">
+                    Thank you! Your question has been submitted to our editorial team.
+                </div>
             </div>
 
             <!-- Box 2: Newsletter Signup -->
@@ -331,11 +335,15 @@
                 <h2 class="text-2xl sm:text-4xl mb-3 text-[#141B2D]">STAY IN THE LOOP</h2>
                 <p class="text-[#4A5568] mb-8 text-base font-medium max-w-2xl mx-auto">Subscribe to receive monthly student financial literacy breakdowns and organization updates straight to your inbox.</p>
                 
-                <form class="flex flex-col sm:flex-row gap-3 justify-center max-w-3xl mx-auto">
-                    <input type="email" placeholder="Enter your email address..." 
+                <form id="newsletter-form" class="flex flex-col sm:flex-row gap-3 justify-center max-w-3xl mx-auto">
+                    <input type="hidden" name="_subject" value="New Newsletter Subscriber!">
+                    <input type="email" name="subscriber_email" required placeholder="Enter your email address..." 
                            class="flex-1 px-5 py-3.5 rounded-xl border-2 border-[#141B2D] focus:outline-none focus:border-[#6C88C4] font-medium placeholder-gray-400 text-gray-800 text-sm bg-white">
-                    <button type="button" class="btn-retro btn-primary whitespace-nowrap text-xs sm:text-sm">JOIN NEWSLETTER</button>
+                    <button type="submit" class="btn-retro btn-primary whitespace-nowrap text-xs sm:text-sm">JOIN NEWSLETTER</button>
                 </form>
+                <div id="newsletter-success" class="hidden mt-4 p-3 bg-white border-2 border-[#141B2D] rounded-xl text-xs font-bold text-[#141B2D] max-w-md mx-auto">
+                    Awesome! You've been added to our newsletter list.
+                </div>
             </div>
 
         </div>
@@ -355,8 +363,8 @@
                     <h3 class="text-2xl text-[#6C88C4] mb-3">FOR HIGH SCHOOLERS</h3>
                     <p class="text-[#4A5568] flex-grow mb-6 font-medium text-sm">Launch an official Market Minds chapter at your high school with our turnkey toolkit, or apply to join our National Team.</p>
                     <div class="flex flex-col gap-3">
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdvgVJ-WzR9v3w5VLW-gothnnUhW2q8Hdo_g97iuBgmJLgMAw/viewform" target="_blank" rel="noopener noreferrer" class="btn-retro btn-primary w-full text-xs">START A CHAPTER</a>
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSc4-_DGhpnUuAtNUfGZLnJvxKyZTa9K95bBjTk01HwelQxRdA/viewform" target="_blank" rel="noopener noreferrer" class="btn-retro btn-outline w-full text-xs">JOIN NATIONAL TEAM</a>
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfrj0Oj7GTAnCdgw-RyGFhAg2lV373im7LzXtm4ANtBuaPIgg/viewform" target="_blank" rel="noopener noreferrer" class="btn-retro btn-primary w-full text-xs">START A CHAPTER</a>
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfvms0bIai6YduvO0D88XJ6vdUa7p58TCCkVW0rZVDIQvJOxQ/viewform" target="_blank" rel="noopener noreferrer" class="btn-retro btn-outline w-full text-xs">JOIN NATIONAL TEAM</a>
                     </div>
                 </div>
 
@@ -365,7 +373,7 @@
                     <h3 class="text-2xl text-[#6C88C4] mb-3">FOR EDUCATORS</h3>
                     <p class="text-[#4A5568] flex-grow mb-6 font-medium text-sm">Host our free Youth Financial Literacy Workshops at your elementary, middle, or high school, library, or youth center.</p>
                     <div class="flex flex-col gap-3">
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSd8E01TzkDd7EM0zzetDr1wKIbf2aW0Hv9xKeUNdppbihQtnQ/viewform" target="_blank" rel="noopener noreferrer" class="btn-retro btn-primary w-full text-xs">REQUEST A WORKSHOP</a>
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdqDdCyMr5tvaOBVb1RtGuJUsQ0vLET1c6EGE7qgbqxJMW9YA/viewform" target="_blank" rel="noopener noreferrer" class="btn-retro btn-primary w-full text-xs">REQUEST A WORKSHOP</a>
                         <a href="resources.html" class="btn-retro btn-outline w-full text-xs">VIEW OUR RESOURCES</a>
                     </div>
                 </div>
@@ -375,8 +383,8 @@
                     <h3 class="text-2xl text-[#6C88C4] mb-3">SPEAKERS & PARTNERS</h3>
                     <p class="text-[#4A5568] flex-grow mb-6 font-medium text-sm">Collaborate with us as an organization or share your career insights with students through our guest speaker series.</p>
                     <div class="flex flex-col gap-3">
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSci2tJNaS6vwO-aLwqQsFRTD86frQEftUzoKGva-DM4Hka1eg/viewform" target="_blank" rel="noopener noreferrer" class="btn-retro btn-primary w-full text-xs">PARTNER WITH US</a>
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfsTiwUY8XjmuY7EfgTTW-_jVMNrQ7nuxE8Elwh5u4b9dn9Ww/viewform" target="_blank" rel="noopener noreferrer" class="btn-retro btn-outline w-full text-xs">SHARE YOUR STORY</a>
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfQWkW8EzKYWi8Cci2z25JxaPj3XCMJa1HoM7IHI9L86DQLcA/viewform" target="_blank" rel="noopener noreferrer" class="btn-retro btn-primary w-full text-xs">PARTNER WITH US</a>
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSf028X3XoFKit4n5Cv1NGAOz7InU_NJoXMZk2bXrJtRDyKFBQ/viewform" target="_blank" rel="noopener noreferrer" class="btn-retro btn-outline w-full text-xs">SHARE YOUR STORY</a>
                     </div>
                 </div>
 
@@ -396,7 +404,7 @@
                     Empowering young people with the financial knowledge, confidence, and community needed to navigate their futures.
                 </p>
                 <a href="about.html" class="text-xs font-bold text-[#141B2D] underline hover:text-[#6C88C4] transition-colors uppercase tracking-wider">
-                    Learn About Us &rarr;
+                    Learn About Us →
                 </a>
             </div>
             
@@ -424,7 +432,6 @@
                     <li><a href="https://instagram.com/marketmindsyouth" target="_blank" class="hover:text-[#6C88C4] transition-colors">Instagram (@marketmindsyouth)</a></li>
                     <li><a href="https://tiktok.com/@marketmindsyouth" target="_blank" class="hover:text-[#6C88C4] transition-colors">TikTok (@marketmindsyouth)</a></li>
                     <li><a href="https://youtube.com/@marketmindsyouth" target="_blank" class="hover:text-[#6C88C4] transition-colors">YouTube (@marketmindsyouth)</a></li>
-                    <li><a href="mailto:contact@marketmindsyouth.org" class="hover:text-[#6C88C4] transition-colors">Contact Us</a></li>
                 </ul>
             </div>
         </div>
@@ -433,7 +440,7 @@
         </div>
     </footer>
 
-    <!-- MOBILE MENU SCRIPT & CELLULAR JITTER EVENLY DISTRIBUTED BACKGROUND SCATTER ENGINE -->
+    <!-- MOBILE MENU SCRIPT & FORM HANDLING & SCATTER ENGINE -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             // Mobile Menu Toggle
@@ -444,6 +451,41 @@
                     mobileMenu.classList.toggle('hidden');
                 });
             }
+
+            // AJAX Form Submissions via FormSubmit.co
+            const handleFormSubmit = (formId, successId) => {
+                const form = document.getElementById(formId);
+                const successMsg = document.getElementById(successId);
+                if (!form) return;
+
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(form);
+
+                    fetch("https://formsubmit.co/ajax/bhsmarketminds@gmail.com", {
+                        method: "POST",
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(() => {
+                        form.reset();
+                        if (successMsg) {
+                            successMsg.classList.remove('hidden');
+                            setTimeout(() => successMsg.classList.add('hidden'), 6000);
+                        }
+                    })
+                    .catch(() => {
+                        form.reset();
+                        if (successMsg) {
+                            successMsg.classList.remove('hidden');
+                            setTimeout(() => successMsg.classList.add('hidden'), 6000);
+                        }
+                    });
+                });
+            };
+
+            handleFormSubmit('qa-form', 'qa-success');
+            handleFormSubmit('newsletter-form', 'newsletter-success');
 
             const canvas = document.getElementById('hero-scatter-canvas');
             if (!canvas) return;
