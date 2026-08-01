@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Credit Climb | Market Minds</title>
+    
+    <!-- Circular Favicon -->
+    <link rel="icon" href="https://lh3.googleusercontent.com/pw/AP1GczM9ixFMsp95jjxMuOg9RPqWXqj7ZmOx1eTTx4sjxv3sZnda7Di2Z7KxzRyRqWwgkrMr8H9uv8Lpj95ZmEV7Pzxoh-A-_iW8H9m-_DPmlgwFvleZwW6Gp_jnjwPv2VQd5Erk8WzNIgsTRNsKLyTLGd6I=w1000-h1000-s-no-gm?authuser=0" type="image/jpeg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-gradient-start: #F0F4F9;
+            --bg-gradient-end: #E4ECF5;
+            --brand-primary: #6C88C4;
+            --brand-primary-hover: #4A607A;
+            --text-navy: #141B2D;
+            --text-slate: #4A5568;
+            --glass-white: rgba(255, 255, 255, 0.92);
+            --danger-red: #E53E3E;
+            --warning-amber: #D69E2E;
+            --success-green: #38A169;
+            --excellent-green: #22543D;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            color: var(--text-navy);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.5;
+        }
+
+        /* Typography */
+        h1, h2, h3, .serif-font {
+            font-family: 'Instrument Serif', Georgia, serif;
+            letter-spacing: 0.02em;
+            color: var(--text-navy);
+        }
+
+        /* Glassmorphic Panel */
+        .glass-panel {
+            background: var(--glass-white);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid var(--text-navy);
+            border-radius: 16px;
+            box-shadow: 4px 4px 0px var(--text-navy);
+        }
+
+        /* Buttons */
+        .btn-retro {
+            background-color: var(--brand-primary);
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 14px 28px;
+            border: 2px solid var(--text-navy);
+            border-radius: 12px;
+            box-shadow: 4px 4px 0px var(--text-navy);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        .btn-retro:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--brand-primary-hover);
+            background-color: var(--brand-primary-hover);
+        }
+
+        .btn-retro:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--text-navy);
+        }
+
+        .btn-secondary { background-color: #FFFFFF; color: var(--text-navy); }
+        .btn-secondary:hover { background-color: #F8FAFC; box-shadow: 6px 6px 0px var(--text-navy); }
+        .btn-danger { background-color: var(--danger-red); }
+
+        /* Header Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(240, 244, 249, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--text-navy);
+            padding: 12px 24px;
+        }
+
+        .nav-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-logo-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+        
+        .brand-logo-wrap:hover {
+            transform: scale(1.02);
+        }
+
+        .brand-logo {
+            height: 44px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        main {
+            max-width: 800px;
+            width: 92%;
+            margin: 40px auto;
+            flex: 1;
+        }
+
+        .hero-title { font-size: 3rem; line-height: 1.1; margin-bottom: 16px; text-transform: uppercase; }
+        .hero-desc { color: var(--text-slate); font-size: 1.1rem; max-width: 600px; margin: 0 auto 32px; }
+
+        /* Dashboard HUD */
+        .hud-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .hud-box {
+            background: #FFFFFF;
+            border: 2px solid var(--text-navy);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 4px 4px 0px var(--text-navy);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hud-label {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--text-slate);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .hud-value {
+            font-size: 1.8rem;
+            font-family: 'Instrument Serif', serif;
+            font-weight: 700;
+        }
+
+        /* Credit Gauge */
+        .gauge-container {
+            margin-top: 12px;
+        }
+
+        .gauge-track {
+            height: 12px;
+            background: linear-gradient(to right, var(--danger-red) 15%, var(--warning-amber) 40%, var(--success-green) 70%, var(--excellent-green) 90%);
+            border-radius: 6px;
+            border: 1px solid var(--text-navy);
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .gauge-pointer {
+            width: 4px;
+            height: 20px;
+            background: var(--text-navy);
+            position: absolute;
+            top: -4px;
+            left: 0%; 
+            transition: left 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 2px;
+        }
+
+        .gauge-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-slate);
+        }
+
+        /* Scenario Area */
+        .scenario-card {
+            background: #FFFFFF;
+            border: 2px solid var(--text-navy);
+            border-radius: 16px;
+            padding: 36px 24px 24px;
+            box-shadow: 6px 6px 0px var(--text-navy);
+            text-align: center;
+            position: relative;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .timeline-badge {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text-navy);
+            color: #FFFFFF;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            border: 2px solid #FFFFFF;
+        }
+
+        .scenario-emoji { font-size: 4rem; margin-bottom: 12px; }
+        .scenario-title { font-size: 2rem; margin-bottom: 12px; font-family: 'Instrument Serif', serif; }
+        .scenario-desc { font-size: 1.1rem; color: var(--text-slate); margin-bottom: 24px; max-width: 500px; margin-inline: auto; }
+
+        .cost-display {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--danger-red);
+            margin-bottom: 24px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Status Update Alerts */
+        .status-alert {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #FEFCBF;
+            border: 2px solid var(--warning-amber);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .show-alert { opacity: 1; animation: popAlert 3s forwards; }
+        @keyframes popAlert { 0% { opacity: 0; transform: translateY(-10px); } 10% { opacity: 1; transform: translateY(0); } 90% { opacity: 1; } 100% { opacity: 0; } }
+
+        /* Results / Outcomes */
+        .outcome-box {
+            background: #F8FAFC;
+            border: 2px dashed var(--text-navy);
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #E2E8F0;
+            font-weight: 600;
+        }
+        
+        .stat-row:last-child { border-bottom: none; }
+
+        .site-footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            color: var(--text-slate);
+            font-weight: 500;
+        }
+
+        .site-footer a {
+            color: var(--brand-primary);
+            font-weight: 800;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .site-footer a:hover {
+            border-bottom-color: var(--brand-primary);
+        }
+
+        .hidden { display: none !important; }
+
+        @media (max-width: 600px) {
+            .hud-grid { grid-template-columns: 1fr; }
+            .options-grid { grid-template-columns: 1fr; }
+            .hero-title { font-size: 2.2rem; }
+            .scenario-card { padding: 36px 16px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <!-- Market Minds Logo with Website Link -->
+            <a href="https://marketmindsyouth.org/" target="_blank" rel="noopener noreferrer" class="brand-logo-wrap" title="Visit Market Minds">
+                <img src="https://lh3.googleusercontent.com/pw/AP1GczM6nrmaHQ4cGTx0z-eOJM-fqo-K9rlJ8ojBBZzrEbzDUyR90feZLpnA2En6xjx3_1rSjeM8v-qB7QUd_JqBKZ4mgvWHxDj62tt8F06I31teXwAyQi0llvvQ7kfJLdJDAEBvU4LZepCDmdjuNUKhKrLC=w1000-h347-s-no-gm?authuser=0" alt="Market Minds Logo" class="brand-logo">
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <!-- INTRO SCREEN -->
+        <section id="intro-screen" class="glass-panel" style="padding: 40px; text-align: center;">
+            <h1 class="hero-title">The Credit Climb</h1>
+            <p class="hero-desc">
+                Welcome to adulthood! You have $1,000 in your bank account, but having cash doesn't mean banks trust you yet. Your goal is to navigate a few months of expenses and build your <strong>Credit Score</strong> to unlock the best financial future.
+            </p>
+            <div style="background: #EBF8FF; border: 2px solid var(--brand-primary); padding: 20px; border-radius: 8px; margin-bottom: 24px; text-align: left; font-size: 0.95rem;">
+                <strong>🎮 HOW IT WORKS:</strong>
+                <ul style="margin-left: 20px; margin-top: 8px;">
+                    <li>You will face 3 months of random expenses (needs, wants, and emergencies).</li>
+                    <li>You must choose whether to pay directly from your Bank Account (Debit), or borrow the money using a Credit Card.</li>
+                    <li><strong>Pro Tip:</strong> Using too much of your limit drops your score (High Utilization). But paying your bills in full makes it soar!</li>
+                </ul>
+            </div>
+            <button id="start-btn" class="btn-retro" style="font-size: 1.2rem; padding: 16px 40px; width: auto;">
+                START SIMULATION ➔
+            </button>
+        </section>
+
+        <!-- GAME STAGE -->
+        <section id="game-stage" class="hidden">
+            
+            <!-- HUD -->
+            <div class="hud-grid">
+                <!-- Bank HUD -->
+                <div class="hud-box">
+                    <div class="hud-label">🏦 Checking Account (Cash)</div>
+                    <div class="hud-value" style="color: var(--success-green);">$<span id="bank-balance">1,000</span></div>
+                    
+                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #E2E8F0; display: none;" id="cc-hud">
+                        <div class="hud-label">💳 Credit Card Balance</div>
+                        <div style="font-weight: 700; font-size: 1.1rem; color: var(--danger-red);">$<span id="cc-balance">0</span> <span style="font-size:0.8rem; color:var(--text-slate); font-weight:normal;">/ $<span id="cc-limit-display">500</span> Limit</span></div>
+                    </div>
+                </div>
+
+                <!-- Credit Score HUD -->
+                <div class="hud-box">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div class="hud-label">📈 Credit Score</div>
+                        <div id="score-status" style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase;">UNESTABLISHED</div>
+                    </div>
+                    <div class="hud-value" id="credit-score">---</div>
+                    
+                    <div class="gauge-container">
+                        <div class="gauge-track">
+                            <div class="gauge-pointer" id="score-pointer"></div>
+                        </div>
+                        <div class="gauge-labels">
+                            <span>350</span>
+                            <span>Poor</span>
+                            <span>Good</span>
+                            <span>850</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenario Card -->
+            <div class="scenario-card">
+                <div id="status-alert" class="status-alert">Alert Message Here</div>
+                <div id="timeline-badge" class="timeline-badge">START</div>
+                <div id="scenario-emoji" class="scenario-emoji">✉️</div>
+                <h2 id="scenario-title" class="scenario-title">Credit Card Offer!</h2>
+                <p id="scenario-desc" class="scenario-desc">You received an offer in the mail for a Starter Student Credit Card. It has a limit of $500. Opening a card is the first step to proving you can handle borrowing money.</p>
+                
+                <div id="cost-display" class="cost-display hidden">-$0</div>
+
+                <div id="options-container" class="options-grid">
+                    <!-- Buttons Injected by JS -->
+                </div>
+            </div>
+
+        </section>
+
+        <!-- RESULTS SCREEN -->
+        <section id="results-screen" class="glass-panel hidden" style="padding: 40px 24px; text-align: center;">
+            <h1 class="hero-title">Simulation Complete!</h1>
+            
+            <div class="outcome-box">
+                <div class="stat-row">
+                    <span>Ending Cash (Bank):</span>
+                    <span id="final-cash" style="color: var(--success-green); font-size: 1.2rem;">$0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Final Credit Score:</span>
+                    <span id="final-score" style="font-size: 1.2rem; font-family: 'Instrument Serif', serif;">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Credit Rating:</span>
+                    <span id="final-rating" style="font-size: 1.1rem; font-weight: 800;">POOR</span>
+                </div>
+            </div>
+
+            <div id="lesson-box" style="background: #EBF8FF; border: 2px solid var(--brand-primary); padding: 24px; border-radius: 12px; margin-bottom: 24px; text-align: left;">
+                <h3 style="margin-bottom: 8px;">🎓 Financial Future Prediction</h3>
+                <p id="lesson-text" style="font-weight: 500; font-size: 1.05rem;"></p>
+            </div>
+
+            <button id="restart-btn" class="btn-retro" style="width: auto;">
+                🔄 PLAY AGAIN
+            </button>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        This is a free educational resource provided by <br class="mobile-break">
+        <a href="https://marketmindsyouth.org/" target="_blank" rel="noopener noreferrer">Market Minds</a>
+    </footer>
+
+    <style>
+        @media (min-width: 601px) { .mobile-break { display: none; } }
+    </style>
+
+    <script>
+        // --- GAME STATE ---
+        let bankBalance = 1000;
+        let ccBalance = 0;
+        let ccLimit = 500;
+        let hasCreditCard = false;
+        let creditScore = 0; // 0 means unestablished
+        let currentStep = 0;
+
+        // --- DOM ELEMENTS ---
+        const ui = {
+            intro: document.getElementById('intro-screen'),
+            game: document.getElementById('game-stage'),
+            results: document.getElementById('results-screen'),
+            
+            bankDisp: document.getElementById('bank-balance'),
+            ccHud: document.getElementById('cc-hud'),
+            ccDisp: document.getElementById('cc-balance'),
+            ccLimitDisp: document.getElementById('cc-limit-display'),
+            scoreDisp: document.getElementById('credit-score'),
+            scorePointer: document.getElementById('score-pointer'),
+            scoreStatus: document.getElementById('score-status'),
+            
+            timeBadge: document.getElementById('timeline-badge'),
+            scenEmoji: document.getElementById('scenario-emoji'),
+            scenTitle: document.getElementById('scenario-title'),
+            scenDesc: document.getElementById('scenario-desc'),
+            costDisp: document.getElementById('cost-display'),
+            optsGrid: document.getElementById('options-container'),
+            statusAlert: document.getElementById('status-alert')
+        };
+
+        // --- SCENARIO TIMELINE (3 Months) ---
+        const timeline = [
+            {
+                type: 'offer',
+                badge: 'MONTH 1',
+                emoji: '✉️',
+                title: 'Starter Card Offer',
+                desc: 'You received a Starter Student Credit Card offer with a $500 limit. Having a credit card builds a score, but only if you use it responsibly.',
+                cost: 0,
+                options: [
+                    { label: 'Accept Credit Card', action: () => acceptCard() },
+                    { label: 'No Thanks, Cash Only', action: () => nextStep(), class: 'btn-secondary' }
+                ]
+            },
+            {
+                type: 'purchase',
+                badge: 'MONTH 1',
+                emoji: '📚',
+                title: 'Required Textbooks',
+                desc: 'You need to buy your books for the semester. Without these, you will fall behind in class.',
+                cost: 150,
+                options: [
+                    { label: 'Pay with Bank Debit', action: () => payDebit(150), class: 'btn-secondary' },
+                    { label: 'Swipe Credit Card', action: () => payCredit(150), reqCard: true }
+                ]
+            },
+            {
+                type: 'purchase',
+                badge: 'MONTH 1',
+                emoji: '🎟️',
+                title: 'Concert Temptation',
+                desc: 'All your friends are getting VIP tickets to a huge music festival this weekend. It looks amazing.',
+                cost: 200,
+                options: [
+                    { label: 'Skip it (Save Money)', action: () => nextStep(), class: 'btn-secondary' },
+                    { label: 'Pay with Debit', action: () => payDebit(200), class: 'btn-secondary' },
+                    { label: 'Swipe Credit Card', action: () => payCredit(200), reqCard: true }
+                ]
+            },
+            {
+                type: 'bill',
+                badge: 'END OF MONTH 1',
+                emoji: '📅',
+                title: 'Credit Card Bill Due',
+                desc: 'Your first monthly statement is here. How do you want to handle your balance?',
+                getCost: () => ccBalance,
+                options: [
+                    { label: 'Pay in Full', action: () => payBillFull() },
+                    { label: 'Pay Minimum ($25)', action: () => payBillMin(), class: 'btn-secondary' },
+                    { label: 'Skip Payment', action: () => skipBill(), class: 'btn-danger' }
+                ]
+            },
+            {
+                type: 'purchase',
+                badge: 'MONTH 2',
+                emoji: '🩺',
+                title: 'Unexpected Vet Bill',
+                desc: 'Your dog ate something weird and you had to rush him to the vet for an emergency visit.',
+                cost: 250,
+                options: [
+                    { label: 'Pay with Bank Debit', action: () => payDebit(250), class: 'btn-secondary' },
+                    { label: 'Swipe Credit Card', action: () => payCredit(250), reqCard: true }
+                ]
+            },
+            {
+                type: 'income',
+                badge: 'MONTH 2',
+                emoji: '💸',
+                title: 'Birthday Money!',
+                desc: 'Your family sent you some cash for your birthday! This gets added directly to your checking account.',
+                cost: 0,
+                incomeAmount: 150,
+                options: [
+                    { label: 'Awesome, deposit it!', action: () => receiveIncome(150) }
+                ]
+            },
+            {
+                type: 'offer',
+                badge: 'MONTH 2',
+                emoji: '📈',
+                title: 'Credit Limit Increase',
+                desc: 'Your bank noticed you using your card. They are offering to raise your credit limit from $500 to $1,000! Accepting causes a tiny temporary drop to your score ("Hard Inquiry"), but lowers your utilization overall.',
+                cost: 0,
+                options: [
+                    { label: 'Accept Limit Increase', action: () => increaseLimit(), reqCard: true },
+                    { label: 'Keep $500 Limit', action: () => nextStep(), class: 'btn-secondary' }
+                ]
+            },
+            {
+                type: 'bill',
+                badge: 'END OF MONTH 2',
+                emoji: '📅',
+                title: 'Credit Card Bill Due',
+                desc: 'Month 2 statement is here. Pay attention to your bank balance vs your credit card balance.',
+                getCost: () => ccBalance,
+                options: [
+                    { label: 'Pay in Full', action: () => payBillFull() },
+                    { label: 'Pay Minimum ($25)', action: () => payBillMin(), class: 'btn-secondary' },
+                    { label: 'Skip Payment', action: () => skipBill(), class: 'btn-danger' }
+                ]
+            },
+            {
+                type: 'purchase',
+                badge: 'MONTH 3',
+                emoji: '💻',
+                title: 'Laptop Crash',
+                desc: 'Your laptop completely died. You need to buy a replacement immediately for school assignments.',
+                cost: 350,
+                options: [
+                    { label: 'Pay with Bank Debit', action: () => payDebit(350), class: 'btn-secondary' },
+                    { label: 'Swipe Credit Card', action: () => payCredit(350), reqCard: true }
+                ]
+            },
+            {
+                type: 'bill',
+                badge: 'END OF MONTH 3',
+                emoji: '📅',
+                title: 'Final Credit Card Bill!',
+                desc: 'This is the last month of the simulation. Settle your accounts before we pull your final credit score report.',
+                getCost: () => ccBalance,
+                options: [
+                    { label: 'Pay in Full', action: () => payBillFull() },
+                    { label: 'Pay Minimum ($25)', action: () => payBillMin(), class: 'btn-secondary' },
+                    { label: 'Skip Payment', action: () => skipBill(), class: 'btn-danger' }
+                ]
+            }
+        ];
+
+        // --- ACTIONS ---
+        function triggerAlert(message, type) {
+            ui.statusAlert.innerText = message;
+            ui.statusAlert.style.borderColor = type === 'good' ? 'var(--success-green)' : (type === 'bad' ? 'var(--danger-red)' : 'var(--warning-amber)');
+            
+            ui.statusAlert.classList.remove('show-alert');
+            void ui.statusAlert.offsetWidth; // trigger reflow
+            ui.statusAlert.classList.add('show-alert');
+        }
+
+        function acceptCard() {
+            hasCreditCard = true;
+            ui.ccHud.style.display = 'block';
+            updateScore(600); // Starter score
+            triggerAlert("Card Opened! Score generated.", "good");
+            nextStep();
+        }
+
+        function increaseLimit() {
+            ccLimit = 1000;
+            ui.ccLimitDisp.innerText = "1,000";
+            updateScore(creditScore - 5); // Hard inquiry penalty
+            triggerAlert("Limit increased. Hard inquiry (-5 pts).", "bad");
+            nextStep();
+        }
+
+        function receiveIncome(amount) {
+            bankBalance += amount;
+            triggerAlert("+$150 deposited to Bank!", "good");
+            updateHUD();
+            nextStep();
+        }
+
+        function payDebit(amount) {
+            if (bankBalance < amount) {
+                alert("You don't have enough cash in the bank for this!");
+                return;
+            }
+            bankBalance -= amount;
+            updateHUD();
+            nextStep();
+        }
+
+        function payCredit(amount) {
+            if (ccBalance + amount > ccLimit) {
+                alert(`CARD DECLINED! That puts you over your $${ccLimit} limit.`);
+                return;
+            }
+            ccBalance += amount;
+            
+            // Utilization Mechanics
+            const utilization = ccBalance / ccLimit;
+            if (creditScore > 0) {
+                if (utilization > 0.6) {
+                    updateScore(creditScore - 15);
+                    triggerAlert("High Utilization! Score dropped.", "bad");
+                } else if (utilization > 0.3) {
+                    updateScore(creditScore - 5);
+                    triggerAlert("Medium Utilization. Score slightly dropped.", "bad");
+                }
+            }
+            
+            updateHUD();
+            nextStep();
+        }
+
+        function payBillFull() {
+            if (ccBalance > bankBalance) {
+                alert("You don't have enough cash in your bank to pay this in full!");
+                return;
+            }
+            bankBalance -= ccBalance;
+            ccBalance = 0;
+            
+            // Major reward for paying in full
+            updateScore(creditScore + 40); 
+            triggerAlert("Bill paid in full! Score increased.", "good");
+            updateHUD();
+            nextStep();
+        }
+
+        function payBillMin() {
+            const min = 25;
+            if (min > bankBalance) {
+                alert("You don't even have $25 cash to pay the minimum!");
+                return;
+            }
+            bankBalance -= min;
+            ccBalance -= min;
+            // Add 10% interest penalty to remaining balance
+            ccBalance = Math.floor(ccBalance * 1.10); 
+            
+            // Small reward, but they suffer interest charges and utilization issues long term
+            updateScore(creditScore + 10); 
+            triggerAlert("Minimum paid. Interest added to balance.", "warning");
+            updateHUD();
+            nextStep();
+        }
+
+        function skipBill() {
+            // Massive penalty for missing a payment
+            ccBalance = Math.floor(ccBalance * 1.15); // 15% late fee/interest
+            updateScore(creditScore - 80);
+            triggerAlert("Missed Payment! Score plummeted.", "bad");
+            updateHUD();
+            nextStep();
+        }
+
+        // --- ENGINE ---
+        document.getElementById('start-btn').addEventListener('click', () => {
+            ui.intro.classList.add('hidden');
+            ui.game.classList.remove('hidden');
+            resetGame();
+            renderStep();
+        });
+
+        document.getElementById('restart-btn').addEventListener('click', () => {
+            ui.results.classList.add('hidden');
+            ui.game.classList.remove('hidden');
+            resetGame();
+            renderStep();
+        });
+
+        function resetGame() {
+            bankBalance = 1000;
+            ccBalance = 0;
+            ccLimit = 500;
+            hasCreditCard = false;
+            creditScore = 0;
+            currentStep = 0;
+            
+            ui.ccHud.style.display = 'none';
+            ui.ccLimitDisp.innerText = "500";
+            updateHUD();
+        }
+
+        function updateScore(newScore) {
+            if (creditScore === 0 && newScore !== 600) return; // Cant change score if unestablished
+            
+            creditScore = Math.max(350, Math.min(850, newScore)); // Clamp between 350-850
+            
+            ui.scoreDisp.innerText = creditScore;
+            
+            // Calculate percentage for gauge (350 is 0%, 850 is 100%)
+            let percent = ((creditScore - 350) / 500) * 100;
+            ui.scorePointer.style.left = `${percent}%`;
+
+            // Update status text and color
+            if (creditScore >= 720) {
+                ui.scoreStatus.innerText = "EXCELLENT";
+                ui.scoreStatus.style.color = "var(--excellent-green)";
+            } else if (creditScore >= 660) {
+                ui.scoreStatus.innerText = "GOOD";
+                ui.scoreStatus.style.color = "var(--success-green)";
+            } else if (creditScore >= 580) {
+                ui.scoreStatus.innerText = "FAIR";
+                ui.scoreStatus.style.color = "var(--warning-amber)";
+            } else {
+                ui.scoreStatus.innerText = "POOR";
+                ui.scoreStatus.style.color = "var(--danger-red)";
+            }
+        }
+
+        function updateHUD() {
+            ui.bankDisp.innerText = bankBalance.toLocaleString();
+            ui.ccDisp.innerText = ccBalance.toLocaleString();
+            
+            if (creditScore === 0) {
+                ui.scoreDisp.innerText = "---";
+                ui.scorePointer.style.left = "0%";
+                ui.scoreStatus.innerText = "NO CREDIT HISTORY";
+                ui.scoreStatus.style.color = "var(--text-slate)";
+            }
+        }
+
+        function renderStep() {
+            if (currentStep >= timeline.length) {
+                endGame();
+                return;
+            }
+
+            const step = timeline[currentStep];
+
+            // If it's a bill step or limit increase, but they have no credit card, skip it automatically
+            if ((step.type === 'bill' && !hasCreditCard) || (step.title === 'Credit Limit Increase' && !hasCreditCard)) {
+                nextStep();
+                return;
+            }
+            
+            // Auto skip bill if balance is 0
+            if (step.type === 'bill' && ccBalance === 0) {
+                nextStep();
+                return;
+            }
+
+            ui.timeBadge.innerText = step.badge;
+            ui.scenEmoji.innerText = step.emoji;
+            ui.scenTitle.innerText = step.title;
+            ui.scenDesc.innerText = step.desc;
+
+            // Handle Costs display
+            let currentCost = step.type === 'bill' ? step.getCost() : step.cost;
+            if (currentCost > 0) {
+                ui.costDisp.innerText = `-$${currentCost}`;
+                ui.costDisp.style.color = "var(--danger-red)";
+                ui.costDisp.classList.remove('hidden');
+            } else if (step.type === 'income') {
+                ui.costDisp.innerText = `+$${step.incomeAmount}`;
+                ui.costDisp.style.color = "var(--success-green)";
+                ui.costDisp.classList.remove('hidden');
+            } else {
+                ui.costDisp.classList.add('hidden');
+            }
+
+            // Render Options
+            ui.optsGrid.innerHTML = '';
+            step.options.forEach(opt => {
+                // Hide credit card options if they didn't accept the card
+                if (opt.reqCard && !hasCreditCard) return;
+
+                const btn = document.createElement('button');
+                btn.className = `btn-retro ${opt.class || ''}`;
+                
+                // Add specific text for bill paying to make it clear
+                let btnText = opt.label;
+                if (step.type === 'bill' && opt.label === 'Pay in Full') btnText += ` ($${ccBalance})`;
+
+                btn.innerText = btnText;
+                btn.onclick = opt.action;
+                ui.optsGrid.appendChild(btn);
+            });
+        }
+
+        function nextStep() {
+            currentStep++;
+            renderStep();
+        }
+
+        function endGame() {
+            ui.game.classList.add('hidden');
+            ui.results.classList.remove('hidden');
+
+            document.getElementById('final-cash').innerText = `$${bankBalance.toLocaleString()}`;
+            document.getElementById('final-score').innerText = creditScore === 0 ? "N/A" : creditScore;
+            
+            const ratingEl = document.getElementById('final-rating');
+            const lessonEl = document.getElementById('lesson-text');
+
+            if (creditScore === 0) {
+                ratingEl.innerText = "CREDIT INVISIBLE";
+                ratingEl.style.color = "var(--text-slate)";
+                lessonEl.innerHTML = `You have <strong>$${bankBalance}</strong> in your bank, but because you never used a credit card, banks have no idea if you are responsible! You are "Credit Invisible." If you try to rent an apartment, the landlord might reject you or force you to pay a massive security deposit because you have no proven track record.`;
+            } else if (creditScore >= 720) {
+                ratingEl.innerText = "EXCELLENT";
+                ratingEl.style.color = "var(--excellent-green)";
+                lessonEl.innerHTML = `<strong>Incredible job!</strong> You used your card, kept your utilization low, and paid your bill in full every month. Landlords will easily rent to you, and when you want to buy a car, banks will give you the lowest possible interest rates. You've mastered the credit climb!`;
+            } else if (creditScore >= 660) {
+                ratingEl.innerText = "GOOD";
+                ratingEl.style.color = "var(--success-green)";
+                lessonEl.innerHTML = `You did a good job establishing credit. You might have carried a small balance or had high utilization at times, but you avoided missing payments. You're on the right track!`;
+            } else if (creditScore >= 580) {
+                ratingEl.innerText = "FAIR";
+                ratingEl.style.color = "var(--warning-amber)";
+                lessonEl.innerHTML = `You have a credit history, but carrying large balances, maxing out your limit, or making only minimum payments hurt your score. You might get approved for a car loan, but the bank will charge you a higher interest rate because they see you as a slight risk.`;
+            } else {
+                ratingEl.innerText = "POOR";
+                ratingEl.style.color = "var(--danger-red)";
+                lessonEl.innerHTML = `You missed payments and severely damaged your credit score. Even if you have cash in the bank now, systems see your history. You will be automatically rejected for most apartments, and any loans you get will be incredibly expensive. Remember, one missed payment takes years to fix!`;
+            }
+        }
+    </script>
+</body>
+</html>

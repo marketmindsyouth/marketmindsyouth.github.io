@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spot the Scam | Market Minds</title>
+    
+    <!-- Circular Favicon -->
+    <link rel="icon" href="https://lh3.googleusercontent.com/pw/AP1GczM9ixFMsp95jjxMuOg9RPqWXqj7ZmOx1eTTx4sjxv3sZnda7Di2Z7KxzRyRqWwgkrMr8H9uv8Lpj95ZmEV7Pzxoh-A-_iW8H9m-_DPmlgwFvleZwW6Gp_jnjwPv2VQd5Erk8WzNIgsTRNsKLyTLGd6I=w1000-h1000-s-no-gm?authuser=0" type="image/jpeg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-gradient-start: #F0F4F9;
+            --bg-gradient-end: #E4ECF5;
+            --brand-primary: #6C88C4;
+            --brand-primary-hover: #4A607A;
+            --text-navy: #141B2D;
+            --text-slate: #4A5568;
+            --glass-white: rgba(255, 255, 255, 0.88);
+            --danger-red: #E53E3E;
+            --success-green: #38A169;
+            --warning-amber: #D69E2E;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            color: var(--text-navy);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.5;
+        }
+
+        /* Typography */
+        h1, h2, h3, .serif-font {
+            font-family: 'Instrument Serif', Georgia, serif;
+            letter-spacing: 0.02em;
+            color: var(--text-navy);
+        }
+
+        /* Glassmorphic Panel */
+        .glass-panel {
+            background: var(--glass-white);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid var(--text-navy);
+            border-radius: 16px;
+            box-shadow: 4px 4px 0px var(--text-navy);
+        }
+
+        /* Buttons */
+        .btn-retro {
+            background-color: var(--brand-primary);
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 14px 28px;
+            border: 2px solid var(--text-navy);
+            border-radius: 12px;
+            box-shadow: 4px 4px 0px var(--text-navy);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+
+        .btn-retro:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--brand-primary-hover);
+            background-color: var(--brand-primary-hover);
+        }
+
+        .btn-retro:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--text-navy);
+        }
+
+        .btn-danger { background-color: var(--danger-red); }
+        .btn-success { background-color: var(--success-green); }
+
+        /* Header Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(240, 244, 249, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--text-navy);
+            padding: 12px 24px;
+        }
+
+        .nav-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-logo-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+        
+        .brand-logo-wrap:hover {
+            transform: scale(1.02);
+        }
+
+        .brand-logo {
+            height: 44px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        /* Main Container */
+        main {
+            max-width: 800px;
+            width: 92%;
+            margin: 40px auto;
+            flex: 1;
+        }
+
+        /* Intro Section */
+        .hero-card {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
+        .hero-desc {
+            color: var(--text-slate);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        /* Game Stage Layout */
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .progress-bar-wrap {
+            flex: 1;
+            height: 16px;
+            background: #E2E8F0;
+            border: 2px solid var(--text-navy);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0 20px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--brand-primary);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        /* Mockup Containers */
+        .mockup-frame {
+            background: #FFFFFF;
+            border: 2px solid var(--text-navy);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 6px 6px 0px var(--text-navy);
+            margin-bottom: 24px;
+        }
+
+        .mockup-header {
+            background: var(--text-navy);
+            color: #FFFFFF;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .mockup-body {
+            padding: 30px 20px;
+            min-height: 300px;
+            background: #FAFBFD;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Device Specific Styles */
+        .sms-bubble {
+            background: #E9E9EB;
+            color: #000;
+            padding: 16px 20px;
+            border-radius: 20px;
+            border-bottom-left-radius: 4px;
+            font-size: 1.1rem;
+            max-width: 90%;
+            margin: 0 auto;
+            line-height: 1.5;
+            border: 1px solid #CBD5E0;
+        }
+        
+        .sms-sender {
+            text-align: center;
+            font-weight: 700;
+            color: #718096;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+        }
+
+        .email-container {
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            padding: 16px;
+            background: #fff;
+        }
+        
+        .email-header {
+            border-bottom: 2px solid #E2E8F0;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .email-field {
+            display: flex;
+            margin-bottom: 6px;
+            font-size: 1rem;
+        }
+        
+        .email-label {
+            width: 80px;
+            font-weight: 700;
+            color: var(--text-slate);
+        }
+
+        /* Inspector Mode & Hotspots */
+        .inspector-banner {
+            background: #FEFCBF;
+            border: 2px dashed var(--warning-amber);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: none;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        /* The magical clickable red flags */
+        .hotspot {
+            position: relative;
+            transition: all 0.2s;
+            border-radius: 4px;
+        }
+
+        /* When inspector mode is active, make the whole area look clickable so it doesn't give away the spots */
+        .inspector-active {
+            cursor: pointer;
+        }
+
+        /* When successfully found */
+        .hotspot.found {
+            background-color: #FFF5F5 !important;
+            border: 2px solid var(--danger-red) !important;
+            padding: 2px 4px;
+            color: var(--danger-red);
+            font-weight: bold;
+            pointer-events: none;
+        }
+
+        /* Action Controls */
+        .action-bar {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* Feedback Modal/Box */
+        .feedback-box {
+            padding: 24px;
+            margin-top: 24px;
+            display: none;
+            text-align: left;
+        }
+
+        .feedback-title {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .explanation-text {
+            font-size: 1.1rem;
+            color: var(--text-slate);
+            margin-bottom: 20px;
+        }
+
+        /* Final Results */
+        .results-section {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: var(--brand-primary);
+            color: white;
+            border: 4px solid var(--text-navy);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 24px auto;
+            box-shadow: 6px 6px 0px var(--text-navy);
+        }
+
+        .score-val {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        /* Utilities */
+        .hidden { display: none !important; }
+
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2.2rem; }
+            .action-bar { grid-template-columns: 1fr; }
+            .btn-retro { padding: 16px; font-size: 1.1rem; }
+        }
+
+        .site-footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            color: var(--text-slate);
+            font-weight: 500;
+        }
+
+        .site-footer a {
+            color: var(--brand-primary);
+            font-weight: 800;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .site-footer a:hover {
+            border-bottom-color: var(--brand-primary);
+        }
+
+        @media (min-width: 601px) { .mobile-break { display: none; } }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="nav-container">
+            <!-- Market Minds Logo with Website Link -->
+            <a href="https://marketmindsyouth.org/" target="_blank" rel="noopener noreferrer" class="brand-logo-wrap" title="Visit Market Minds">
+                <img src="https://lh3.googleusercontent.com/pw/AP1GczM6nrmaHQ4cGTx0z-eOJM-fqo-K9rlJ8ojBBZzrEbzDUyR90feZLpnA2En6xjx3_1rSjeM8v-qB7QUd_JqBKZ4mgvWHxDj62tt8F06I31teXwAyQi0llvvQ7kfJLdJDAEBvU4LZepCDmdjuNUKhKrLC=w1000-h347-s-no-gm?authuser=0" alt="Market Minds Logo" class="brand-logo">
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <!-- INTRO SCREEN -->
+        <section id="intro-screen" class="glass-panel hero-card">
+            <h1 class="hero-title">Spot the Scam</h1>
+            <p class="hero-desc">
+                Scammers are everywhere—hiding in texts, emails, and messages. Can you tell what's real and what's a trick? Play the game to test your instincts and become a Scam Detective!
+            </p>
+            <button id="start-btn" class="btn-retro" style="font-size: 1.2rem; padding: 16px 40px;">
+                START GAME ➔
+            </button>
+        </section>
+
+        <!-- GAME PLAY STAGE -->
+        <section id="game-stage" class="hidden">
+            
+            <div class="game-header">
+                <span id="scenario-counter">1 OF 5</span>
+                <div class="progress-bar-wrap">
+                    <div id="progress-fill" class="progress-bar-fill"></div>
+                </div>
+                <span>SCORE: <span id="live-score">0</span></span>
+            </div>
+
+            <!-- Inspector Banner -->
+            <div id="inspector-banner" class="inspector-banner">
+                🔍 GREAT JOB! Now, tap the suspicious parts of the message below! (<span id="flags-found">0</span>/<span id="flags-total">0</span> found)
+            </div>
+
+            <!-- Interactive Device Mockup -->
+            <div class="mockup-frame">
+                <div class="mockup-header">
+                    <span id="mockup-type-title">MESSAGES</span>
+                    <span>100% 🔋</span>
+                </div>
+                <div id="mockup-content" class="mockup-body">
+                    <!-- JavaScript will inject the scenario here -->
+                </div>
+            </div>
+
+            <!-- Action Controls -->
+            <div id="decision-controls" class="action-bar">
+                <button id="btn-scam" class="btn-retro btn-danger">
+                    🚨 IT'S A SCAM
+                </button>
+                <button id="btn-safe" class="btn-retro btn-success">
+                    ✅ IT'S SAFE
+                </button>
+            </div>
+
+            <!-- Feedback Card -->
+            <div id="feedback-card" class="glass-panel feedback-box">
+                <h2 id="feedback-title" class="feedback-title"></h2>
+                <p id="feedback-explanation" class="explanation-text"></p>
+                <div style="text-align: right;">
+                    <button id="next-scenario-btn" class="btn-retro">
+                        NEXT ➔
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESULTS SCREEN -->
+        <section id="results-screen" class="glass-panel results-section hidden">
+            <h1 class="hero-title">Challenge Complete!</h1>
+            <p class="hero-desc">You've trained your brain to catch the tricksters.</p>
+            
+            <div class="score-circle">
+                <div id="final-score" class="score-val">0</div>
+                <div style="font-size: 0.9rem; font-weight: 700;">STARS</div>
+            </div>
+
+            <h2 id="rank-title" style="margin-bottom: 24px;">RANK: SCAM DETECTIVE</h2>
+
+            <button id="restart-btn" class="btn-retro">
+                🔄 PLAY AGAIN
+            </button>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        This is a free educational resource provided by <br class="mobile-break">
+        <a href="https://marketmindsyouth.org/" target="_blank" rel="noopener noreferrer">Market Minds</a>
+    </footer>
+
+    <script>
+        // Kid-Friendly Scenarios
+        const scenarios = [
+            {
+                type: "MESSAGES • iPhone",
+                isScam: true,
+                renderMockup: function() {
+                    return `
+                        <div class="sms-sender">From: <span class="hotspot" data-flag="1">1-800-FREE-BUX</span></div>
+                        <div class="sms-bubble">
+                            CONGRATS! You have been chosen to receive <span class="hotspot" data-flag="2">10,000 FREE V-Bucks</span> for your account. Click here to claim your prize instantly: <br><br>
+                            <span class="hotspot" data-flag="3" style="color: #007AFF; text-decoration: underline; word-break: break-all;">
+                                http://fortnite-free-claim-prize.xyz/login
+                            </span>
+                        </div>
+                    `;
+                },
+                redFlagsCount: 3,
+                correctTitle: "🚨 CORRECT! It's a Fake Prize Scam.",
+                wrongTitle: "❌ OOPS! This was actually a scam.",
+                explanation: "Scammers promise free in-game money (like V-Bucks or Robux) to trick you into clicking unsafe links and stealing your game password! Never trust random texts offering free stuff."
+            },
+            {
+                type: "MESSAGES • iPhone",
+                isScam: false,
+                renderMockup: function() {
+                    return `
+                        <div class="sms-sender">From: Mom</div>
+                        <div class="sms-bubble">
+                            Hey honey! I'm running a little late from work. Can you make sure you take the dog out when you get home from school? Thanks!
+                        </div>
+                    `;
+                },
+                redFlagsCount: 0,
+                correctTitle: "✅ CORRECT! This is safe.",
+                wrongTitle: "❌ OOPS! This one was actually safe.",
+                explanation: "This is a normal message from a parent. Notice how they aren't asking you to click any weird links, give away passwords, or send them money urgently!"
+            },
+            {
+                type: "INSTAGRAM • Direct Message",
+                isScam: true,
+                renderMockup: function() {
+                    return `
+                        <div class="sms-sender">@GamerPro_Unknown99 said:</div>
+                        <div class="sms-bubble" style="background: #EBF8FF; border-color: #bee3f8;">
+                            Hey bro! My older brother is quitting gaming and <span class="hotspot" data-flag="1">giving away his Steam account with 50 games</span> on it. He just wants <span class="hotspot" data-flag="2">$10 on CashApp</span> to transfer the email to you. Let me know if you want it!
+                        </div>
+                    `;
+                },
+                redFlagsCount: 2,
+                correctTitle: "🚨 CORRECT! It's a Social Media Scam.",
+                wrongTitle: "❌ OOPS! This was actually a scam.",
+                explanation: "Strangers offering amazing accounts for a tiny amount of money are lying. If you send them money on an app like CashApp, they will take the money, block you, and you will never get the account."
+            },
+            {
+                type: "GMAIL • School Email",
+                isScam: false,
+                renderMockup: function() {
+                    return `
+                        <div class="email-container">
+                            <div class="email-header">
+                                <div class="email-field">
+                                    <span class="email-label">From:</span>
+                                    <strong>mr.smith@middleschool.edu</strong>
+                                </div>
+                                <div class="email-field">
+                                    <span class="email-label">Subject:</span>
+                                    <strong>Science Fair Reminder</strong>
+                                </div>
+                            </div>
+                            <div style="font-size: 1.05rem;">
+                                Hi Class,<br><br>
+                                Just a reminder that your Science Fair posters are due this Friday in the gym! Please check Google Classroom for the grading rubric.<br><br>
+                                Best,<br>Mr. Smith
+                            </div>
+                        </div>
+                    `;
+                },
+                redFlagsCount: 0,
+                correctTitle: "✅ CORRECT! This is safe.",
+                wrongTitle: "❌ OOPS! This one was actually safe.",
+                explanation: "This is a legitimate email. It comes from an official school email address (.edu) and is simply giving a reminder about a project without asking for any personal info."
+            },
+            {
+                type: "GMAIL • Personal Email",
+                isScam: true,
+                renderMockup: function() {
+                    return `
+                        <div class="email-container">
+                            <div class="email-header">
+                                <div class="email-field">
+                                    <span class="email-label">From:</span>
+                                    <strong><span class="hotspot" data-flag="1">admin@nethlix-support.com</span></strong>
+                                </div>
+                                <div class="email-field">
+                                    <span class="email-label">Subject:</span>
+                                    <strong style="color: var(--danger-red);">YOUR ACCOUNT IS LOCKED</strong>
+                                </div>
+                            </div>
+                            <div style="font-size: 1.05rem;">
+                                Dear Customer,<br><br>
+                                <span class="hotspot" data-flag="2">Your Netflix payment failed and your account is locked immediately.</span><br><br>
+                                Please <span class="hotspot" data-flag="3">reply to this email with your parent's Credit Card Number</span> so we can turn your movies back on.
+                            </div>
+                        </div>
+                    `;
+                },
+                redFlagsCount: 3,
+                correctTitle: "🚨 CORRECT! It's a Phishing Email.",
+                wrongTitle: "❌ OOPS! This was actually a scam.",
+                explanation: "Look closely at the email address—it's spelled 'nethlix' instead of Netflix! Also, real companies will NEVER ask you to type a credit card directly into an email. They are trying to scare you into making a mistake."
+            }
+        ];
+
+        // Game State Variables
+        let currentScenarioIndex = 0;
+        let score = 0;
+        let flagsFound = 0;
+        let currentScenario = null;
+
+        // DOM Elements
+        const introScreen = document.getElementById('intro-screen');
+        const gameStage = document.getElementById('game-stage');
+        const resultsScreen = document.getElementById('results-screen');
+        
+        const mockupTypeTitle = document.getElementById('mockup-type-title');
+        const mockupContent = document.getElementById('mockup-content');
+        
+        const btnScam = document.getElementById('btn-scam');
+        const btnSafe = document.getElementById('btn-safe');
+        const decisionControls = document.getElementById('decision-controls');
+        
+        const inspectorBanner = document.getElementById('inspector-banner');
+        const flagsFoundEl = document.getElementById('flags-found');
+        const flagsTotalEl = document.getElementById('flags-total');
+        
+        const feedbackCard = document.getElementById('feedback-card');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackExplanation = document.getElementById('feedback-explanation');
+        const nextBtn = document.getElementById('next-scenario-btn');
+
+        const liveScore = document.getElementById('live-score');
+        const progressFill = document.getElementById('progress-fill');
+
+        // Initialization
+        document.getElementById('start-btn').addEventListener('click', startGame);
+        document.getElementById('restart-btn').addEventListener('click', startGame);
+        
+        btnScam.addEventListener('click', () => handleGuess(true));
+        btnSafe.addEventListener('click', () => handleGuess(false));
+        nextBtn.addEventListener('click', loadNextScenario);
+
+        function startGame() {
+            currentScenarioIndex = 0;
+            score = 0;
+            updateScore(0);
+            introScreen.classList.add('hidden');
+            resultsScreen.classList.add('hidden');
+            gameStage.classList.remove('hidden');
+            loadScenario();
+        }
+
+        function loadScenario() {
+            // Reset UI for new scenario
+            decisionControls.classList.remove('hidden');
+            inspectorBanner.style.display = 'none';
+            feedbackCard.style.display = 'none';
+            mockupContent.classList.remove('inspector-active');
+            
+            currentScenario = scenarios[currentScenarioIndex];
+            
+            // Update Headers
+            document.getElementById('scenario-counter').innerText = `SCENARIO ${currentScenarioIndex + 1} OF ${scenarios.length}`;
+            progressFill.style.width = `${((currentScenarioIndex) / scenarios.length) * 100}%`;
+            mockupTypeTitle.innerText = currentScenario.type;
+            
+            // Inject Mockup HTML
+            mockupContent.innerHTML = currentScenario.renderMockup();
+
+            // Set up hotspots if they exist
+            if(currentScenario.isScam) {
+                const hotspots = document.querySelectorAll('.hotspot');
+                hotspots.forEach(spot => {
+                    spot.addEventListener('click', handleHotspotClick);
+                });
+            }
+        }
+
+        function handleGuess(guessedScam) {
+            decisionControls.classList.add('hidden');
+            
+            const isCorrect = (guessedScam === currentScenario.isScam);
+
+            if (isCorrect) {
+                updateScore(1);
+                
+                // If they correctly guessed it's a scam, launch Inspector Mode
+                if (currentScenario.isScam) {
+                    launchInspectorMode();
+                    return; // Wait for them to find flags before showing feedback
+                }
+            }
+            
+            // If they guessed wrong, or correctly guessed it's safe (no inspector mode needed)
+            showFeedback(isCorrect);
+        }
+
+        function launchInspectorMode() {
+            flagsFound = 0;
+            flagsTotalEl.innerText = currentScenario.redFlagsCount;
+            flagsFoundEl.innerText = flagsFound;
+            
+            inspectorBanner.style.display = 'block';
+            mockupContent.classList.add('inspector-active');
+        }
+
+        function handleHotspotClick(e) {
+            // Only work if inspector mode is active and it hasn't been found yet
+            if (!mockupContent.classList.contains('inspector-active') || e.target.classList.contains('found')) return;
+
+            e.target.classList.add('found');
+            flagsFound++;
+            flagsFoundEl.innerText = flagsFound;
+
+            if (flagsFound >= currentScenario.redFlagsCount) {
+                // All flags found!
+                inspectorBanner.style.display = 'none';
+                mockupContent.classList.remove('inspector-active');
+                
+                // Add bonus star for finding all flags
+                updateScore(1);
+                showFeedback(true); // Show positive feedback
+            }
+        }
+
+        function showFeedback(isCorrect) {
+            feedbackCard.style.display = 'block';
+            
+            if (isCorrect) {
+                feedbackTitle.innerHTML = currentScenario.correctTitle;
+                feedbackTitle.style.color = 'var(--success-green)';
+            } else {
+                feedbackTitle.innerHTML = currentScenario.wrongTitle;
+                feedbackTitle.style.color = 'var(--danger-red)';
+                
+                // If they missed a scam, reveal the hotspots for educational purposes
+                if (currentScenario.isScam) {
+                    const hotspots = document.querySelectorAll('.hotspot');
+                    hotspots.forEach(spot => spot.classList.add('found'));
+                }
+            }
+
+            feedbackExplanation.innerHTML = currentScenario.explanation;
+        }
+
+        function updateScore(points) {
+            score += points;
+            liveScore.innerText = score;
+        }
+
+        function loadNextScenario() {
+            currentScenarioIndex++;
+            if (currentScenarioIndex < scenarios.length) {
+                loadScenario();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            gameStage.classList.add('hidden');
+            resultsScreen.classList.remove('hidden');
+            
+            progressFill.style.width = `100%`;
+            document.getElementById('final-score').innerText = score;
+
+            const maxScore = scenarios.length + scenarios.filter(s => s.isScam).length; // 1 for guess, 1 for finding all flags
+            
+            let rank = "";
+            if (score === maxScore) rank = "MASTER SCAM BUSTER 🏆";
+            else if (score > maxScore / 2) rank = "SHARP DETECTIVE 🔍";
+            else rank = "DETECTIVE IN TRAINING 🎓";
+
+            document.getElementById('rank-title').innerText = `RANK: ${rank}`;
+        }
+
+    </script>
+</body>
+</html>
