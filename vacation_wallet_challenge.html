@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vacation Wallet Challenge | Market Minds</title>
+    
+    <!-- Brand Favicon -->
+    <link rel="icon" href="https://lh3.googleusercontent.com/pw/AP1GczM7dpwqAoD3jtUidsgOIQFPZDEIKJ7EGbftLFTFiav-DhaJgi0Q11HiGT4W356SuFpAhDLxDeVI4xhP1eEt8IeylLovcNhQXZ90Rw_q2fkQpnOo6JsnYH42l8TxXwCZ4WtBqKrM7AHyn1ozyKZBnQSq=w992-h992-s-no-gm?authuser=0" type="image/png">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Instrument Serif (Headings) and Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Market Minds Style Guide Variables */
+            --bg-gradient-start: #F0F4F9;
+            --bg-gradient-end: #E4ECF5;
+            --brand-primary: #6C88C4;
+            --brand-primary-hover: #4A607A;
+            --text-navy: #141B2D;
+            --text-slate: #4A5568;
+            --glass-white: rgba(255, 255, 255, 0.92);
+            --danger-red: #E53E3E;
+            --warning-amber: #D69E2E;
+            --success-green: #38A169;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            color: var(--text-slate);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Typography Rules */
+        h1, h2, h3, h4, .serif-heading {
+            font-family: 'Instrument Serif', Georgia, serif;
+            color: var(--text-navy);
+            letter-spacing: 0.02em;
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+
+        header.site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(240, 244, 249, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--text-navy);
+            padding: 12px 24px;
+        }
+
+        .nav-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-logo-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+        
+        .brand-logo-wrap:hover {
+            transform: scale(1.02);
+        }
+
+        .brand-logo {
+            height: 44px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .glass-panel {
+            background: var(--glass-white);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid var(--text-navy);
+            border-radius: 16px;
+            box-shadow: 4px 4px 0px var(--text-navy);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Artistic Retro-Tech Buttons */
+        .btn-retro {
+            border: 2px solid var(--text-navy);
+            border-radius: 12px;
+            box-shadow: 4px 4px 0px var(--text-navy);
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            padding: 0.85rem 1.75rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 8px;
+        }
+
+        .btn-retro:hover:not(:disabled) {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--brand-primary-hover);
+        }
+        
+        .btn-retro:active:not(:disabled) {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px var(--text-navy);
+        }
+
+        .btn-retro:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: 2px 2px 0px var(--text-navy);
+        }
+
+        .btn-primary {
+            background-color: var(--brand-primary);
+            color: #ffffff;
+        }
+
+        .btn-secondary {
+            background-color: #ffffff;
+            color: var(--text-navy);
+        }
+
+        .choice-card {
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            background: #ffffff;
+            border: 2px solid #E2E8F0;
+        }
+        
+        .choice-card:hover {
+            border-color: var(--brand-primary);
+            background-color: rgba(108, 136, 196, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 4px 4px 0px rgba(108, 136, 196, 0.2);
+        }
+
+        .choice-card.selected {
+            border-color: var(--text-navy);
+            background-color: rgba(108, 136, 196, 0.15);
+            box-shadow: 4px 4px 0px var(--text-navy);
+        }
+
+        /* Animations */
+        .fade-in { animation: fadeIn 0.4s ease-in forwards; }
+        .slide-up { animation: slideUp 0.5s ease-out forwards; }
+        .pop-in { animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes popIn { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
+
+        .wallet-deduct { animation: textRedPulse 1s ease; }
+
+        @keyframes textRedPulse {
+            0% { color: var(--text-navy); transform: scale(1); }
+            50% { color: var(--danger-red); transform: scale(1.1); }
+            100% { color: var(--text-navy); transform: scale(1); }
+        }
+
+        .site-footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: auto;
+            font-size: 0.95rem;
+            color: var(--text-slate);
+            font-weight: 500;
+        }
+
+        .site-footer a {
+            color: var(--brand-primary);
+            font-weight: 800;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .site-footer a:hover {
+            border-bottom-color: var(--brand-primary);
+        }
+
+        /* Modal Overlay for Immediate Events */
+        #event-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(20, 27, 45, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <!-- Site Header -->
+    <header class="site-header">
+        <div class="nav-container">
+            <a href="https://marketmindsyouth.org/" target="_blank" rel="noopener noreferrer" class="brand-logo-wrap" title="Visit Market Minds">
+                <img src="https://lh3.googleusercontent.com/pw/AP1GczNsoqlPUEDJuh6m6J5ROUJS5meKcDo2Lu7D2LH93YTpEQpL7jF4X4-HvoKSn3blk9gKJHwWo5b6U0ODJ8ef518iTImmMffKDjDJzIJEsSkgtwrvqNcYY6Ginzh5f4uqKyu-U9rZFuxbSD8ejhHzzax2=w964-h190-s-no-gm?authuser=0" alt="Market Minds Logo" class="brand-logo">
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Game Canvas -->
+    <div class="w-full max-w-4xl mx-auto flex flex-col flex-grow p-4 sm:p-8 mt-4">
+        
+        <!-- Dashboard Header -->
+        <div class="glass-panel flex justify-between items-center p-4 sm:p-6 mb-6 shadow-md slide-up">
+            <div>
+                <h1 class="text-2xl sm:text-3xl m-0">Vacation Wallet</h1>
+                <p class="text-xs sm:text-sm font-bold tracking-wider text-[var(--brand-primary)] uppercase mt-1" id="phase-indicator">Setup Phase</p>
+            </div>
+            <div class="text-right bg-[#F8FAFC] border-2 border-[var(--text-navy)] px-4 py-2 rounded-xl">
+                <p class="text-[0.65rem] sm:text-xs uppercase font-bold tracking-widest text-[var(--text-slate)]">Total Balance</p>
+                <div class="text-2xl sm:text-4xl font-black text-[var(--text-navy)] font-serif tracking-tight" id="wallet-display">$200</div>
+            </div>
+        </div>
+
+        <!-- Dynamic Content Container -->
+        <main id="game-container" class="glass-panel flex-grow p-6 sm:p-10 relative shadow-xl slide-up flex flex-col">
+            <!-- Content Injected via JS -->
+        </main>
+        
+    </div>
+
+    <!-- Event Overlay (Hidden by default) -->
+    <div id="event-overlay" class="hidden">
+        <div class="bg-white border-2 border-[var(--text-navy)] rounded-2xl p-6 sm:p-8 max-w-md w-full shadow-[8px_8px_0px_rgba(20,27,45,1)] relative">
+            <div class="absolute -top-4 -left-4 bg-[var(--danger-red)] text-white px-4 py-1 rounded-full font-bold uppercase tracking-wider text-xs shadow-md border-2 border-white flex items-center gap-2">
+                <span>⚠️</span> Hidden Cost
+            </div>
+            <h3 class="text-2xl mb-3 text-[var(--danger-red)] font-serif" id="event-title">Event Title</h3>
+            <p class="text-md mb-6 text-[var(--text-slate)] leading-relaxed" id="event-desc">Event Description</p>
+            
+            <div class="bg-red-50 p-4 rounded-xl flex justify-between items-center mb-8 border border-red-200">
+                <span class="font-bold uppercase tracking-widest text-xs text-[var(--danger-red)]">Immediate Deduction:</span>
+                <span class="text-3xl font-black text-[var(--danger-red)]" id="event-cost">-$0</span>
+            </div>
+            
+            <button id="btn-event-confirm" class="btn-retro btn-secondary w-full text-lg">Ouch, Okay</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        This is a free educational resource provided by <br class="sm:hidden block">
+        <a href="https://marketmindsyouth.org/" target="_blank" rel="noopener noreferrer">Market Minds</a>
+    </footer>
+
+    <script>
+        // Data Structure: Adventures, Scenarios, and Immediate Events
+        const Adventures = {
+            europe: {
+                id: 'europe',
+                emoji: '✈️',
+                title: "European Weekend",
+                desc: "You have 5 days to explore London or Paris. Your parents gave you $200 for your own lunches, getting around, and fun. Flights and hotel are covered. Plan wisely—if you run out of money, you go into debt!",
+                scenarios: [
+                    {
+                        day: 1,
+                        title: "Day 1: The Lunch Choice",
+                        desc: "You just arrived at the hotel and dropped your bags. You're starving. What's the move?",
+                        options: [
+                            { id: 'E1A', title: "Sit-down Tourist Cafe", desc: "Right near the famous museum. Great view.", cost: 35,
+                              event: { title: "The 'Thirsty Tourist' Tax", desc: "You asked for water, but they brought you a premium glass bottle and charged you for it.", cost: 8 } },
+                            { id: 'E1B', title: "Local Grocery Store", desc: "Grab a quick, authentic pre-made sandwich.", cost: 12, event: null },
+                            { id: 'E1C', title: "Food Delivery to Hotel", desc: "You're jetlagged. Order a burger on your phone.", cost: 20,
+                              event: { title: "The Delivery App Trap", desc: "Service fee, small order fee, and an international driver tip were automatically added at checkout.", cost: 18 } }
+                        ]
+                    },
+                    {
+                        day: 2,
+                        title: "Day 2: The Activity Choice",
+                        desc: "You have a full afternoon to yourself. How are you spending it?",
+                        options: [
+                            { id: 'E2A', title: "VIP Guided Tour", desc: "Skip-the-line access to the biggest attraction.", cost: 60, event: null },
+                            { id: 'E2B', title: "Vintage Shopping", desc: "Explore the local fashion district.", cost: 40,
+                              event: { title: "Unexpected Alterations", desc: "You found an awesome jacket, but the zipper broke immediately. You had to pay a local tailor to fix it.", cost: 15 } },
+                            { id: 'E2C', title: "Free Walking Tour", desc: "Explore the city on foot. You only pay for a pastry.", cost: 10,
+                              event: { title: "Caught in the Rain", desc: "It started pouring mid-tour! You had to run into a tourist shop and buy an overpriced umbrella to survive.", cost: 15 } }
+                        ]
+                    },
+                    {
+                        day: 3,
+                        title: "Day 3: The Transit Choice",
+                        desc: "You are across the city and need to get back to your hotel before dinner.",
+                        options: [
+                            { id: 'E3A', title: "Walk for 45 mins", desc: "It takes a while, but it's completely free.", cost: 0,
+                              event: { title: "Lost in the City", desc: "You took a wrong turn, got completely lost, and missed your pre-booked dinner reservation. They charged a cancellation fee.", cost: 20 } },
+                            { id: 'E3B', title: "Underground Subway", desc: "Takes a little navigation, but gets you close.", cost: 5,
+                              event: { title: "Lost in Translation", desc: "You got on the wrong train, traveled into the wrong zone, and got fined by a transit officer.", cost: 15 } },
+                            { id: 'E3C', title: "Call an Uber", desc: "Go door-to-door using the app.", cost: 20,
+                              event: { title: "The Surge Pricing Trap", desc: "Surge pricing was active due to rush hour! Your ride was secretly multiplied.", cost: 25 } }
+                        ]
+                    },
+                    {
+                        day: 4,
+                        title: "Day 4: The Souvenir",
+                        desc: "You want to bring something back to remember the trip.",
+                        options: [
+                            { id: 'E4A', title: "Designer T-Shirt", desc: "From a trendy boutique downtown.", cost: 55, event: null },
+                            { id: 'E4B', title: "Street Vendor Magnet", desc: "Simple, cheap, and classic.", cost: 8, event: null },
+                            { id: 'E4C', title: "Wait for the Airport", desc: "You'll just buy something at the terminal tomorrow.", cost: 0,
+                              event: { title: "Airport Markup", desc: "You waited until the airport. The exact same t-shirt from the city cost double at the terminal gate.", cost: 45 } }
+                        ]
+                    },
+                    {
+                        day: 5,
+                        title: "Day 5: Final Dinner",
+                        desc: "It's your last night! How are you eating?",
+                        options: [
+                            { id: 'E5A', title: "Fancy Restaurant", desc: "Treat yourself to a nice 3-course meal.", cost: 50, event: null },
+                            { id: 'E5B', title: "Split Tapas", desc: "Share a bunch of small plates with friends.", cost: 25, event: null },
+                            { id: 'E5C', title: "Fast Food Burger", desc: "You're tired, just grab a quick local burger.", cost: 15, event: null }
+                        ]
+                    }
+                ],
+                globalEndEvent: {
+                    title: "Foreign Transaction Fees",
+                    desc: "You didn't check your debit card policy. Your bank charged a 3% foreign transaction fee on every single purchase you made abroad.",
+                    cost: 10
+                }
+            },
+            
+            roadtrip: {
+                id: 'roadtrip',
+                emoji: '🚗',
+                title: "Cross-Country Road Trip",
+                desc: "You and your friends are driving across the state for 5 days. You have $200 for your snacks, pit stops, and emergencies. Don't go broke in the middle of nowhere!",
+                scenarios: [
+                    {
+                        day: 1,
+                        title: "Day 1: Road Snacks",
+                        desc: "First stop at the gas station. You need fuel for the journey.",
+                        options: [
+                            { id: 'R1A', title: "The Massive Haul", desc: "Chips, candy, jerky, and energy drinks.", cost: 35,
+                              event: { title: "Highway Price Gouging", desc: "You bought snacks at an isolated highway rest stop where prices are marked up 50% compared to a normal grocery store.", cost: 15 } },
+                            { id: 'R1B', title: "Drive-thru Combo", desc: "Grab a quick burger meal next door.", cost: 15, event: null },
+                            { id: 'R1C', title: "Just a Soda", desc: "Keep it simple and cheap.", cost: 4, event: null }
+                        ]
+                    },
+                    {
+                        day: 2,
+                        title: "Day 2: The Pit Stop",
+                        desc: "You see signs for a major roadside attraction. Do you stop?",
+                        options: [
+                            { id: 'R2A', title: "Theme Park", desc: "Spend the afternoon riding rollercoasters.", cost: 75,
+                              event: { title: "Lost Item Fee", desc: "Your sunglasses flew off on a rollercoaster. You had to buy a cheap replacement pair at the gift shop.", cost: 20 } },
+                            { id: 'R2B', title: "Dinosaur Museum", desc: "A quirky, local roadside exhibit.", cost: 20, event: null },
+                            { id: 'R2C', title: "State Park Hike", desc: "Stretch your legs on a scenic trail.", cost: 5, event: null }
+                        ]
+                    },
+                    {
+                        day: 3,
+                        title: "Day 3: Emergency!",
+                        desc: "Oh no! You got a flat tire in a small town. How do you handle it?",
+                        options: [
+                            { id: 'R3A', title: "Local Mechanic", desc: "Pay the shop down the street for a quick patch.", cost: 50, event: null },
+                            { id: 'R3B', title: "DIY Fix-a-Flat", desc: "Buy a sealant can at the auto store.", cost: 20,
+                              event: { title: "Defective Repair", desc: "The cheap sealant can failed immediately. You had to call an expensive emergency tow truck anyway.", cost: 60 } },
+                            { id: 'R3C', title: "Wait for AAA", desc: "Use your parents' roadside assistance (free, but takes hours).", cost: 0,
+                              event: { title: "Boredom Spending", desc: "You waited 4 hours for the tow truck. You got bored and bought magazines and junk food at the gas station.", cost: 25 } }
+                        ]
+                    },
+                    {
+                        day: 4,
+                        title: "Day 4: Motel Dinner",
+                        desc: "You finally checked into the motel. You're exhausted and hungry.",
+                        options: [
+                            { id: 'R4A', title: "Delivery Pizza", desc: "Order a pie straight to room 204.", cost: 25,
+                              event: { title: "Rural Delivery Fee", desc: "Your motel was miles from town. The pizza place charged a massive out-of-zone delivery fee.", cost: 18 } },
+                            { id: 'R4B', title: "Diner Next Door", desc: "Walk to the 24/7 diner for a hot meal.", cost: 30, event: null },
+                            { id: 'R4C', title: "Microwave Ramen", desc: "Use the lobby microwave for your instant noodles.", cost: 5, event: null }
+                        ]
+                    },
+                    {
+                        day: 5,
+                        title: "Day 5: Final Souvenir",
+                        desc: "The trip is almost over! Time to get a memento.",
+                        options: [
+                            { id: 'R5A', title: "Tourist Trap Hoodie", desc: "A heavy, overpriced sweatshirt.", cost: 50, event: null },
+                            { id: 'R5B', title: "Bumper Sticker", desc: "Classic road trip decoration.", cost: 8, event: null },
+                            { id: 'R5C', title: "Postcard", desc: "Send it to your grandparents.", cost: 2, event: null }
+                        ]
+                    }
+                ],
+                globalEndEvent: {
+                    title: "Toll Road Ticket",
+                    desc: "You accidentally drove through an electronic toll lane without a pass. They mailed you a ticket with a late fee penalty.",
+                    cost: 15
+                }
+            }
+        };
+
+        const GameState = {
+            theme: null,
+            day: 1,
+            walletBalance: 200,
+            history: [] // { item, cost, type }
+        };
+
+        const DOM = {
+            container: document.getElementById('game-container'),
+            walletDisplay: document.getElementById('wallet-display'),
+            phaseIndicator: document.getElementById('phase-indicator'),
+            eventOverlay: document.getElementById('event-overlay'),
+            btnEventConfirm: document.getElementById('btn-event-confirm')
+        };
+
+        function updateWallet(amount, isDeduction = false) {
+            GameState.walletBalance += amount;
+            
+            let displayVal = GameState.walletBalance >= 0 ? `$${GameState.walletBalance}` : `-$${Math.abs(GameState.walletBalance)}`;
+            DOM.walletDisplay.innerText = displayVal;
+            
+            if (GameState.walletBalance < 0) {
+                DOM.walletDisplay.style.color = 'var(--danger-red)';
+            } else {
+                DOM.walletDisplay.style.color = 'var(--text-navy)';
+            }
+
+            if (isDeduction) {
+                DOM.walletDisplay.classList.remove('wallet-deduct');
+                void DOM.walletDisplay.offsetWidth; // trigger reflow
+                DOM.walletDisplay.classList.add('wallet-deduct');
+            }
+        }
+
+        function recordTransaction(item, cost, type = "purchase") {
+            GameState.history.push({ item, cost, type });
+        }
+
+        function clearContainer() {
+            DOM.container.innerHTML = '';
+            DOM.container.className = 'glass-panel flex-grow p-6 sm:p-10 relative shadow-xl fade-in flex flex-col';
+        }
+
+        function renderSetupPhase() {
+            DOM.phaseIndicator.innerText = "The Mission";
+            clearContainer();
+            
+            let themeCardsHTML = Object.values(Adventures).map(adv => `
+                <div class="choice-card theme-card p-6 rounded-xl text-center flex flex-col items-center justify-center bg-white shadow-sm" data-theme="${adv.id}">
+                    <span class="text-5xl mb-4 block">${adv.emoji}</span>
+                    <h3 class="text-xl font-bold text-[var(--text-navy)] m-0">${adv.title}</h3>
+                </div>
+            `).join('');
+
+            DOM.container.innerHTML = `
+                <div class="max-w-xl mx-auto w-full flex-grow flex flex-col justify-center slide-up">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl sm:text-4xl uppercase mb-3">Choose Your Adventure</h2>
+                        <p class="text-lg text-[var(--text-slate)]">Select a trip. You have exactly $200. Can you survive 5 days without going into debt?</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                        ${themeCardsHTML}
+                    </div>
+
+                    <div id="theme-desc-box" class="bg-[#F0F4F9] border-l-4 border-[var(--brand-primary)] p-6 rounded-r-xl text-[var(--text-navy)] font-medium text-md hidden pop-in">
+                        <span id="theme-desc"></span>
+                    </div>
+                    
+                    <div class="mt-8 text-center hidden pop-in" id="action-area-setup">
+                        <button id="btn-start" class="btn-retro btn-primary w-full sm:w-auto text-lg">Lock In & Start Trip ➔</button>
+                    </div>
+                </div>
+            `;
+
+            const themeCards = document.querySelectorAll('.theme-card');
+            const themeDescBox = document.getElementById('theme-desc-box');
+            const themeDescText = document.getElementById('theme-desc');
+            const actionArea = document.getElementById('action-area-setup');
+
+            themeCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    themeCards.forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    
+                    const selectedTheme = this.dataset.theme;
+                    GameState.theme = selectedTheme;
+                    
+                    themeDescText.innerText = Adventures[selectedTheme].desc;
+                    themeDescBox.classList.remove('hidden');
+                    actionArea.classList.remove('hidden');
+                });
+            });
+
+            document.getElementById('btn-start').addEventListener('click', () => {
+                renderDay(1);
+            });
+        }
+
+        function renderDay(dayNum) {
+            GameState.day = dayNum;
+            const adventure = Adventures[GameState.theme];
+            
+            // Check if trip is over
+            if (dayNum > adventure.scenarios.length) {
+                processGlobalEndEvent();
+                return;
+            }
+
+            DOM.phaseIndicator.innerText = `Day ${dayNum} of ${adventure.scenarios.length}`;
+            const scenario = adventure.scenarios[dayNum - 1];
+            let selectedOption = null;
+            
+            clearContainer();
+            
+            DOM.container.innerHTML = `
+                <div class="max-w-2xl mx-auto w-full slide-up">
+                    <div class="mb-8">
+                        <span class="inline-block bg-[var(--text-navy)] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-3">Day ${dayNum}</span>
+                        <h2 class="text-3xl sm:text-4xl uppercase mb-2">${scenario.title}</h2>
+                        <p class="text-lg text-[var(--text-slate)]">${scenario.desc}</p>
+                    </div>
+                    
+                    <div class="space-y-4" id="options-container">
+                        ${scenario.options.map(opt => `
+                            <div class="choice-card p-5 rounded-xl flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4" data-id="${opt.id}">
+                                <div class="flex-grow">
+                                    <h4 class="text-xl m-0 font-bold text-[var(--text-navy)]">${opt.title}</h4>
+                                    <p class="text-sm text-[var(--text-slate)] m-0 mt-1">${opt.desc}</p>
+                                </div>
+                                <div class="text-2xl font-black text-[var(--text-navy)] font-serif whitespace-nowrap bg-gray-50 px-4 py-2 rounded-lg border border-gray-200">
+                                    $${opt.cost}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="pt-8 text-center hidden pop-in" id="action-area">
+                        <button id="btn-confirm" class="btn-retro btn-primary w-full sm:w-auto text-lg">Confirm Choice</button>
+                    </div>
+                </div>
+            `;
+
+            const cards = document.querySelectorAll('.choice-card');
+            const actionArea = document.getElementById('action-area');
+            const btnConfirm = document.getElementById('btn-confirm');
+
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    cards.forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedOption = scenario.options.find(o => o.id === this.dataset.id);
+                    actionArea.classList.remove('hidden');
+                });
+            });
+
+            btnConfirm.addEventListener('click', () => {
+                if(!selectedOption) return;
+                
+                // Process base choice
+                updateWallet(-selectedOption.cost, true);
+                recordTransaction(`Day ${dayNum}: ${selectedOption.title}`, selectedOption.cost, "purchase");
+
+                // Check for immediate hidden fee event
+                if (selectedOption.event) {
+                    showImmediateEvent(selectedOption.event, () => renderDay(dayNum + 1));
+                } else {
+                    renderDay(dayNum + 1);
+                }
+            });
+        }
+
+        function showImmediateEvent(eventData, callback) {
+            document.getElementById('event-title').innerText = eventData.title;
+            document.getElementById('event-desc').innerText = eventData.desc;
+            document.getElementById('event-cost').innerText = `-$${eventData.cost}`;
+            
+            DOM.eventOverlay.classList.remove('hidden');
+            
+            // Deduct the hidden fee
+            updateWallet(-eventData.cost, true);
+            recordTransaction(`Hidden Fee: ${eventData.title}`, eventData.cost, "hidden_fee");
+
+            DOM.btnEventConfirm.onclick = () => {
+                DOM.eventOverlay.classList.add('hidden');
+                if(callback) callback();
+            };
+        }
+
+        function processGlobalEndEvent() {
+            const adventure = Adventures[GameState.theme];
+            if (adventure.globalEndEvent) {
+                showImmediateEvent(adventure.globalEndEvent, () => renderDebrief());
+            } else {
+                renderDebrief();
+            }
+        }
+
+        function renderDebrief() {
+            DOM.phaseIndicator.innerText = "Final Bank Statement";
+            clearContainer();
+
+            // Persona Calculation
+            let persona = "";
+            let personaDesc = "";
+            
+            if (GameState.walletBalance < 0) {
+                persona = "The Debt Traveler";
+                personaDesc = "You went into the negative! Hidden fees, bad planning, and expensive convenience costs completely destroyed your budget. You owe money!";
+            } else if (GameState.walletBalance < 30) {
+                persona = "The Broke Tourist";
+                personaDesc = "You barely survived. You spent a lot on convenience and got hit hard by hidden fees, leaving you with almost nothing left.";
+            } else if (GameState.walletBalance >= 60) {
+                persona = "The Frugal Expert";
+                personaDesc = "Amazing! You avoided tourist traps, skipped delivery apps, and navigated the trip perfectly. Masterful budgeting.";
+            } else {
+                persona = "The Balanced Spender";
+                personaDesc = "You spent money on fun experiences but didn't go broke. You enjoyed the trip, but those hidden convenience fees definitely ate into your budget!";
+            }
+
+            // Build Receipt
+            let receiptHTML = GameState.history.map(item => `
+                <div class="flex justify-between items-center py-2 text-sm border-b border-gray-100 last:border-0 ${item.type === 'hidden_fee' ? 'text-[var(--danger-red)] font-medium bg-red-50 px-2 rounded -mx-2' : 'text-[var(--text-slate)]'}">
+                    <span class="pr-4 truncate flex-grow ${item.type === 'hidden_fee' ? 'font-bold' : ''}">${item.item}</span>
+                    <span class="whitespace-nowrap ${item.type === 'hidden_fee' ? 'font-black' : ''}">-$${item.cost}</span>
+                </div>
+            `).join('');
+
+            DOM.container.innerHTML = `
+                <div class="max-w-4xl mx-auto w-full slide-up">
+                    
+                    <div class="text-center mb-10">
+                        <h4 class="text-sm tracking-widest uppercase text-[var(--brand-primary)] mb-2 font-bold">Your Travel Persona</h4>
+                        <h2 class="text-4xl sm:text-5xl text-[var(--text-navy)] mb-4 uppercase">${persona}</h2>
+                        <p class="text-lg max-w-2xl mx-auto text-[var(--text-slate)]">${personaDesc}</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        
+                        <!-- Receipt Panel -->
+                        <div class="bg-white p-6 sm:p-8 rounded-2xl border-2 border-[var(--text-navy)] shadow-[6px_6px_0px_rgba(20,27,45,1)] flex flex-col max-h-[400px]">
+                            <h3 class="text-2xl mb-4 border-b-2 border-gray-200 pb-3 uppercase text-[var(--text-navy)] flex justify-between">
+                                <span>Statement</span>
+                                <span class="text-sm font-sans font-bold text-gray-400 mt-2">Start: $200</span>
+                            </h3>
+                            <div class="space-y-1 overflow-y-auto pr-2 flex-grow scrollbar-thin">
+                                ${receiptHTML}
+                            </div>
+                            <div class="flex justify-between items-end pt-4 border-t-2 border-[var(--text-navy)] mt-4">
+                                <span class="uppercase font-bold text-[var(--text-slate)] text-sm tracking-widest">Final Balance</span>
+                                <span class="text-4xl font-black font-serif ${GameState.walletBalance < 0 ? 'text-[var(--danger-red)]' : 'text-[var(--success-green)]'}">
+                                    ${GameState.walletBalance < 0 ? `-$${Math.abs(GameState.walletBalance)}` : `$${GameState.walletBalance}`}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Takeaway Panel -->
+                        <div class="space-y-6 flex flex-col justify-center">
+                            <div class="bg-[var(--bg-gradient-start)] p-6 sm:p-8 rounded-2xl border-l-4 border-[var(--brand-primary)]">
+                                <h4 class="font-bold uppercase tracking-widest text-[var(--text-navy)] text-xs mb-3 flex items-center gap-2">
+                                    <span class="text-lg">🎓</span> The Core Lesson
+                                </h4>
+                                <p class="text-md leading-relaxed text-[var(--text-slate)]">Budgeting isn't just about looking at the listed menu price. <strong>Hidden costs</strong> like delivery fees, surge pricing, travel mistakes, and convenience taxes can immediately destroy a budget if you don't plan for the unexpected.</p>
+                            </div>
+                            
+                            <button onclick="location.reload()" class="btn-retro btn-primary w-full py-4 text-lg mt-4">🔄 Play Another Adventure</button>
+                        </div>
+
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initialize Application
+        renderSetupPhase();
+    </script>
+</body>
+</html>
