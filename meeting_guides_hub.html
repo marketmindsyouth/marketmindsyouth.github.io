@@ -25,6 +25,8 @@
                         brand: {
                             iceLight: '#F0F4F9',
                             iceDark: '#E4ECF5',
+                            slateLight: '#D0E2EE',
+                            slateDark: '#A3C2D4',
                             accent: '#6C88C4',
                             accentDark: '#4A607A',
                             navy: '#141B2D',
@@ -48,6 +50,7 @@
             color: #4A5568;
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -56,6 +59,7 @@
             text-transform: uppercase;
             line-height: 1.08;
             letter-spacing: 0.015em;
+            font-weight: 700;
         }
 
         /* Artistic Retro-Tech Buttons */
@@ -111,39 +115,38 @@
         }
         
         .reveal-content.active {
-            max-height: 400px;
+            max-height: 300px;
             opacity: 1;
             margin-top: 1.5rem;
         }
 
-        /* View Switching Logic */
+        /* View Toggling */
         .view-section {
             display: none;
-        }
-        .view-section.active {
-            display: block;
-            animation: fadeIn 0.4s ease-out;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .view-section.active {
+            display: block;
+            opacity: 1;
         }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- Global Navigation -->
     <nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b-2 border-brand-navy">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center cursor-pointer" onclick="switchView('hub-menu')">
-                <img src="https://lh3.googleusercontent.com/pw/AP1GczNsoqlPUEDJuh6m6J5ROUJS5meKcDo2Lu7D2LH93YTpEQpL7jF4X4-HvoKSn3blk9gKJHwWo5b6U0ODJ8ef518iTImmMffKDjDJzIJEsSkgtwrvqNcYY6Ginzh5f4uqKyu-U9rZFuxbSD8ejhHzzax2=w964-h190-s-no-gm?authuser=0" alt="Market Minds" class="h-8 md:h-10">
+            <div class="flex items-center">
+                <a href="/">
+                    <img src="https://lh3.googleusercontent.com/pw/AP1GczNsoqlPUEDJuh6m6J5ROUJS5meKcDo2Lu7D2LH93YTpEQpL7jF4X4-HvoKSn3blk9gKJHwWo5b6U0ODJ8ef518iTImmMffKDjDJzIJEsSkgtwrvqNcYY6Ginzh5f4uqKyu-U9rZFuxbSD8ejhHzzax2=w964-h190-s-no-gm?authuser=0" alt="Market Minds" class="h-8 md:h-10">
+                </a>
             </div>
             <div class="hidden md:flex items-center gap-8 font-sans font-semibold text-sm tracking-widest text-brand-navy">
-                <a href="#" class="hover:text-brand-accent transition-colors">ABOUT US</a>
-                <a href="#" class="hover:text-brand-accent transition-colors">PROGRAMS</a>
-                <a href="#" class="hover:text-brand-accent transition-colors">RESOURCES</a>
-                <a href="#" class="btn-retro btn-primary px-6 py-2 text-xs">GET INVOLVED</a>
+                <a href="/about.html" class="hover:text-brand-accent transition-colors">ABOUT US</a>
+                <a href="/programs.html" class="hover:text-brand-accent transition-colors">PROGRAMS</a>
+                <a href="/resources.html" class="hover:text-brand-accent transition-colors">RESOURCES</a>
+                <a href="/get-involved.html" class="btn-retro btn-primary px-6 py-2 text-xs">GET INVOLVED</a>
             </div>
         </div>
     </nav>
@@ -151,9 +154,6 @@
     <!-- Main Content Canvas -->
     <main class="pt-32 pb-24 px-4 sm:px-6 max-w-5xl mx-auto">
         
-        <!-- ========================================== -->
-        <!-- THE HUB MENU (Landing View)                -->
-        <!-- ========================================== -->
         <div id="hub-menu" class="view-section active space-y-16">
             <header class="text-center space-y-6">
                 <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold">MEETING GUIDES HUB</h1>
@@ -161,7 +161,7 @@
                     Select a topic below to launch the interactive presenter screen for your chapter meeting. Ensure you have the Facilitator Google Doc open on your phone or a separate device.
                 </p>
                 <div class="pt-4">
-                    <a href="#" target="_blank" class="btn-retro btn-outline px-6 py-3 text-sm">
+                    <a href="https://marketmindsyouth.org/facilitator_master_doc.html" target="_blank" class="btn-retro btn-outline px-6 py-3 text-sm">
                         OPEN FACILITATOR MASTER DOC
                     </a>
                 </div>
@@ -169,88 +169,57 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Guide 1 Card -->
-                <div class="card-retro p-8 hover:bg-brand-iceLight transition-colors cursor-pointer group flex flex-col justify-between h-full" onclick="switchView('guide-1')">
-                    <div class="space-y-4">
-                        <span class="text-brand-accent font-bold tracking-widest text-sm uppercase">Guide 01</span>
-                        <h2 class="text-3xl group-hover:text-brand-accent transition-colors">CAPITAL ALLOCATION</h2>
-                        <p class="text-brand-slate font-medium">Understanding money as a tool for leverage rather than just consumption.</p>
-                    </div>
-                    <div class="mt-8 pt-6 border-t-2 border-brand-navy/10 flex justify-between items-center">
-                        <span class="text-sm font-bold text-brand-navy">35 MIN</span>
-                        <span class="text-brand-navy font-bold group-hover:translate-x-2 transition-transform">LAUNCH &rarr;</span>
-                    </div>
-                </div>
+                <button onclick="showView('guide-1')" class="card-retro p-8 text-left hover:bg-brand-iceLight transition-colors group">
+                    <span class="inline-block px-3 py-1 border-2 border-brand-navy rounded-full text-xs font-bold tracking-widest text-brand-navy bg-white mb-4">GUIDE 01</span>
+                    <h3 class="text-3xl mb-3 group-hover:text-brand-accent transition-colors">CAPITAL ALLOCATION</h3>
+                    <p class="text-brand-slate font-medium">Transform how students view money from a consumption tool to an asset-building tool.</p>
+                </button>
 
                 <!-- Guide 2 Card -->
-                <div class="card-retro p-8 hover:bg-brand-iceLight transition-colors cursor-pointer group flex flex-col justify-between h-full" onclick="switchView('guide-2')">
-                    <div class="space-y-4">
-                        <span class="text-brand-accent font-bold tracking-widest text-sm uppercase">Guide 02</span>
-                        <h2 class="text-3xl group-hover:text-brand-accent transition-colors">TIME CURRENCY</h2>
-                        <p class="text-brand-slate font-medium">Opportunity cost, time arbitrage, and treating your hours with the same respect as cash.</p>
-                    </div>
-                    <div class="mt-8 pt-6 border-t-2 border-brand-navy/10 flex justify-between items-center">
-                        <span class="text-sm font-bold text-brand-navy">35 MIN</span>
-                        <span class="text-brand-navy font-bold group-hover:translate-x-2 transition-transform">LAUNCH &rarr;</span>
-                    </div>
-                </div>
+                <button onclick="showView('guide-2')" class="card-retro p-8 text-left hover:bg-brand-iceLight transition-colors group">
+                    <span class="inline-block px-3 py-1 border-2 border-brand-navy rounded-full text-xs font-bold tracking-widest text-brand-navy bg-white mb-4">GUIDE 02</span>
+                    <h3 class="text-3xl mb-3 group-hover:text-brand-accent transition-colors">TIME CURRENCY</h3>
+                    <p class="text-brand-slate font-medium">Teach students to value their hours and leverage their youth to learn high-income skills.</p>
+                </button>
 
                 <!-- Guide 3 Card -->
-                <div class="card-retro p-8 hover:bg-brand-iceLight transition-colors cursor-pointer group flex flex-col justify-between h-full" onclick="switchView('guide-3')">
-                    <div class="space-y-4">
-                        <span class="text-brand-accent font-bold tracking-widest text-sm uppercase">Guide 03</span>
-                        <h2 class="text-3xl group-hover:text-brand-accent transition-colors">MARKETING DEFENSE</h2>
-                        <p class="text-brand-slate font-medium">Navigating the attention economy, dark patterns, and status games.</p>
-                    </div>
-                    <div class="mt-8 pt-6 border-t-2 border-brand-navy/10 flex justify-between items-center">
-                        <span class="text-sm font-bold text-brand-navy">35 MIN</span>
-                        <span class="text-brand-navy font-bold group-hover:translate-x-2 transition-transform">LAUNCH &rarr;</span>
-                    </div>
-                </div>
+                <button onclick="showView('guide-3')" class="card-retro p-8 text-left hover:bg-brand-iceLight transition-colors group">
+                    <span class="inline-block px-3 py-1 border-2 border-brand-navy rounded-full text-xs font-bold tracking-widest text-brand-navy bg-white mb-4">GUIDE 03</span>
+                    <h3 class="text-3xl mb-3 group-hover:text-brand-accent transition-colors">MARKETING DEFENSE</h3>
+                    <p class="text-brand-slate font-medium">Deconstruct viral hype and dark patterns so students can defend their bank accounts.</p>
+                </button>
 
                 <!-- Guide 4 Card -->
-                <div class="card-retro p-8 hover:bg-brand-iceLight transition-colors cursor-pointer group flex flex-col justify-between h-full" onclick="switchView('guide-4')">
-                    <div class="space-y-4">
-                        <span class="text-brand-accent font-bold tracking-widest text-sm uppercase">Guide 04</span>
-                        <h2 class="text-3xl group-hover:text-brand-accent transition-colors">THE JOB MARKET</h2>
-                        <p class="text-brand-slate font-medium">Building a portfolio career, digital leverage, and the power of skill stacking.</p>
-                    </div>
-                    <div class="mt-8 pt-6 border-t-2 border-brand-navy/10 flex justify-between items-center">
-                        <span class="text-sm font-bold text-brand-navy">35 MIN</span>
-                        <span class="text-brand-navy font-bold group-hover:translate-x-2 transition-transform">LAUNCH &rarr;</span>
-                    </div>
-                </div>
+                <button onclick="showView('guide-4')" class="card-retro p-8 text-left hover:bg-brand-iceLight transition-colors group">
+                    <span class="inline-block px-3 py-1 border-2 border-brand-navy rounded-full text-xs font-bold tracking-widest text-brand-navy bg-white mb-4">GUIDE 04</span>
+                    <h3 class="text-3xl mb-3 group-hover:text-brand-accent transition-colors">GEN Z JOB MARKET</h3>
+                    <p class="text-brand-slate font-medium">Shift focus from relying on one corporate employer to building a robust skill stack.</p>
+                </button>
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- GUIDE 1: CAPITAL ALLOCATION                -->
-        <!-- ========================================== -->
         <div id="guide-1" class="view-section space-y-24">
-            <button class="text-sm font-bold text-brand-slate hover:text-brand-navy flex items-center gap-2 mb-8 transition-colors" onclick="switchView('hub-menu')">
-                &larr; BACK TO HUB
-            </button>
-
-            <header class="text-center space-y-6">
-                <div class="inline-block px-4 py-1 border-2 border-brand-navy rounded-full text-xs font-bold tracking-widest text-brand-navy bg-white shadow-[2px_2px_0px_#141B2D]">
+            <header class="text-center space-y-8 relative">
+                <button onclick="showView('hub-menu')" class="absolute left-0 top-0 text-brand-navy font-bold text-sm tracking-widest hover:text-brand-accent transition-colors">&larr; BACK TO HUB</button>
+                <div class="inline-block px-4 py-1 border-2 border-brand-navy rounded-full text-xs font-bold tracking-widest text-brand-navy bg-white mt-12 md:mt-0 shadow-[2px_2px_0px_#141B2D]">
                     MEETING GUIDE 1
                 </div>
-                <h1 class="text-5xl md:text-6xl font-bold">CAPITAL ALLOCATION</h1>
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold">CAPITAL ALLOCATION</h1>
+                <p class="text-lg md:text-xl text-brand-slate max-w-2xl mx-auto font-medium">Estimated Time: 35 Minutes</p>
             </header>
 
             <section class="space-y-8">
                 <h2 class="text-3xl text-brand-navy border-b-2 border-brand-navy pb-4">PHASE 1: THE WARM-UP</h2>
-                <div class="card-retro p-10 md:p-16 text-center space-y-8 relative overflow-hidden">
+                <div class="card-retro p-10 md:p-16 text-center space-y-8 bg-white relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-full h-3 bg-brand-accent"></div>
                     <h3 class="text-brand-slate text-sm font-bold tracking-widest uppercase">Icebreaker Question</h3>
-                    <p class="text-4xl md:text-5xl font-serif text-brand-navy leading-tight">
-                        "What is the smartest $50 you have ever spent, and what is the dumbest?"
-                    </p>
+                    <p class="text-4xl md:text-5xl font-serif text-brand-navy leading-tight">"What is the smartest $50 you have ever spent, and what is the dumbest?"</p>
                 </div>
             </section>
 
             <section class="space-y-8">
                 <h2 class="text-3xl text-brand-navy border-b-2 border-brand-navy pb-4">PHASE 2: REAL-WORLD DILEMMA</h2>
-                <div class="card-retro p-8 md:p-12 space-y-12">
+                <div class="card-retro p-8 md:p-12 bg-white space-y-12">
                     <h3 class="text-center text-3xl font-serif">CHOOSE YOUR ALLOCATION: $200 CASH</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="border-2 border-brand-navy p-8 rounded-xl space-y-6 bg-brand-iceLight">
@@ -269,7 +238,7 @@
                                 <span class="text-brand-accent font-bold tracking-widest text-sm block mb-2">OPTION B</span>
                                 <h4 class="text-2xl">MICRO-CAPITAL</h4>
                             </div>
-                            <p class="text-brand-slate text-center text-lg h-16">Buy a domain name, basic software, or inventory to launch a local service.</p>
+                            <p class="text-brand-slate text-center text-lg h-16">Buy a domain name, basic software, or inventory to launch a service.</p>
                             <div class="bg-white border-2 border-brand-navy rounded-lg p-5 text-center">
                                 <span class="block text-sm text-brand-slate font-bold uppercase mb-1">Value in 1 Year:</span>
                                 <span class="font-serif text-3xl text-brand-navy">$500 to $2,000+</span>
@@ -278,46 +247,45 @@
                     </div>
                     <div class="pt-8 border-t-2 border-dashed border-brand-slate/30 text-center">
                         <span class="text-sm font-bold tracking-wider text-brand-accent block mb-4 uppercase">Discussion Question</span>
-                        <p class="text-3xl font-serif text-brand-navy max-w-3xl mx-auto">
-                            At what exact point does spending money stop being an expense and start becoming an investment in yourself?
-                        </p>
+                        <p class="text-3xl font-serif text-brand-navy max-w-3xl mx-auto">At what exact point does spending money stop being an expense and start becoming an investment in yourself?</p>
                     </div>
                 </div>
             </section>
 
             <section class="space-y-8">
                 <h2 class="text-3xl text-brand-navy border-b-2 border-brand-navy pb-4">PHASE 3: CORE CONCEPTS</h2>
+                <p class="text-brand-slate font-medium text-lg">Click on a guiding word below to reveal the definition for the room.</p>
                 <div class="grid grid-cols-1 gap-6">
-                    <div class="card-retro overflow-hidden">
-                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('g1-concept-1')">
+                    <div class="card-retro bg-white overflow-hidden">
+                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('concept-1-1')">
                             <h3 class="text-2xl md:text-3xl">1. MICRO-CAPITAL</h3>
-                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-g1-concept-1">+</div>
+                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-concept-1-1">+</div>
                         </button>
-                        <div id="g1-concept-1" class="reveal-content px-6 md:px-8 pb-8">
+                        <div id="concept-1-1" class="reveal-content px-6 md:px-8 pb-8">
                             <div class="space-y-4 border-t-2 border-brand-navy/10 pt-6">
                                 <span class="font-bold text-sm tracking-widest text-brand-accent block">DEFINITION</span>
                                 <p class="text-xl text-brand-slate">Small amounts of money, typically between $50 and $300, used to acquire assets or business tools rather than standard consumer goods.</p>
                             </div>
                         </div>
                     </div>
-                    <div class="card-retro overflow-hidden">
-                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('g1-concept-2')">
+                    <div class="card-retro bg-white overflow-hidden">
+                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('concept-1-2')">
                             <h3 class="text-2xl md:text-3xl">2. ASYMMETRIC RISK</h3>
-                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-g1-concept-2">+</div>
+                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-concept-1-2">+</div>
                         </button>
-                        <div id="g1-concept-2" class="reveal-content px-6 md:px-8 pb-8">
+                        <div id="concept-1-2" class="reveal-content px-6 md:px-8 pb-8">
                             <div class="space-y-4 border-t-2 border-brand-navy/10 pt-6">
                                 <span class="font-bold text-sm tracking-widest text-brand-accent block">DEFINITION</span>
                                 <p class="text-xl text-brand-slate">A decision where the potential downside is small and firmly capped, but the potential upside is massive and open-ended.</p>
                             </div>
                         </div>
                     </div>
-                    <div class="card-retro overflow-hidden">
-                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('g1-concept-3')">
+                    <div class="card-retro bg-white overflow-hidden">
+                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('concept-1-3')">
                             <h3 class="text-2xl md:text-3xl">3. CONSUMPTION VS. ASSETS</h3>
-                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-g1-concept-3">+</div>
+                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-concept-1-3">+</div>
                         </button>
-                        <div id="g1-concept-3" class="reveal-content px-6 md:px-8 pb-8">
+                        <div id="concept-1-3" class="reveal-content px-6 md:px-8 pb-8">
                             <div class="space-y-4 border-t-2 border-brand-navy/10 pt-6">
                                 <span class="font-bold text-sm tracking-widest text-brand-accent block">DEFINITION</span>
                                 <p class="text-xl text-brand-slate">Consumption takes money out of your pocket forever. Assets actively put money back into your pocket or build concrete future value.</p>
@@ -329,12 +297,33 @@
 
             <section class="space-y-8">
                 <h2 class="text-3xl text-brand-navy border-b-2 border-brand-navy pb-4">PHASE 4: ROOM CHALLENGE</h2>
-                <div class="card-retro p-8 md:p-14 space-y-10">
+                <div class="card-retro p-8 md:p-14 space-y-10 relative overflow-hidden bg-white">
                     <div class="text-center space-y-6">
                         <h3 class="text-4xl md:text-5xl font-serif text-brand-navy">THE $100 MICRO-BUSINESS PITCH</h3>
                         <p class="text-xl text-brand-slate max-w-3xl mx-auto leading-relaxed">
-                            Form teams of 3 to 4. You have <span class="font-bold text-brand-navy">8 minutes to plan</span> a local business or service that requires under $100 to start. Each team will create a short slide deck to present to the room.
+                            Form teams of 3 to 4. You have <span class="font-bold text-brand-navy">8 minutes to plan</span> a local business or service that requires under $100 to start. Once the timer ends, each team will take turns presenting their pitch to the room.
                         </p>
+                    </div>
+                    <div class="bg-brand-iceLight border-2 border-brand-navy/20 rounded-xl p-6 max-w-4xl mx-auto text-center">
+                        <span class="text-sm font-bold tracking-widest text-brand-accent block mb-2 uppercase">Example Idea</span>
+                        <p class="text-brand-slate text-lg">Purchasing a $60 used lawnmower and a $10 box of flyers to start a neighborhood landscaping service.</p>
+                    </div>
+                    <div class="border-2 border-brand-navy rounded-xl p-8 md:p-10 max-w-4xl mx-auto">
+                        <h4 class="text-xl mb-6 text-center font-bold tracking-widest">YOUR PITCH MUST ANSWER:</h4>
+                        <ul class="space-y-6 text-brand-slate font-medium text-xl max-w-2xl mx-auto">
+                            <li class="flex items-start gap-4">
+                                <div class="w-6 h-6 rounded border-2 border-brand-navy flex-shrink-0 mt-1 bg-white"></div>
+                                <span>What exact tool, software, or asset did you buy with your $100?</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-6 h-6 rounded border-2 border-brand-navy flex-shrink-0 mt-1 bg-white"></div>
+                                <span>Who is the very first target customer you will approach?</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-6 h-6 rounded border-2 border-brand-navy flex-shrink-0 mt-1 bg-white"></div>
+                                <span>What is your specific plan to hit your first $200 in revenue?</span>
+                            </li>
+                        </ul>
                     </div>
                     <div class="flex flex-col items-center gap-6 pt-6">
                         <span id="timer-display-1" class="text-7xl font-serif text-brand-navy tracking-wider">08:00</span>
@@ -346,42 +335,41 @@
             <section class="space-y-8">
                 <div class="card-retro p-10 md:p-16 text-center space-y-6 bg-brand-navy text-white border-brand-navy">
                     <h3 class="text-brand-accent text-sm font-bold tracking-widest uppercase">THE BIG TAKEAWAY</h3>
-                    <p class="text-3xl md:text-5xl font-serif leading-tight max-w-4xl mx-auto">
-                        Money is not just something you spend to buy things. It is a tool you allocate to create freedom and leverage.
-                    </p>
+                    <p class="text-3xl md:text-5xl font-serif leading-tight max-w-4xl mx-auto">Money is not just something you spend to buy things. It is a tool you allocate to create freedom and leverage.</p>
+                </div>
+            </section>
+
+            <section class="space-y-8">
+                <h2 class="text-3xl text-brand-navy border-b-2 border-brand-navy pb-4">PHASE 5: COMMUNITY CONNECTION</h2>
+                <div class="card-retro p-8 bg-brand-iceLight border-brand-navy/20 text-center space-y-4">
+                    <h3 class="text-xl font-bold tracking-widest text-brand-accent uppercase">POST-MEETING HANGOUT</h3>
+                    <p class="text-lg text-brand-slate max-w-2xl mx-auto font-medium">Stick around for 10 minutes! Turn to someone near you and ask them what specific micro-project or skill they want to test this year. Building wealth is a team sport.</p>
                 </div>
             </section>
         </div>
 
-        <!-- ========================================== -->
-        <!-- GUIDE 2: TIME CURRENCY                     -->
-        <!-- ========================================== -->
         <div id="guide-2" class="view-section space-y-24">
-            <button class="text-sm font-bold text-brand-slate hover:text-brand-navy flex items-center gap-2 mb-8 transition-colors" onclick="switchView('hub-menu')">
-                &larr; BACK TO HUB
-            </button>
-
-            <header class="text-center space-y-6">
-                <div class="inline-block px-4 py-1 border-2 border-brand-navy rounded-full text-xs font-bold tracking-widest text-brand-navy bg-white shadow-[2px_2px_0px_#141B2D]">
+            <header class="text-center space-y-8 relative">
+                <button onclick="showView('hub-menu')" class="absolute left-0 top-0 text-brand-navy font-bold text-sm tracking-widest hover:text-brand-accent transition-colors">&larr; BACK TO HUB</button>
+                <div class="inline-block px-4 py-1 border-2 border-brand-navy rounded-full text-xs font-bold tracking-widest text-brand-navy bg-white mt-12 md:mt-0 shadow-[2px_2px_0px_#141B2D]">
                     MEETING GUIDE 2
                 </div>
-                <h1 class="text-5xl md:text-6xl font-bold">TIME CURRENCY</h1>
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold">TIME CURRENCY</h1>
+                <p class="text-lg md:text-xl text-brand-slate max-w-2xl mx-auto font-medium">Estimated Time: 35 Minutes</p>
             </header>
 
             <section class="space-y-8">
                 <h2 class="text-3xl text-brand-navy border-b-2 border-brand-navy pb-4">PHASE 1: THE WARM-UP</h2>
-                <div class="card-retro p-10 md:p-16 text-center space-y-8 relative overflow-hidden">
+                <div class="card-retro p-10 md:p-16 text-center space-y-8 bg-white relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-full h-3 bg-brand-accent"></div>
                     <h3 class="text-brand-slate text-sm font-bold tracking-widest uppercase">Icebreaker Question</h3>
-                    <p class="text-4xl md:text-5xl font-serif text-brand-navy leading-tight">
-                        "If you could instantly buy back 5 hours of your week, which specific hours would you eliminate?"
-                    </p>
+                    <p class="text-4xl md:text-5xl font-serif text-brand-navy leading-tight">"If you could instantly buy back 5 hours of your week, which specific hours would you eliminate?"</p>
                 </div>
             </section>
 
             <section class="space-y-8">
                 <h2 class="text-3xl text-brand-navy border-b-2 border-brand-navy pb-4">PHASE 2: REAL-WORLD DILEMMA</h2>
-                <div class="card-retro p-8 md:p-12 space-y-12">
+                <div class="card-retro p-8 md:p-12 bg-white space-y-12">
                     <h3 class="text-center text-3xl font-serif">THE TIME TRADE-OFF MATRIX</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="border-2 border-brand-navy p-8 rounded-xl space-y-6 bg-brand-iceLight">
@@ -389,10 +377,10 @@
                                 <span class="text-brand-accent font-bold tracking-widest text-sm block mb-2">PATH A</span>
                                 <h4 class="text-2xl">IMMEDIATE CASH</h4>
                             </div>
-                            <p class="text-brand-slate text-center text-lg h-16">Work 15 hours per week at a minimum wage job ($15/hr).</p>
-                            <div class="bg-white border-2 border-brand-navy rounded-lg p-5 text-center space-y-2">
-                                <span class="block text-sm text-brand-slate font-bold uppercase mb-1">Short-Term Result:</span>
-                                <span class="font-serif text-3xl text-brand-navy block">More spending money today</span>
+                            <p class="text-brand-slate text-center text-lg h-24">Work 15 hours per week at a minimum wage job ($15/hr = $225/week).</p>
+                            <div class="bg-white border-2 border-brand-navy rounded-lg p-5 text-center">
+                                <span class="block text-sm text-brand-slate font-bold uppercase mb-1">Long-Term Impact:</span>
+                                <span class="font-serif text-2xl text-brand-navy">More spending money right now.</span>
                             </div>
                         </div>
                         <div class="border-2 border-brand-navy p-8 rounded-xl space-y-6 bg-brand-iceLight">
@@ -400,58 +388,57 @@
                                 <span class="text-brand-accent font-bold tracking-widest text-sm block mb-2">PATH B</span>
                                 <h4 class="text-2xl">SKILL COMPOUNDING</h4>
                             </div>
-                            <p class="text-brand-slate text-center text-lg h-24">Work 5 hours per week, and spend 10 hours per week mastering a high-income skill (coding, media, design).</p>
-                            <div class="bg-white border-2 border-brand-navy rounded-lg p-5 text-center space-y-2">
-                                <span class="block text-sm text-brand-slate font-bold uppercase mb-1">Long-Term Result:</span>
-                                <span class="font-serif text-3xl text-brand-navy block">Earning $50+/hr next year</span>
+                            <p class="text-brand-slate text-center text-lg h-24">Work 5 hours per week, and spend 10 hours mastering a high-income skill.</p>
+                            <div class="bg-white border-2 border-brand-navy rounded-lg p-5 text-center">
+                                <span class="block text-sm text-brand-slate font-bold uppercase mb-1">Long-Term Impact:</span>
+                                <span class="font-serif text-2xl text-brand-navy">Earning premium rates in 12 months.</span>
                             </div>
                         </div>
                     </div>
                     <div class="pt-8 border-t-2 border-dashed border-brand-slate/30 text-center">
                         <span class="text-sm font-bold tracking-wider text-brand-accent block mb-4 uppercase">Discussion Question</span>
-                        <p class="text-3xl font-serif text-brand-navy max-w-3xl mx-auto">
-                            When is trading your time for immediate minimum wage cash a trap, and when is it necessary?
-                        </p>
+                        <p class="text-3xl font-serif text-brand-navy max-w-3xl mx-auto">When is trading your time for immediate minimum wage cash a trap, and when is it genuinely necessary?</p>
                     </div>
                 </div>
             </section>
 
             <section class="space-y-8">
                 <h2 class="text-3xl text-brand-navy border-b-2 border-brand-navy pb-4">PHASE 3: CORE CONCEPTS</h2>
+                <p class="text-brand-slate font-medium text-lg">Click on a guiding word below to reveal the definition for the room.</p>
                 <div class="grid grid-cols-1 gap-6">
-                    <div class="card-retro overflow-hidden">
-                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('g2-concept-1')">
+                    <div class="card-retro bg-white overflow-hidden">
+                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('concept-2-1')">
                             <h3 class="text-2xl md:text-3xl">1. OPPORTUNITY COST</h3>
-                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-g2-concept-1">+</div>
+                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-concept-2-1">+</div>
                         </button>
-                        <div id="g2-concept-1" class="reveal-content px-6 md:px-8 pb-8">
+                        <div id="concept-2-1" class="reveal-content px-6 md:px-8 pb-8">
                             <div class="space-y-4 border-t-2 border-brand-navy/10 pt-6">
                                 <span class="font-bold text-sm tracking-widest text-brand-accent block">DEFINITION</span>
-                                <p class="text-xl text-brand-slate">The real cost of any choice is the value of the next best alternative you gave up. If you spend 3 hours scrolling, the cost is not $0; it is what you could have built in those 3 hours.</p>
+                                <p class="text-xl text-brand-slate">The real cost of any choice is the value of the next best alternative you gave up.</p>
                             </div>
                         </div>
                     </div>
-                    <div class="card-retro overflow-hidden">
-                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('g2-concept-2')">
+                    <div class="card-retro bg-white overflow-hidden">
+                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('concept-2-2')">
                             <h3 class="text-2xl md:text-3xl">2. TIME ARBITRAGE</h3>
-                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-g2-concept-2">+</div>
+                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-concept-2-2">+</div>
                         </button>
-                        <div id="g2-concept-2" class="reveal-content px-6 md:px-8 pb-8">
+                        <div id="concept-2-2" class="reveal-content px-6 md:px-8 pb-8">
                             <div class="space-y-4 border-t-2 border-brand-navy/10 pt-6">
                                 <span class="font-bold text-sm tracking-widest text-brand-accent block">DEFINITION</span>
-                                <p class="text-xl text-brand-slate">Taking advantage of the fact that, as a student, you have low financial overhead. This is the single easiest time in your life to spend 6 months learning a complex skill for free.</p>
+                                <p class="text-xl text-brand-slate">Using your youth and low financial overhead to learn high-value skills before you have adult bills to pay.</p>
                             </div>
                         </div>
                     </div>
-                    <div class="card-retro overflow-hidden">
-                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('g2-concept-3')">
+                    <div class="card-retro bg-white overflow-hidden">
+                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('concept-2-3')">
                             <h3 class="text-2xl md:text-3xl">3. COMPOUND TIME</h3>
-                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-g2-concept-3">+</div>
+                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-concept-2-3">+</div>
                         </button>
-                        <div id="g2-concept-3" class="reveal-content px-6 md:px-8 pb-8">
+                        <div id="concept-2-3" class="reveal-content px-6 md:px-8 pb-8">
                             <div class="space-y-4 border-t-2 border-brand-navy/10 pt-6">
                                 <span class="font-bold text-sm tracking-widest text-brand-accent block">DEFINITION</span>
-                                <p class="text-xl text-brand-slate">Skills learned early in life pay dividends for decades. Knowledge compounds just like money in a bank account.</p>
+                                <p class="text-xl text-brand-slate">Skills learned at age 16 or 17 pay professional dividends for decades. Time invested now is worth more than time invested later.</p>
                             </div>
                         </div>
                     </div>
@@ -460,12 +447,25 @@
 
             <section class="space-y-8">
                 <h2 class="text-3xl text-brand-navy border-b-2 border-brand-navy pb-4">PHASE 4: ROOM CHALLENGE</h2>
-                <div class="card-retro p-8 md:p-14 space-y-10">
+                <div class="card-retro p-8 md:p-14 space-y-10 relative overflow-hidden bg-white">
                     <div class="text-center space-y-6">
                         <h3 class="text-4xl md:text-5xl font-serif text-brand-navy">THE TIME AUDIT</h3>
                         <p class="text-xl text-brand-slate max-w-3xl mx-auto leading-relaxed">
-                            Form pairs. You have <span class="font-bold text-brand-navy">8 minutes to review</span> each other's weekly schedules, identify 3 "Time Leaks," and reallocate 4 hours toward a new skill or project. Present your findings to the room.
+                            Form pairs. You have <span class="font-bold text-brand-navy">8 minutes</span> to interview each other about your schedules last week. You will present a 2-slide summary for your partner to the room.
                         </p>
+                    </div>
+                    <div class="border-2 border-brand-navy rounded-xl p-8 md:p-10 max-w-4xl mx-auto">
+                        <h4 class="text-xl mb-6 text-center font-bold tracking-widest">YOUR PITCH MUST ANSWER:</h4>
+                        <ul class="space-y-6 text-brand-slate font-medium text-xl max-w-2xl mx-auto">
+                            <li class="flex items-start gap-4">
+                                <div class="w-6 h-6 rounded border-2 border-brand-navy flex-shrink-0 mt-1 bg-white"></div>
+                                <span>Identify the 3 biggest "Time Leaks" in your partner's schedule.</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-6 h-6 rounded border-2 border-brand-navy flex-shrink-0 mt-1 bg-white"></div>
+                                <span>If they reclaimed 4 hours next week, what specific skill or project should they spend it on?</span>
+                            </li>
+                        </ul>
                     </div>
                     <div class="flex flex-col items-center gap-6 pt-6">
                         <span id="timer-display-2" class="text-7xl font-serif text-brand-navy tracking-wider">08:00</span>
@@ -477,42 +477,41 @@
             <section class="space-y-8">
                 <div class="card-retro p-10 md:p-16 text-center space-y-6 bg-brand-navy text-white border-brand-navy">
                     <h3 class="text-brand-accent text-sm font-bold tracking-widest uppercase">THE BIG TAKEAWAY</h3>
-                    <p class="text-3xl md:text-5xl font-serif leading-tight max-w-4xl mx-auto">
-                        You are richer in time right now than you will ever be again. Treat your hours with the same respect as cash.
-                    </p>
+                    <p class="text-3xl md:text-5xl font-serif leading-tight max-w-4xl mx-auto">You are richer in time right now than you will ever be again. Treat your hours with the same respect as cash.</p>
+                </div>
+            </section>
+
+            <section class="space-y-8">
+                <h2 class="text-3xl text-brand-navy border-b-2 border-brand-navy pb-4">PHASE 5: COMMUNITY CONNECTION</h2>
+                <div class="card-retro p-8 bg-brand-iceLight border-brand-navy/20 text-center space-y-4">
+                    <h3 class="text-xl font-bold tracking-widest text-brand-accent uppercase">POST-MEETING HANGOUT</h3>
+                    <p class="text-lg text-brand-slate max-w-2xl mx-auto font-medium">Don't rush out just yet. Grab a snack and chat with someone about the biggest "time leak" you discovered today. Sometimes saying it out loud makes it easier to fix.</p>
                 </div>
             </section>
         </div>
 
-        <!-- ========================================== -->
-        <!-- GUIDE 3: MARKETING DEFENSE                 -->
-        <!-- ========================================== -->
         <div id="guide-3" class="view-section space-y-24">
-            <button class="text-sm font-bold text-brand-slate hover:text-brand-navy flex items-center gap-2 mb-8 transition-colors" onclick="switchView('hub-menu')">
-                &larr; BACK TO HUB
-            </button>
-
-            <header class="text-center space-y-6">
-                <div class="inline-block px-4 py-1 border-2 border-brand-navy rounded-full text-xs font-bold tracking-widest text-brand-navy bg-white shadow-[2px_2px_0px_#141B2D]">
+            <header class="text-center space-y-8 relative">
+                <button onclick="showView('hub-menu')" class="absolute left-0 top-0 text-brand-navy font-bold text-sm tracking-widest hover:text-brand-accent transition-colors">&larr; BACK TO HUB</button>
+                <div class="inline-block px-4 py-1 border-2 border-brand-navy rounded-full text-xs font-bold tracking-widest text-brand-navy bg-white mt-12 md:mt-0 shadow-[2px_2px_0px_#141B2D]">
                     MEETING GUIDE 3
                 </div>
-                <h1 class="text-5xl md:text-6xl font-bold">MARKETING DEFENSE</h1>
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold">MARKETING DEFENSE</h1>
+                <p class="text-lg md:text-xl text-brand-slate max-w-2xl mx-auto font-medium">Estimated Time: 35 Minutes</p>
             </header>
 
             <section class="space-y-8">
                 <h2 class="text-3xl text-brand-navy border-b-2 border-brand-navy pb-4">PHASE 1: THE WARM-UP</h2>
-                <div class="card-retro p-10 md:p-16 text-center space-y-8 relative overflow-hidden">
+                <div class="card-retro p-10 md:p-16 text-center space-y-8 bg-white relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-full h-3 bg-brand-accent"></div>
                     <h3 class="text-brand-slate text-sm font-bold tracking-widest uppercase">Icebreaker Question</h3>
-                    <p class="text-4xl md:text-5xl font-serif text-brand-navy leading-tight">
-                        "What is one item you bought purely because you saw it go viral on social media?"
-                    </p>
+                    <p class="text-4xl md:text-5xl font-serif text-brand-navy leading-tight">"What is one item you bought purely because you saw it go viral on social media?"</p>
                 </div>
             </section>
 
             <section class="space-y-8">
                 <h2 class="text-3xl text-brand-navy border-b-2 border-brand-navy pb-4">PHASE 2: REAL-WORLD DILEMMA</h2>
-                <div class="card-retro p-8 md:p-12 space-y-12">
+                <div class="card-retro p-8 md:p-12 bg-white space-y-12">
                     <h3 class="text-center text-3xl font-serif">THE $15 SHIRT VS. THE $250 LOGO</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="border-2 border-brand-navy p-8 rounded-xl space-y-6 bg-brand-iceLight">
@@ -520,67 +519,66 @@
                                 <span class="text-brand-accent font-bold tracking-widest text-sm block mb-2">ITEM A</span>
                                 <h4 class="text-2xl">$15 PLAIN TEE</h4>
                             </div>
-                            <div class="bg-white border-2 border-brand-navy rounded-lg p-5 text-center space-y-2">
-                                <span class="block text-sm text-brand-slate font-bold uppercase">Material: 100% Cotton</span>
-                                <span class="block text-sm text-brand-slate font-bold uppercase pb-2">Utility: Keeps you clothed</span>
-                            </div>
+                            <ul class="text-brand-slate text-lg space-y-2 h-24">
+                                <li>Material: 100% Cotton</li>
+                                <li>Utility: Keeps you clothed and comfortable.</li>
+                            </ul>
                         </div>
                         <div class="border-2 border-brand-navy p-8 rounded-xl space-y-6 bg-brand-iceLight">
                             <div class="text-center">
                                 <span class="text-brand-accent font-bold tracking-widest text-sm block mb-2">ITEM B</span>
                                 <h4 class="text-2xl">$250 DESIGNER TEE</h4>
                             </div>
-                            <div class="bg-white border-2 border-brand-navy rounded-lg p-5 text-center space-y-2">
-                                <span class="block text-sm text-brand-slate font-bold uppercase">Material: 100% Cotton</span>
-                                <span class="block text-sm text-brand-slate font-bold uppercase pb-2">Utility: Signals status</span>
-                            </div>
+                            <ul class="text-brand-slate text-lg space-y-2 h-24">
+                                <li>Material: 100% Cotton</li>
+                                <li>Utility: Signals status and group membership.</li>
+                            </ul>
                         </div>
                     </div>
                     <div class="pt-8 border-t-2 border-dashed border-brand-slate/30 text-center">
                         <span class="text-sm font-bold tracking-wider text-brand-accent block mb-4 uppercase">Discussion Question</span>
-                        <p class="text-3xl font-serif text-brand-navy max-w-3xl mx-auto">
-                            Are you actually buying a higher quality product, or are you buying admission into a social group?
-                        </p>
+                        <p class="text-3xl font-serif text-brand-navy max-w-3xl mx-auto">Are you actually buying a higher quality product, or are you buying admission into a social group?</p>
                     </div>
                 </div>
             </section>
 
             <section class="space-y-8">
                 <h2 class="text-3xl text-brand-navy border-b-2 border-brand-navy pb-4">PHASE 3: CORE CONCEPTS</h2>
+                <p class="text-brand-slate font-medium text-lg">Click on a guiding word below to reveal the definition for the room.</p>
                 <div class="grid grid-cols-1 gap-6">
-                    <div class="card-retro overflow-hidden">
-                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('g3-concept-1')">
+                    <div class="card-retro bg-white overflow-hidden">
+                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('concept-3-1')">
                             <h3 class="text-2xl md:text-3xl">1. DARK PATTERNS</h3>
-                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-g3-concept-1">+</div>
+                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-concept-3-1">+</div>
                         </button>
-                        <div id="g3-concept-1" class="reveal-content px-6 md:px-8 pb-8">
+                        <div id="concept-3-1" class="reveal-content px-6 md:px-8 pb-8">
                             <div class="space-y-4 border-t-2 border-brand-navy/10 pt-6">
                                 <span class="font-bold text-sm tracking-widest text-brand-accent block">DEFINITION</span>
-                                <p class="text-xl text-brand-slate">Digital design tricks engineered to make you spend money without thinking, such as 1-click buying, countdown timers, and fake scarcity.</p>
+                                <p class="text-xl text-brand-slate">Digital design tricks engineered to make you spend money without thinking (1-click buying, Apple Pay, countdown timers, fake scarcity).</p>
                             </div>
                         </div>
                     </div>
-                    <div class="card-retro overflow-hidden">
-                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('g3-concept-2')">
+                    <div class="card-retro bg-white overflow-hidden">
+                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('concept-3-2')">
                             <h3 class="text-2xl md:text-3xl">2. STATUS GAMES</h3>
-                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-g3-concept-2">+</div>
+                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-concept-3-2">+</div>
                         </button>
-                        <div id="g3-concept-2" class="reveal-content px-6 md:px-8 pb-8">
+                        <div id="concept-3-2" class="reveal-content px-6 md:px-8 pb-8">
                             <div class="space-y-4 border-t-2 border-brand-navy/10 pt-6">
                                 <span class="font-bold text-sm tracking-widest text-brand-accent block">DEFINITION</span>
-                                <p class="text-xl text-brand-slate">Spending money to appear wealthy to others, which actively prevents you from accumulating real, long-term wealth.</p>
+                                <p class="text-xl text-brand-slate">Spending money to appear wealthy to others, which actively prevents you from accumulating real wealth in the background.</p>
                             </div>
                         </div>
                     </div>
-                    <div class="card-retro overflow-hidden">
-                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('g3-concept-3')">
+                    <div class="card-retro bg-white overflow-hidden">
+                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('concept-3-3')">
                             <h3 class="text-2xl md:text-3xl">3. ATTENTION ARBITRAGE</h3>
-                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-g3-concept-3">+</div>
+                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-concept-3-3">+</div>
                         </button>
-                        <div id="g3-concept-3" class="reveal-content px-6 md:px-8 pb-8">
+                        <div id="concept-3-3" class="reveal-content px-6 md:px-8 pb-8">
                             <div class="space-y-4 border-t-2 border-brand-navy/10 pt-6">
                                 <span class="font-bold text-sm tracking-widest text-brand-accent block">DEFINITION</span>
-                                <p class="text-xl text-brand-slate">Understanding that "free" apps make money by selling your attention to advertisers. If you aren't paying for the product, you are the product.</p>
+                                <p class="text-xl text-brand-slate">Understanding that free apps make money by selling your attention to advertisers. If you aren't paying for the product, you are the product.</p>
                             </div>
                         </div>
                     </div>
@@ -589,12 +587,29 @@
 
             <section class="space-y-8">
                 <h2 class="text-3xl text-brand-navy border-b-2 border-brand-navy pb-4">PHASE 4: ROOM CHALLENGE</h2>
-                <div class="card-retro p-8 md:p-14 space-y-10">
+                <div class="card-retro p-8 md:p-14 space-y-10 relative overflow-hidden bg-white">
                     <div class="text-center space-y-6">
                         <h3 class="text-4xl md:text-5xl font-serif text-brand-navy">THE VIRAL BRAND TEARDOWN</h3>
                         <p class="text-xl text-brand-slate max-w-3xl mx-auto leading-relaxed">
-                            Form teams of 3 to 4. You have <span class="font-bold text-brand-navy">8 minutes to deconstruct</span> the marketing playbook of a popular viral brand (e.g., Stanley, Supreme, Gymshark). Prepare slides to present your teardown to the room.
+                            Form teams of 3. You have <span class="font-bold text-brand-navy">8 minutes</span> to pick a viral brand (Stanley, Gymshark, Labubu, etc.) and deconstruct their marketing playbook to present to the room.
                         </p>
+                    </div>
+                    <div class="border-2 border-brand-navy rounded-xl p-8 md:p-10 max-w-4xl mx-auto">
+                        <h4 class="text-xl mb-6 text-center font-bold tracking-widest">YOUR PITCH MUST ANSWER:</h4>
+                        <ul class="space-y-6 text-brand-slate font-medium text-xl max-w-2xl mx-auto">
+                            <li class="flex items-start gap-4">
+                                <div class="w-6 h-6 rounded border-2 border-brand-navy flex-shrink-0 mt-1 bg-white"></div>
+                                <span>What insecurity or status goal are they targeting in young people?</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-6 h-6 rounded border-2 border-brand-navy flex-shrink-0 mt-1 bg-white"></div>
+                                <span>What artificial scarcity trick do they use (drops, limited stock)?</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-6 h-6 rounded border-2 border-brand-navy flex-shrink-0 mt-1 bg-white"></div>
+                                <span>How can a smart consumer enjoy this product without falling for the hype?</span>
+                            </li>
+                        </ul>
                     </div>
                     <div class="flex flex-col items-center gap-6 pt-6">
                         <span id="timer-display-3" class="text-7xl font-serif text-brand-navy tracking-wider">08:00</span>
@@ -606,116 +621,110 @@
             <section class="space-y-8">
                 <div class="card-retro p-10 md:p-16 text-center space-y-6 bg-brand-navy text-white border-brand-navy">
                     <h3 class="text-brand-accent text-sm font-bold tracking-widest uppercase">THE BIG TAKEAWAY</h3>
-                    <p class="text-3xl md:text-5xl font-serif leading-tight max-w-4xl mx-auto">
-                        Financial literacy is mental defense. Do not let corporate algorithms dictate your bank balance.
-                    </p>
+                    <p class="text-3xl md:text-5xl font-serif leading-tight max-w-4xl mx-auto">Financial literacy is mental defense. Do not let corporate algorithms dictate your bank balance.</p>
+                </div>
+            </section>
+
+            <section class="space-y-8">
+                <h2 class="text-3xl text-brand-navy border-b-2 border-brand-navy pb-4">PHASE 5: COMMUNITY CONNECTION</h2>
+                <div class="card-retro p-8 bg-brand-iceLight border-brand-navy/20 text-center space-y-4">
+                    <h3 class="text-xl font-bold tracking-widest text-brand-accent uppercase">POST-MEETING HANGOUT</h3>
+                    <p class="text-lg text-brand-slate max-w-2xl mx-auto font-medium">Hang out for a few minutes. Check in with the people at your table. What is one hype brand you all agree is actually worth the money, and one that is a total trap?</p>
                 </div>
             </section>
         </div>
 
-        <!-- ========================================== -->
-        <!-- GUIDE 4: THE JOB MARKET                    -->
-        <!-- ========================================== -->
         <div id="guide-4" class="view-section space-y-24">
-            <button class="text-sm font-bold text-brand-slate hover:text-brand-navy flex items-center gap-2 mb-8 transition-colors" onclick="switchView('hub-menu')">
-                &larr; BACK TO HUB
-            </button>
-
-            <header class="text-center space-y-6">
-                <div class="inline-block px-4 py-1 border-2 border-brand-navy rounded-full text-xs font-bold tracking-widest text-brand-navy bg-white shadow-[2px_2px_0px_#141B2D]">
+            <header class="text-center space-y-8 relative">
+                <button onclick="showView('hub-menu')" class="absolute left-0 top-0 text-brand-navy font-bold text-sm tracking-widest hover:text-brand-accent transition-colors">&larr; BACK TO HUB</button>
+                <div class="inline-block px-4 py-1 border-2 border-brand-navy rounded-full text-xs font-bold tracking-widest text-brand-navy bg-white mt-12 md:mt-0 shadow-[2px_2px_0px_#141B2D]">
                     MEETING GUIDE 4
                 </div>
-                <h1 class="text-5xl md:text-6xl font-bold">THE GEN Z JOB MARKET</h1>
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold">GEN Z JOB MARKET</h1>
+                <p class="text-lg md:text-xl text-brand-slate max-w-2xl mx-auto font-medium">Estimated Time: 35 Minutes</p>
             </header>
 
             <section class="space-y-8">
                 <h2 class="text-3xl text-brand-navy border-b-2 border-brand-navy pb-4">PHASE 1: THE WARM-UP</h2>
-                <div class="card-retro p-10 md:p-16 text-center space-y-8 relative overflow-hidden">
+                <div class="card-retro p-10 md:p-16 text-center space-y-8 bg-white relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-full h-3 bg-brand-accent"></div>
                     <h3 class="text-brand-slate text-sm font-bold tracking-widest uppercase">Icebreaker Question</h3>
-                    <p class="text-4xl md:text-5xl font-serif text-brand-navy leading-tight">
-                        "What is a modern job or career that did not exist 10 years ago that you think is genuinely cool?"
-                    </p>
+                    <p class="text-4xl md:text-5xl font-serif text-brand-navy leading-tight">"What is a modern job or career that didn't exist 10 years ago that you think is genuinely cool?"</p>
                 </div>
             </section>
 
             <section class="space-y-8">
                 <h2 class="text-3xl text-brand-navy border-b-2 border-brand-navy pb-4">PHASE 2: REAL-WORLD DILEMMA</h2>
-                <div class="card-retro p-8 md:p-12 space-y-12">
-                    <h3 class="text-center text-3xl font-serif">TRADITIONAL VS. PORTFOLIO CAREER</h3>
+                <div class="card-retro p-8 md:p-12 bg-white space-y-12">
+                    <h3 class="text-center text-3xl font-serif">THE CORPORATE PIPELINE VS. THE PORTFOLIO CAREER</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="border-2 border-brand-navy p-8 rounded-xl space-y-6 bg-brand-iceLight">
                             <div class="text-center">
-                                <span class="text-brand-accent font-bold tracking-widest text-sm block mb-2">PATH A</span>
-                                <h4 class="text-2xl">THE OLD PLAYBOOK</h4>
+                                <span class="text-brand-accent font-bold tracking-widest text-sm block mb-2">THE OLD PLAYBOOK</span>
+                                <h4 class="text-2xl">CORPORATE LADDER</h4>
                             </div>
-                            <div class="bg-white border-2 border-brand-navy rounded-lg p-5 text-center space-y-4">
-                                <span class="block text-sm text-brand-slate font-bold uppercase">Degree</span>
-                                <span class="block text-brand-navy">&darr;</span>
-                                <span class="block text-sm text-brand-slate font-bold uppercase">1 Corporate Company</span>
-                                <span class="block text-brand-navy">&darr;</span>
-                                <span class="block text-sm text-brand-slate font-bold uppercase">40-Year Ladder</span>
+                            <p class="text-brand-slate text-center text-lg h-24">Get a degree, join one single corporate company, and climb the ladder for 40 years.</p>
+                            <div class="bg-white border-2 border-brand-navy rounded-lg p-5 text-center">
+                                <span class="block text-sm text-brand-slate font-bold uppercase mb-1">Risk Profile:</span>
+                                <span class="font-serif text-2xl text-brand-navy">Dependent on one employer.</span>
                             </div>
                         </div>
                         <div class="border-2 border-brand-navy p-8 rounded-xl space-y-6 bg-brand-iceLight">
                             <div class="text-center">
-                                <span class="text-brand-accent font-bold tracking-widest text-sm block mb-2">PATH B</span>
-                                <h4 class="text-2xl">THE MODERN PLAYBOOK</h4>
+                                <span class="text-brand-accent font-bold tracking-widest text-sm block mb-2">THE MODERN PLAYBOOK</span>
+                                <h4 class="text-2xl">SKILL PORTFOLIO</h4>
                             </div>
-                            <div class="bg-white border-2 border-brand-navy rounded-lg p-5 text-center space-y-4">
-                                <span class="block text-sm text-brand-slate font-bold uppercase">Specialized Skills</span>
-                                <span class="block text-brand-navy">+</span>
-                                <span class="block text-sm text-brand-slate font-bold uppercase">Multiple Income Streams</span>
-                                <span class="block text-brand-navy">+</span>
-                                <span class="block text-sm text-brand-slate font-bold uppercase">Digital Assets</span>
+                            <p class="text-brand-slate text-center text-lg h-24">Combine specialized skills, freelancing, multiple income streams, and digital assets.</p>
+                            <div class="bg-white border-2 border-brand-navy rounded-lg p-5 text-center">
+                                <span class="block text-sm text-brand-slate font-bold uppercase mb-1">Risk Profile:</span>
+                                <span class="font-serif text-2xl text-brand-navy">High security through diversification.</span>
                             </div>
                         </div>
                     </div>
                     <div class="pt-8 border-t-2 border-dashed border-brand-slate/30 text-center">
                         <span class="text-sm font-bold tracking-wider text-brand-accent block mb-4 uppercase">Discussion Question</span>
-                        <p class="text-3xl font-serif text-brand-navy max-w-3xl mx-auto">
-                            Is true job security found in relying on a single employer, or in having skills that multiple people will pay you for?
-                        </p>
+                        <p class="text-3xl font-serif text-brand-navy max-w-3xl mx-auto">Is true job security found in relying on a single employer, or in having skills that multiple people will gladly pay you for?</p>
                     </div>
                 </div>
             </section>
 
             <section class="space-y-8">
                 <h2 class="text-3xl text-brand-navy border-b-2 border-brand-navy pb-4">PHASE 3: CORE CONCEPTS</h2>
+                <p class="text-brand-slate font-medium text-lg">Click on a guiding word below to reveal the definition for the room.</p>
                 <div class="grid grid-cols-1 gap-6">
-                    <div class="card-retro overflow-hidden">
-                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('g4-concept-1')">
+                    <div class="card-retro bg-white overflow-hidden">
+                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('concept-4-1')">
                             <h3 class="text-2xl md:text-3xl">1. SKILL STACKING</h3>
-                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-g4-concept-1">+</div>
+                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-concept-4-1">+</div>
                         </button>
-                        <div id="g4-concept-1" class="reveal-content px-6 md:px-8 pb-8">
+                        <div id="concept-4-1" class="reveal-content px-6 md:px-8 pb-8">
                             <div class="space-y-4 border-t-2 border-brand-navy/10 pt-6">
                                 <span class="font-bold text-sm tracking-widest text-brand-accent block">DEFINITION</span>
-                                <p class="text-xl text-brand-slate">Combining two or three average skills to create a unique, highly valuable combination. (e.g., Video Editing + Basic Finance = High-paid media producer for financial firms).</p>
+                                <p class="text-xl text-brand-slate">Combining two or three average skills to create a unique, highly valuable combination that is hard to replace.</p>
                             </div>
                         </div>
                     </div>
-                    <div class="card-retro overflow-hidden">
-                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('g4-concept-2')">
+                    <div class="card-retro bg-white overflow-hidden">
+                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('concept-4-2')">
                             <h3 class="text-2xl md:text-3xl">2. HIGH-INCOME SKILLS</h3>
-                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-g4-concept-2">+</div>
+                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-concept-4-2">+</div>
                         </button>
-                        <div id="g4-concept-2" class="reveal-content px-6 md:px-8 pb-8">
+                        <div id="concept-4-2" class="reveal-content px-6 md:px-8 pb-8">
                             <div class="space-y-4 border-t-2 border-brand-navy/10 pt-6">
                                 <span class="font-bold text-sm tracking-widest text-brand-accent block">DEFINITION</span>
-                                <p class="text-xl text-brand-slate">Skills that directly generate revenue or solve major business problems, such as sales, copywriting, data analysis, or coding. These often do not require a 4-year degree to start earning.</p>
+                                <p class="text-xl text-brand-slate">Skills that directly generate revenue or solve major business problems, such as sales, copywriting, data analysis, or coding. They do not necessarily require a 4-year degree.</p>
                             </div>
                         </div>
                     </div>
-                    <div class="card-retro overflow-hidden">
-                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('g4-concept-3')">
+                    <div class="card-retro bg-white overflow-hidden">
+                        <button class="w-full text-left p-6 md:p-8 flex justify-between items-center hover:bg-brand-iceLight transition-colors" onclick="toggleReveal('concept-4-3')">
                             <h3 class="text-2xl md:text-3xl">3. DIGITAL LEVERAGE</h3>
-                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-g4-concept-3">+</div>
+                            <div class="w-10 h-10 rounded-full border-2 border-brand-navy flex items-center justify-center text-brand-navy font-bold text-2xl pb-1" id="icon-concept-4-3">+</div>
                         </button>
-                        <div id="g4-concept-3" class="reveal-content px-6 md:px-8 pb-8">
+                        <div id="concept-4-3" class="reveal-content px-6 md:px-8 pb-8">
                             <div class="space-y-4 border-t-2 border-brand-navy/10 pt-6">
                                 <span class="font-bold text-sm tracking-widest text-brand-accent block">DEFINITION</span>
-                                <p class="text-xl text-brand-slate">Code, content, or media that works for you 24/7 without extra labor cost. Building things once that can be sold or viewed infinitely.</p>
+                                <p class="text-xl text-brand-slate">Code, content, or media that works for you 24 hours a day without requiring extra labor cost on your part.</p>
                             </div>
                         </div>
                     </div>
@@ -724,12 +733,29 @@
 
             <section class="space-y-8">
                 <h2 class="text-3xl text-brand-navy border-b-2 border-brand-navy pb-4">PHASE 4: ROOM CHALLENGE</h2>
-                <div class="card-retro p-8 md:p-14 space-y-10">
+                <div class="card-retro p-8 md:p-14 space-y-10 relative overflow-hidden bg-white">
                     <div class="text-center space-y-6">
                         <h3 class="text-4xl md:text-5xl font-serif text-brand-navy">THE SKILL STACK BUILDER</h3>
                         <p class="text-xl text-brand-slate max-w-3xl mx-auto leading-relaxed">
-                            Form pairs. You have <span class="font-bold text-brand-navy">8 minutes to design</span> a custom "Skill Stack" for your partner based on their actual hobbies and interests. Prepare to pitch their new portfolio career to the room.
+                            Pair up. You have <span class="font-bold text-brand-navy">8 minutes</span> to look at your partner's current interests and help them design a 2-skill stack pitch to present to the room.
                         </p>
+                    </div>
+                    <div class="border-2 border-brand-navy rounded-xl p-8 md:p-10 max-w-4xl mx-auto">
+                        <h4 class="text-xl mb-6 text-center font-bold tracking-widest">YOUR PITCH MUST ANSWER:</h4>
+                        <ul class="space-y-6 text-brand-slate font-medium text-xl max-w-2xl mx-auto">
+                            <li class="flex items-start gap-4">
+                                <div class="w-6 h-6 rounded border-2 border-brand-navy flex-shrink-0 mt-1 bg-white"></div>
+                                <span>What is their core passion? (Fashion, Sports, Gaming, Photography, etc.)</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-6 h-6 rounded border-2 border-brand-navy flex-shrink-0 mt-1 bg-white"></div>
+                                <span>What technical or business skill could they learn to pair with it? (Data, Video Editing, Sales, etc.)</span>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <div class="w-6 h-6 rounded border-2 border-brand-navy flex-shrink-0 mt-1 bg-white"></div>
+                                <span>What is the specific micro-service they could offer local businesses this month combining the two?</span>
+                            </li>
+                        </ul>
                     </div>
                     <div class="flex flex-col items-center gap-6 pt-6">
                         <span id="timer-display-4" class="text-7xl font-serif text-brand-navy tracking-wider">08:00</span>
@@ -741,62 +767,75 @@
             <section class="space-y-8">
                 <div class="card-retro p-10 md:p-16 text-center space-y-6 bg-brand-navy text-white border-brand-navy">
                     <h3 class="text-brand-accent text-sm font-bold tracking-widest uppercase">THE BIG TAKEAWAY</h3>
-                    <p class="text-3xl md:text-5xl font-serif leading-tight max-w-4xl mx-auto">
-                        Your specialized skills and peer network are your ultimate financial safety net.
-                    </p>
+                    <p class="text-3xl md:text-5xl font-serif leading-tight max-w-4xl mx-auto">Your specialized skills and peer network are your ultimate financial safety net.</p>
+                </div>
+            </section>
+
+            <section class="space-y-8">
+                <h2 class="text-3xl text-brand-navy border-b-2 border-brand-navy pb-4">PHASE 5: COMMUNITY CONNECTION</h2>
+                <div class="card-retro p-8 bg-brand-iceLight border-brand-navy/20 text-center space-y-4">
+                    <h3 class="text-xl font-bold tracking-widest text-brand-accent uppercase">POST-MEETING HANGOUT</h3>
+                    <p class="text-lg text-brand-slate max-w-2xl mx-auto font-medium">Stick around! Network with your chapter. Who in the room has a skill that you want to learn? Go ask them how they started. This is how real leverage is built.</p>
                 </div>
             </section>
         </div>
 
     </main>
 
-    <!-- Global Footer -->
-    <footer class="bg-white border-t-2 border-brand-navy py-12 px-6">
+    <footer class="bg-white border-t-2 border-brand-navy py-12 px-6 mt-12">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="space-y-4 md:col-span-2">
-                <img src="https://lh3.googleusercontent.com/pw/AP1GczNsoqlPUEDJuh6m6J5ROUJS5meKcDo2Lu7D2LH93YTpEQpL7jF4X4-HvoKSn3blk9gKJHwWo5b6U0ODJ8ef518iTImmMffKDjDJzIJEsSkgtwrvqNcYY6Ginzh5f4uqKyu-U9rZFuxbSD8ejhHzzax2=w964-h190-s-no-gm?authuser=0" alt="Market Minds" class="h-8">
-                <p class="text-brand-slate text-sm max-w-sm mt-4">
+                <a href="/">
+                    <img src="https://lh3.googleusercontent.com/pw/AP1GczNsoqlPUEDJuh6m6J5ROUJS5meKcDo2Lu7D2LH93YTpEQpL7jF4X4-HvoKSn3blk9gKJHwWo5b6U0ODJ8ef518iTImmMffKDjDJzIJEsSkgtwrvqNcYY6Ginzh5f4uqKyu-U9rZFuxbSD8ejhHzzax2=w964-h190-s-no-gm?authuser=0" alt="Market Minds" class="h-8">
+                </a>
+                <p class="text-brand-slate text-sm max-w-sm mt-4 font-medium">
                     A student-led nonprofit empowering young people with the financial and economic knowledge they need to navigate their futures.
                 </p>
-                <a href="#" class="inline-block text-brand-navy font-bold text-sm hover:text-brand-accent transition-colors mt-2">Learn About Us &rarr;</a>
+                <a href="/about.html" class="inline-block text-brand-navy font-bold text-sm hover:text-brand-accent transition-colors mt-2">Learn About Us &rarr;</a>
             </div>
             
             <div>
                 <h4 class="text-brand-navy text-sm font-bold tracking-widest mb-4 uppercase">Programs</h4>
-                <ul class="space-y-3 text-sm text-brand-slate">
-                    <li><a href="#" class="hover:text-brand-accent transition-colors">High School Chapters</a></li>
-                    <li><a href="#" class="hover:text-brand-accent transition-colors">Financial Literacy</a></li>
-                    <li><a href="#" class="hover:text-brand-accent transition-colors">Meeting Guides</a></li>
+                <ul class="space-y-3 text-sm text-brand-slate font-medium">
+                    <li><a href="/programs.html" class="hover:text-brand-accent transition-colors">High School Chapters</a></li>
+                    <li><a href="/programs.html" class="hover:text-brand-accent transition-colors">Financial Literacy</a></li>
+                    <li><a href="/resources.html" class="hover:text-brand-accent transition-colors">Meeting Guides</a></li>
                 </ul>
             </div>
 
             <div>
                 <h4 class="text-brand-navy text-sm font-bold tracking-widest mb-4 uppercase">Community</h4>
-                <ul class="space-y-3 text-sm text-brand-slate">
-                    <li><a href="#" class="hover:text-brand-accent transition-colors">Instagram @marketmindsyouth</a></li>
-                    <li><a href="#" class="hover:text-brand-accent transition-colors">TikTok @marketmindsyouth</a></li>
-                    <li><a href="#" class="hover:text-brand-accent transition-colors">YouTube Channel</a></li>
+                <ul class="space-y-3 text-sm text-brand-slate font-medium">
+                    <li><a href="https://instagram.com/marketmindsyouth" target="_blank" class="hover:text-brand-accent transition-colors">Instagram @marketmindsyouth</a></li>
+                    <li><a href="https://tiktok.com/@marketmindsyouth" target="_blank" class="hover:text-brand-accent transition-colors">TikTok @marketmindsyouth</a></li>
+                    <li><a href="/get-involved.html" class="hover:text-brand-accent transition-colors">Get Involved</a></li>
                 </ul>
             </div>
         </div>
     </footer>
 
-    <!-- Interactive Logic -->
     <script>
         // View Navigation Logic
-        function switchView(viewId) {
+        function showView(viewId) {
             // Hide all views
-            const views = document.querySelectorAll('.view-section');
-            views.forEach(view => {
-                view.classList.remove('active');
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.remove('active');
+                setTimeout(() => {
+                    if(!el.classList.contains('active')) {
+                        el.style.display = 'none';
+                    }
+                }, 300);
             });
-            
-            // Show target view
-            const target = document.getElementById(viewId);
-            if (target) {
+
+            // Show selected view
+            setTimeout(() => {
+                const target = document.getElementById(viewId);
+                target.style.display = 'block';
+                // Trigger reflow
+                void target.offsetWidth;
                 target.classList.add('active');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
+            }, 300);
         }
 
         // Reveal Logic for Concepts
@@ -828,7 +867,6 @@
             }
 
             updateDisplay() {
-                if(!this.display) return;
                 const minutes = Math.floor(this.remaining / 60);
                 const seconds = this.remaining % 60;
                 this.display.textContent = 
@@ -876,7 +914,7 @@
             }
         }
 
-        // Initialize 8-minute Timers (480 seconds) for all 4 guides
+        // Initialize timers for all 4 guides (8 minutes = 480 seconds)
         const timers = {
             1: new Timer('timer-display-1', 'btn-timer-1', 480),
             2: new Timer('timer-display-2', 'btn-timer-2', 480),
@@ -884,10 +922,8 @@
             4: new Timer('timer-display-4', 'btn-timer-4', 480)
         };
 
-        function toggleTimer(guideNumber) { 
-            if(timers[guideNumber]) {
-                timers[guideNumber].toggle(); 
-            }
+        function toggleTimer(id) { 
+            timers[id].toggle(); 
         }
     </script>
 </body>
