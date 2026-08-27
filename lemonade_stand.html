@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Market Minds - Interactive Sandbox</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Market Minds Core Palette */
+            --bg-gradient-top: #F0F4F9;
+            --bg-gradient-bottom: #E4ECF5;
+            --brand-primary: #6C88C4;
+            --brand-primary-hover: #4A607A;
+            --text-dark: #141B2D;
+            --text-muted: #4A5568;
+            --glass-white: rgba(255, 255, 255, 0.92);
+            
+            /* Game World Colors - Line Art Style */
+            --sky-blue: #D0E2EE;
+            --grass-green: #A3D9A5;
+            
+            /* Feedback Colors */
+            --success-green: #10b981;
+            --warning-red: #f87171;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-drag: none; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-top) 0%, var(--bg-gradient-bottom) 100%);
+            color: var(--text-dark);
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Instrument Serif', serif;
+            text-transform: uppercase;
+            font-weight: 700;
+            line-height: 1.08;
+            letter-spacing: 0.015em;
+            color: var(--text-dark);
+        }
+
+        /* View Management */
+        .view-container {
+            display: none;
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+        }
+
+        .view-container.active { display: flex; }
+
+        /* --- PAGE 1: START SCREEN --- */
+        #view-start {
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--sky-blue) 0%, var(--grass-green) 100%);
+        }
+
+        .start-card {
+            background: white;
+            border: 2px solid var(--text-dark);
+            border-radius: 20px;
+            padding: 50px;
+            text-align: center;
+            box-shadow: 8px 8px 0px var(--text-dark);
+            max-width: 500px;
+        }
+
+        .start-card h1 { font-size: 54px; margin-bottom: 10px; }
+        .start-card p { font-size: 16px; color: var(--text-muted); margin-bottom: 30px; font-weight: 500; line-height: 1.5; }
+
+        /* --- PAGE 2: CHARACTER CREATOR --- */
+        #view-creator {
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .creator-card {
+            background: white;
+            border: 2px solid var(--text-dark);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 8px 8px 0px var(--text-dark);
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            gap: 30px;
+            align-items: stretch;
+            flex-wrap: wrap;
+        }
+
+        .creator-preview-pane {
+            flex: 1; min-width: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: var(--bg-gradient-top); border: 2px dashed var(--brand-primary); border-radius: 16px; padding: 20px;
+        }
+        .creator-preview-pane svg { width: 220px; height: auto; }
+
+        .creator-controls {
+            flex: 2; min-width: 350px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: start;
+        }
+        .creator-controls h2 { grid-column: 1 / -1; font-size: 32px; border-bottom: 2px solid var(--text-dark); padding-bottom: 10px; margin-bottom: 5px; }
+
+        .control-group { display: flex; flex-direction: column; gap: 6px; }
+        .control-group label { font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); }
+        .control-group input, .control-group select {
+            padding: 12px; border: 2px solid var(--text-dark); border-radius: 8px;
+            font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px;
+            outline: none; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .control-group input:focus, .control-group select:focus { border-color: var(--brand-primary); box-shadow: 2px 2px 0px var(--brand-primary); }
+
+        .creator-actions { grid-column: 1 / -1; display: flex; justify-content: flex-end; margin-top: 10px; }
+
+        /* --- PAGE 3: THE WORLD --- */
+        #view-world { padding: 15px; gap: 15px; }
+
+        .world-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 20px; background: var(--glass-white); border: 2px solid var(--text-dark);
+            border-radius: 16px; box-shadow: 4px 4px 0px rgba(20, 27, 45, 0.1); z-index: 10; flex-shrink: 0;
+        }
+
+        .bank-container { display: flex; align-items: center; gap: 15px; }
+        .bank-account {
+            display: flex; align-items: center; gap: 8px; background: white; border: 2px solid var(--text-dark);
+            border-radius: 12px; padding: 6px 16px; font-weight: 700; font-size: 22px; box-shadow: 3px 3px 0px var(--brand-primary);
+        }
+        .bank-account span { color: var(--success-green); }
+        .click-power-label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+
+        .world-canvas {
+            flex: 1; position: relative;
+            background: linear-gradient(to bottom, var(--sky-blue) 0%, var(--sky-blue) 45%, var(--text-dark) 45%, var(--text-dark) 46%, var(--grass-green) 46%, var(--grass-green) 100%);
+            border: 2px solid var(--text-dark); border-radius: 16px; box-shadow: inset 0px 4px 10px rgba(0,0,0,0.05); overflow: hidden;
+        }
+
+        /* Instruction overlay for the pouring mini-game */
+        .instruction-overlay {
+            position: absolute; top: 10%; left: 50%; transform: translate(-50%, 0);
+            background: white; border: 2px solid var(--text-dark); border-radius: 20px;
+            padding: 12px 24px; font-weight: bold; font-size: 20px; color: var(--brand-primary);
+            box-shadow: 4px 4px 0px var(--text-dark); display: none; z-index: 50; text-align: center;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0% { transform: translate(-50%, 0) scale(1); } 50% { transform: translate(-50%, 0) scale(1.05); } 100% { transform: translate(-50%, 0) scale(1); } }
+
+        .figurine {
+            position: absolute; display: flex; align-items: center; justify-content: center; flex-direction: column;
+            cursor: grab; touch-action: none; transition: transform 0.1s ease, filter 0.2s ease; z-index: 5;
+        }
+        .figurine:active { cursor: grabbing; transform: scale(1.05) translateY(-5px); z-index: 100; }
+        .figurine svg { width: 100%; height: auto; pointer-events: none; }
+        
+        .figurine-name {
+            background: white; border: 2px solid var(--text-dark); border-radius: 6px;
+            padding: 4px 8px; font-size: 12px; font-weight: bold; position: absolute; top: -30px;
+            white-space: nowrap; pointer-events: none; box-shadow: 2px 2px 0px var(--text-dark);
+        }
+
+        /* Asset Sizing */
+        .size-stand { width: 340px; z-index: 4; }
+        .size-sign { width: 130px; }
+        .size-arch { width: 220px; z-index: 3; }
+        .size-balloons { width: 90px; }
+        .size-tree { width: 150px; z-index: 2; }
+        .size-cloud { width: 180px; z-index: 1; }
+        .size-character { width: 120px; z-index: 6; }
+        .size-cooler { width: 110px; }
+        .size-house { width: 160px; z-index: 2; }
+        .size-tipjar { width: 80px; z-index: 7; }
+        
+        /* Interactive Pouring Assets (Now completely un-nested from the Stand base) */
+        .size-pitcher { width: 85px; z-index: 20; position: absolute; }
+        .size-cup { width: 40px; z-index: 15; position: absolute; display: none; }
+        #cup-stack { width: 45px; position: absolute; z-index: 15; cursor: default; }
+
+        /* Interactivity Classes */
+        .interact-earn { cursor: pointer; transition: transform 0.1s; }
+        .interact-earn:hover { transform: scale(1.05); filter: drop-shadow(0px 4px 0px var(--brand-primary)); }
+        .interact-earn:active { transform: scale(0.95); }
+        
+        .interact-guide { cursor: pointer; }
+        .interact-guide:hover { filter: drop-shadow(0px 4px 0px #FDE047); }
+        
+        /* Question Mark Bubbles - Absolute positioned so they don't flip with the character */
+        .guide-indicator {
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+            background: white; border: 2px solid var(--text-dark); border-radius: 50%;
+            width: 26px; height: 26px; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 16px; color: var(--text-dark);
+            animation: bounce 2s infinite; pointer-events: none; z-index: 10; box-shadow: 2px 2px 0px var(--text-dark);
+        }
+        .svg-wrapper { width: 100%; display: flex; justify-content: center; pointer-events: none; }
+        .flip-svg .svg-wrapper svg { transform: scaleX(-1); }
+        @keyframes bounce { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, -6px); } }
+
+        /* Visual Feedback for Pouring Game */
+        .glow-active { filter: drop-shadow(0px 0px 10px #FDE047) drop-shadow(0px 0px 20px #FDE047) !important; z-index: 150 !important; }
+        .glow-target { filter: drop-shadow(0px 0px 10px #10b981) drop-shadow(0px 0px 20px #10b981) !important; }
+
+        .floating-text {
+            position: absolute; color: white; background: var(--success-green);
+            padding: 4px 12px; border: 2px solid var(--text-dark); border-radius: 12px;
+            font-weight: 700; font-size: 20px; pointer-events: none;
+            animation: floatUp 1s ease-out forwards; z-index: 150; box-shadow: 2px 2px 0px var(--text-dark);
+        }
+        @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-50px) scale(1.2); opacity: 0; } }
+
+        .bottom-dash { display: flex; gap: 15px; height: 180px; flex-shrink: 0; }
+
+        .inventory-panel {
+            background: var(--glass-white); border: 2px solid var(--text-dark);
+            border-radius: 16px; padding: 12px; box-shadow: 4px 4px 0px rgba(20, 27, 45, 0.1);
+            display: flex; align-items: stretch; gap: 12px; flex: 1; position: relative; overflow-x: auto;
+        }
+
+        .shop-panel {
+            background: var(--glass-white); border: 2px solid var(--text-dark);
+            border-radius: 16px; box-shadow: 4px 4px 0px rgba(20, 27, 45, 0.1);
+            display: flex; flex-direction: column; flex: 2; overflow: hidden;
+        }
+
+        .panel-title {
+            font-family: 'Instrument Serif', serif; font-weight: 700; font-size: 24px;
+            text-transform: uppercase; color: var(--text-dark); padding-right: 12px;
+            border-right: 2px dashed rgba(20, 27, 45, 0.2); line-height: 1.1; display: flex; align-items: center; min-width: max-content;
+        }
+
+        .inventory-slots {
+            display: flex; gap: 10px; align-items: center; flex: 1; position: relative;
+            padding: 8px; border: 2px dashed rgba(20,27,45,0.2); border-radius: 12px; background: white; min-width: 150px; overflow-x: auto;
+        }
+        #invHelper { position: absolute; width: 100%; text-align: center; color: var(--text-muted); font-size: 13px; font-weight: 600; pointer-events: none; }
+
+        .shop-tabs { display: flex; border-bottom: 2px solid var(--text-dark); background: #f8fafc; }
+        .shop-tab {
+            flex: 1; padding: 10px; text-align: center; font-weight: 700; font-size: 14px;
+            text-transform: uppercase; cursor: pointer; border-right: 2px solid var(--text-dark);
+            background: transparent; color: var(--text-muted); transition: all 0.2s;
+        }
+        .shop-tab:last-child { border-right: none; }
+        .shop-tab.active { background: white; color: var(--brand-primary); border-bottom: 2px solid white; margin-bottom: -2px; }
+
+        .shop-content { display: flex; gap: 15px; padding: 15px; overflow-x: auto; flex: 1; align-items: center; }
+        .shop-category { display: none; gap: 15px; }
+        .shop-category.active { display: flex; }
+
+        .shop-item {
+            display: flex; align-items: center; gap: 12px; background: white;
+            border: 2px solid var(--text-dark); padding: 10px; border-radius: 12px; min-width: 220px; box-shadow: 2px 2px 0px var(--text-dark);
+        }
+        .shop-item-preview { width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; }
+        .shop-item-preview svg { width: 100%; height: 100%; object-fit: contain; }
+        
+        .shop-item-info { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+        .shop-item-info span { font-weight: 700; font-size: 14px; color: var(--text-dark); line-height: 1.1; }
+        .shop-item-info small { color: var(--text-muted); font-size: 11px; font-weight: 600; text-transform: uppercase; }
+
+        /* Buttons */
+        .btn-retro {
+            background-color: white; color: var(--text-dark); border: 2px solid var(--text-dark); border-radius: 8px;
+            box-shadow: 2px 2px 0px var(--text-dark); font-family: 'Inter', sans-serif; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.05em; padding: 6px 10px; cursor: pointer; transition: all 0.2s ease; font-size: 11px; text-align: center;
+        }
+        .btn-retro:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 4px 4px 0px var(--brand-primary); }
+        .btn-retro.primary { background-color: var(--brand-primary); color: white; padding: 12px 24px; font-size: 14px; box-shadow: 4px 4px 0px var(--text-dark); }
+        .btn-retro.primary:hover { box-shadow: 6px 6px 0px var(--text-dark); }
+        .btn-retro:disabled { background: #e2e8f0; color: #94a3b8; box-shadow: none; cursor: not-allowed; transform: none; border-color: #cbd5e1; }
+
+        /* Modals & Toasts */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(20, 27, 45, 0.7); backdrop-filter: blur(8px);
+            display: none; justify-content: center; align-items: center; z-index: 2000;
+        }
+        .modal-content {
+            background: white; border: 2px solid var(--text-dark); border-radius: 20px;
+            padding: 30px; max-width: 500px; width: 90%; box-shadow: 8px 8px 0px var(--text-dark); display: flex; flex-direction: column; gap: 16px;
+        }
+        .modal-content h3 { text-align: center; font-size: 28px; }
+        .modal-content p { font-size: 16px; line-height: 1.5; color: var(--text-muted); text-align: center; font-weight: 500; }
+
+        .quiz-options { display: flex; flex-direction: column; gap: 12px; }
+        
+        .help-section {
+            display: none; background: #FFFBEB; border: 2px solid #F59E0B; padding: 15px;
+            border-radius: 12px; font-size: 14px; color: #92400E; line-height: 1.5; font-weight: 500;
+        }
+        .help-section strong { display: block; margin-bottom: 6px; text-transform: uppercase; color: #B45309; }
+
+        .quiz-feedback {
+            display: none; text-align: center; padding: 20px; background: var(--bg-gradient-top);
+            border: 2px solid var(--text-dark); border-radius: 12px; font-weight: 600; font-size: 16px; line-height: 1.5;
+        }
+
+        .toast-container { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 3000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .toast {
+            background: white; color: var(--text-dark); padding: 12px 24px; border-radius: 12px; border: 2px solid var(--text-dark);
+            font-weight: 700; font-size: 14px; box-shadow: 4px 4px 0px var(--brand-primary); animation: slideUpFade 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="view-start" class="view-container active">
+        <div class="start-card">
+            <h1>Market Minds</h1>
+            <p>Welcome to the interactive financial sandbox. Build your character, run a business, and learn how money works!</p>
+            <button class="btn-retro primary" onclick="switchView('view-creator')">Play Now</button>
+        </div>
+    </div>
+
+    <div id="view-creator" class="view-container">
+        <div class="creator-card">
+            <div class="creator-preview-pane">
+                <div id="creatorPreviewBox"></div>
+            </div>
+            <div class="creator-controls">
+                <h2>Create Your Character</h2>
+                
+                <div class="control-group" style="grid-column: 1 / -1;">
+                    <label>Character Name</label>
+                    <input type="text" id="inp-name" placeholder="Enter name..." value="Player 1">
+                </div>
+
+                <!-- 7 Distinct Options -->
+                <div class="control-group">
+                    <label>Skin Tone</label>
+                    <select id="sel-skin" onchange="updateCreatorPreview()">
+                        <option value="#FFEDD5" style="background:#FFEDD5">Light</option>
+                        <option value="#FCD34D" style="background:#FCD34D">Medium</option>
+                        <option value="#D2B48C" style="background:#D2B48C">Tan</option>
+                        <option value="#8B4513" style="background:#8B4513; color:white">Dark</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label>Hair Style</label>
+                    <select id="sel-hairstyle" onchange="updateCreatorPreview()">
+                        <option value="hair-spiky">Spiky</option>
+                        <option value="hair-pigtails">Pigtails</option>
+                        <option value="hair-curly">Curly</option>
+                        <option value="hair-bob">Bob</option>
+                        <option value="hair-bald">Bald</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label>Hair Color</label>
+                    <select id="sel-haircolor" onchange="updateCreatorPreview()">
+                        <option value="#8B4513" style="background:#8B4513; color:white">Brown</option>
+                        <option value="#141B2D" style="background:#141B2D; color:white">Black</option>
+                        <option value="#FDE047" style="background:#FDE047">Blonde</option>
+                        <option value="#D97706" style="background:#D97706">Ginger</option>
+                        <option value="#EF4444" style="background:#EF4444; color:white">Red</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label>Shirt Color</label>
+                    <select id="sel-shirtcolor" onchange="updateCreatorPreview()">
+                        <option value="#3B82F6" style="background:#3B82F6; color:white">Blue</option>
+                        <option value="#EF4444" style="background:#EF4444; color:white">Red</option>
+                        <option value="#10B981" style="background:#10B981; color:white">Green</option>
+                        <option value="#FDE047" style="background:#FDE047">Yellow</option>
+                        <option value="#A855F7" style="background:#A855F7; color:white">Purple</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label>Shirt Design</label>
+                    <select id="sel-shirtdesign" onchange="updateCreatorPreview()">
+                        <option value="plain">Plain</option>
+                        <option value="star">Star Logo</option>
+                        <option value="stripes">Stripes</option>
+                        <option value="buttons">Buttons</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label>Bottoms Style</label>
+                    <select id="sel-pantsstyle" onchange="updateCreatorPreview()">
+                        <option value="pants-shorts">Shorts</option>
+                        <option value="pants-long">Long Pants</option>
+                        <option value="pants-skirt">Skirt</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label>Bottoms Color</label>
+                    <select id="sel-pantscolor" onchange="updateCreatorPreview()">
+                        <option value="#64748B" style="background:#64748B; color:white">Grey</option>
+                        <option value="#1E293B" style="background:#1E293B; color:white">Navy</option>
+                        <option value="#F472B6" style="background:#F472B6; color:white">Pink</option>
+                        <option value="#DEB887" style="background:#DEB887">Khaki</option>
+                    </select>
+                </div>
+
+                <div class="creator-actions">
+                    <button class="btn-retro primary" onclick="startGame()">Drop into World!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-world" class="view-container">
+        
+        <div class="world-header">
+            <button class="btn-retro" onclick="switchView('view-creator')">⬅ Change Character</button>
+            <div class="bank-container">
+                <div class="click-power-label">Income: $<span id="powerCount">1</span> / Click</div>
+                <div class="bank-account" id="bankDisplay">
+                    🏦 $<span id="coinCount">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="world-canvas" id="worldCanvas">
+            
+            <!-- Pouring Mini-game Instruction -->
+            <div class="instruction-overlay" id="pourOverlay">DRAG PITCHER TO EMPTY CUP 🍋</div>
+
+            <!-- Draggable Scenery -->
+            <div class="figurine size-cloud" style="top: 8%; left: 8%;" id="scenery-cloud1"></div>
+            <div class="figurine size-cloud" style="top: 15%; left: 65%; transform: scale(0.8);" id="scenery-cloud2"></div>
+            <div class="figurine size-tree" style="top: 25%; left: 75%;" id="scenery-tree1"></div>
+            <div class="figurine size-tree" style="top: 30%; left: -2%; transform: scale(0.85);" id="scenery-tree2"></div>
+
+            <!-- The Main Stand & Interactive Elements (Now all completely independent siblings) -->
+            <div class="figurine size-stand" style="top: 35%; left: 35%; cursor: default;" id="item-stand"></div>
+            
+            <!-- Decorative Stack of Cups on counter -->
+            <div id="cup-stack" style="top: 48%; left: 40%;"></div>
+
+            <!-- Interactive Pouring Assets on Counter -->
+            <div class="figurine size-pitcher interact-earn" id="interactive-pitcher" style="top: 42%; left: 45%;" onclick="earnMoney(event)"></div>
+            <div class="figurine size-cup" id="empty-cup" style="top: 48%; left: 52%; display:none;"></div>
+            <div class="figurine size-cup" id="full-cup" style="top: 48%; left: 52%; display:none;"></div>
+            
+            <!-- 6 Programmatically Generated Customers -->
+            <!-- Note: guide-indicator is OUTSIDE the svg-wrapper so it doesn't flip -->
+            <div class="figurine size-character interact-guide" id="guide-1" style="top: 55%; left: 10%;" onclick="handleCustomerClick('quest1')"><div class="guide-indicator">?</div><div class="svg-wrapper"></div></div>
+            <div class="figurine size-character interact-guide" id="guide-2" style="top: 65%; left: 22%;" onclick="handleCustomerClick('quest2')"><div class="guide-indicator">?</div><div class="svg-wrapper"></div></div>
+            <div class="figurine size-character interact-guide" id="guide-3" style="top: 50%; left: 68%;" onclick="handleCustomerClick('quest3')"><div class="guide-indicator">?</div><div class="svg-wrapper"></div></div>
+            <div class="figurine size-character interact-guide" id="guide-4" style="top: 70%; left: 82%;" onclick="handleCustomerClick('quest4')"><div class="guide-indicator">?</div><div class="svg-wrapper"></div></div>
+            <div class="figurine size-character interact-guide flip-svg" id="guide-5" style="top: 75%; left: 5%;" onclick="handleCustomerClick('quest5')"><div class="guide-indicator">?</div><div class="svg-wrapper"></div></div>
+            <div class="figurine size-character interact-guide flip-svg" id="guide-6" style="top: 75%; left: 55%;" onclick="handleCustomerClick('quest6')"><div class="guide-indicator">?</div><div class="svg-wrapper"></div></div>
+        </div>
+
+        <div class="bottom-dash" id="bottomDash">
+            <div class="inventory-panel">
+                <div class="panel-title">Your<br>Items</div>
+                <div class="inventory-slots" id="inventoryContainer">
+                    <div id="invHelper">Purchased items appear here.<br>Drag them into the world!</div>
+                </div>
+            </div>
+
+            <div class="shop-panel">
+                <div class="shop-tabs">
+                    <div class="shop-tab active" onclick="switchShopTab('profits')">Profits (Income)</div>
+                    <div class="shop-tab" onclick="switchShopTab('decorations')">Decorations</div>
+                </div>
+                
+                <div class="shop-content">
+                    <!-- Profits Category -->
+                    <div class="shop-category active" id="shop-profits">
+                        <div class="shop-item">
+                            <div class="shop-item-preview" id="shop-preview-sign"></div>
+                            <div class="shop-item-info">
+                                <span>Ad Sign</span><small>+$2 / Click</small>
+                                <button class="btn-retro" id="btn-buy-sign" onclick="buyItem('sign', 30, 'size-sign', true, 2)">BUY $30 (<span id="stock-sign">5</span>)</button>
+                            </div>
+                        </div>
+                        <div class="shop-item">
+                            <div class="shop-item-preview" id="shop-preview-tipjar"></div>
+                            <div class="shop-item-info">
+                                <span>Tip Jar</span><small>+$1 / Click</small>
+                                <button class="btn-retro" id="btn-buy-tipjar" onclick="buyItem('tipjar', 15, 'size-tipjar', true, 1)">BUY $15 (<span id="stock-tipjar">3</span>)</button>
+                            </div>
+                        </div>
+                        <div class="shop-item">
+                            <div class="shop-item-preview" id="shop-preview-cooler"></div>
+                            <div class="shop-item-info">
+                                <span>Ice Cooler</span><small>+$1 / Click</small>
+                                <button class="btn-retro" id="btn-buy-cooler" onclick="buyItem('cooler', 25, 'size-cooler', true, 1)">BUY $25 (<span id="stock-cooler">3</span>)</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Decorations Category -->
+                    <div class="shop-category" id="shop-decorations">
+                        <div class="shop-item">
+                            <div class="shop-item-preview" id="shop-preview-arch"></div>
+                            <div class="shop-item-info">
+                                <span>Party Arch</span><small>Decoration</small>
+                                <button class="btn-retro" id="btn-buy-arch" onclick="buyItem('arch', 40, 'size-arch', false, 0)">BUY $40 (<span id="stock-arch">2</span>)</button>
+                            </div>
+                        </div>
+                        <div class="shop-item">
+                            <div class="shop-item-preview" id="shop-preview-balloons"></div>
+                            <div class="shop-item-info">
+                                <span>Balloons</span><small>Decoration</small>
+                                <button class="btn-retro" id="btn-buy-balloons" onclick="buyItem('balloons', 15, 'size-balloons', false, 0)">BUY $15 (<span id="stock-balloons">5</span>)</button>
+                            </div>
+                        </div>
+                        <div class="shop-item">
+                            <div class="shop-item-preview" id="shop-preview-house"></div>
+                            <div class="shop-item-info">
+                                <span>MM HQ</span><small>Decoration</small>
+                                <button class="btn-retro" id="btn-buy-house" onclick="buyItem('house', 60, 'size-house', false, 0)">BUY $60 (<span id="stock-house">1</span>)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="modal-overlay" id="lessonModal">
+        <div class="modal-content">
+            <h3 id="questionTitle">Customer Question</h3>
+            <p id="questionText">...</p>
+            
+            <div class="help-section" id="helpSection">
+                <strong>💡 Market Minds Tip: Needs vs. Wants</strong>
+                A <b>NEED</b> is something essential for survival or absolutely required for a business to operate (like water, food, or raw materials like lemons). <br><br>
+                A <b>WANT</b> is something nice to have, but not required to survive or function (like a new toy, luxury designer clothing, or video games).
+            </div>
+            
+            <div class="quiz-options" id="quizOptions">
+                <button class="btn-retro primary" onclick="checkAnswer(true)">A) It is a NEED.</button>
+                <button class="btn-retro primary" onclick="checkAnswer(false)">B) It is a WANT.</button>
+                <button class="btn-retro" style="background: #F0F4F9; color: var(--text-dark); box-shadow: 2px 2px 0px var(--text-dark);" onclick="toggleHelp()">🤔 Need Help? What's the difference?</button>
+            </div>
+            
+            <div class="quiz-feedback" id="quizFeedback"></div>
+            <button class="btn-retro primary" id="closeModalBtn" style="display:none; width: 100%;" onclick="closeModal()">Prepare the Lemonade!</button>
+        </div>
+    </div>
+
+    <script>
+        // --- MASTER SVG CHARACTER GENERATOR (Strict 2px Line Art Style) ---
+        function getMasterSVG(config, isHoldingCup = false) {
+            const c = {
+                skin: config.skin || '#FFEDD5',
+                hairStyle: config.hairStyle || 'hair-spiky',
+                hairColor: config.hairColor || '#8B4513',
+                shirtColor: config.shirtColor || '#3B82F6',
+                shirtDesign: config.shirtDesign || 'plain',
+                pantsStyle: config.pantsStyle || 'pants-shorts',
+                pantsColor: config.pantsColor || '#64748B'
+            };
+
+            // Process Shirt Design Overlay
+            let designSVG = '';
+            if(c.shirtDesign === 'star') designSVG = '<polygon points="50,65 53,72 60,72 55,77 57,84 50,80 43,84 45,77 40,72 47,72" fill="#FDE047" stroke="#141B2D" stroke-width="1.5"/>';
+            if(c.shirtDesign === 'stripes') designSVG = '<line x1="35" y1="65" x2="65" y2="65" stroke="#141B2D" stroke-width="2"/><line x1="35" y1="75" x2="65" y2="75" stroke="#141B2D" stroke-width="2"/><line x1="35" y1="85" x2="65" y2="85" stroke="#141B2D" stroke-width="2"/>';
+            if(c.shirtDesign === 'buttons') designSVG = '<line x1="50" y1="55" x2="50" y2="95" stroke="#141B2D" stroke-width="2"/><circle cx="50" cy="65" r="1.5" fill="#141B2D"/><circle cx="50" cy="75" r="1.5" fill="#141B2D"/><circle cx="50" cy="85" r="1.5" fill="#141B2D"/>';
+
+            // Process Pants Style
+            let pantsSVG = '';
+            if(c.pantsStyle === 'pants-shorts') pantsSVG = `<path d="M 35 95 L 65 95 L 65 115 L 55 115 L 50 105 L 45 115 L 35 115 Z" fill="${c.pantsColor}" stroke="#141B2D" stroke-width="2"/>`;
+            if(c.pantsStyle === 'pants-long') pantsSVG = `<path d="M 35 95 L 65 95 L 65 135 L 55 135 L 50 100 L 45 135 L 35 135 Z" fill="${c.pantsColor}" stroke="#141B2D" stroke-width="2"/>`;
+            if(c.pantsStyle === 'pants-skirt') pantsSVG = `<path d="M 35 95 L 65 95 L 70 115 Q 50 120 30 115 Z" fill="${c.pantsColor}" stroke="#141B2D" stroke-width="2"/>`;
+            
+            // Arm Paths: Fixed to 6px wide straight lines (same width as legs)
+            // Left Arm
+            const leftArmPath = `M 38 60 L 30 105 L 36 105 L 44 60 Z`;
+            // Left Sleeve: A polygon placed OVER the arm base
+            const leftSleevePath = `M 37 55 L 34 75 L 40 75 L 45 58 Z`;
+            
+            const leftArm = `<path d="${leftArmPath}" fill="${c.skin}" stroke="#141B2D" stroke-width="2"/>
+                             <path d="${leftSleevePath}" fill="${c.shirtColor}" stroke="#141B2D" stroke-width="2"/>`;
+            
+            // Right arm bends up slightly if holding cup
+            const rightArmPath = isHoldingCup ? 
+                `M 62 60 L 70 85 L 60 85 L 56 70 Z` :
+                `M 62 60 L 70 105 L 64 105 L 56 60 Z`;
+            const rightSleevePath = `M 63 55 L 66 75 L 60 75 L 55 58 Z`;
+
+            const rightArm = `<path d="${rightArmPath}" fill="${c.skin}" stroke="#141B2D" stroke-width="2"/>
+                              <path d="${rightSleevePath}" fill="${c.shirtColor}" stroke="#141B2D" stroke-width="2"/>`;
+
+            const cupSVG = isHoldingCup ? `
+                <g id="held-cup" transform="translate(62, 70)">
+                    <rect x="0" y="0" width="14" height="20" fill="#FFF" stroke="#141B2D" stroke-width="2" rx="1"/>
+                    <rect x="2" y="5" width="10" height="13" fill="#FEF08A"/>
+                    <path d="M 14 5 Q 18 2 14 0" fill="none" stroke="#141B2D" stroke-width="1.5"/>
+                </g>` : '';
+            
+            // Hair Styles
+            let backHair = '', frontHair = '';
+            if (c.hairStyle === 'hair-spiky') {
+                frontHair = `<path d="M 30 30 L 35 15 L 42 22 L 50 12 L 58 22 L 65 15 L 70 30 Q 50 15 30 30 Z" fill="${c.hairColor}" stroke="#141B2D" stroke-width="2"/>`;
+            } else if (c.hairStyle === 'hair-pigtails') {
+                backHair = `<circle cx="20" cy="40" r="12" fill="${c.hairColor}" stroke="#141B2D" stroke-width="2"/><circle cx="80" cy="40" r="12" fill="${c.hairColor}" stroke="#141B2D" stroke-width="2"/>`;
+                frontHair = `<path d="M 32 30 C 32 10 68 10 68 30 Q 50 20 32 30 Z" fill="${c.hairColor}" stroke="#141B2D" stroke-width="2"/>`;
+            } else if (c.hairStyle === 'hair-curly') {
+                frontHair = `<path d="M 28 30 C 25 10 75 10 72 30 Q 70 20 60 25 Q 50 15 40 25 Q 30 20 28 30 Z" fill="${c.hairColor}" stroke="#141B2D" stroke-width="2"/>`;
+            } else if (c.hairStyle === 'hair-bob') {
+                backHair = `<path d="M 25 35 V 70 H 75 V 35 Z" fill="${c.hairColor}" stroke="#141B2D" stroke-width="2"/>`;
+                frontHair = `<path d="M 32 35 C 32 10 68 10 68 35 L 72 40 L 68 40 L 68 25 L 32 25 L 32 40 L 28 40 Z" fill="${c.hairColor}" stroke="#141B2D" stroke-width="2"/>`;
+            }
+
+            return `
+            <svg viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg" stroke-linejoin="round" stroke-linecap="round">
+                <!-- BACK HAIR -->
+                <g id="back-hair">${backHair}</g>
+
+                <!-- LEGS -->
+                <g id="legs">
+                    <rect x="40" y="90" width="6" height="45" fill="${c.skin}" stroke="#141B2D" stroke-width="2"/>
+                    <rect x="54" y="90" width="6" height="45" fill="${c.skin}" stroke="#141B2D" stroke-width="2"/>
+                    <!-- Shoes -->
+                    <path d="M 37 135 H 48 V 140 C 48 143 37 143 37 140 Z" fill="#FFF" stroke="#141B2D" stroke-width="2"/>
+                    <path d="M 52 135 H 63 V 140 C 63 143 52 143 52 140 Z" fill="#FFF" stroke="#141B2D" stroke-width="2"/>
+                </g>
+
+                <!-- TORSO -->
+                <g id="torso">
+                    <rect x="35" y="55" width="30" height="45" rx="4" fill="${c.shirtColor}" stroke="#141B2D" stroke-width="2"/>
+                    ${designSVG}
+                    <path d="M 45 55 Q 50 62 55 55" fill="${c.skin}" stroke="#141B2D" stroke-width="2"/>
+                </g>
+
+                <!-- PANTS (Overlaps Torso bottom) -->
+                <g id="pants">${pantsSVG}</g>
+
+                <!-- ARMS (Layered over torso and pants) -->
+                <g id="arms">${leftArm} ${rightArm}</g>
+                
+                ${cupSVG}
+
+                <!-- HEAD & FACE -->
+                <g id="head">
+                    <circle cx="50" cy="35" r="18" fill="${c.skin}" stroke="#141B2D" stroke-width="2"/>
+                    <circle cx="43" cy="35" r="2" fill="#141B2D" stroke="none"/>
+                    <circle cx="57" cy="35" r="2" fill="#141B2D" stroke="none"/>
+                    <path d="M 46 42 Q 50 46 54 42" fill="none" stroke="#141B2D" stroke-width="2"/>
+                </g>
+
+                <!-- FRONT HAIR -->
+                <g id="front-hair">${frontHair}</g>
+            </svg>`;
+        }
+
+        const svgAssets = {
+            'house': `
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" stroke="#141B2D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                    <path d="M 20 50 L 50 20 L 80 50 V 90 H 20 Z" fill="#FFF"/>
+                    <rect x="40" y="60" width="20" height="30" fill="#6C88C4"/>
+                    <rect x="30" y="45" width="12" height="12" fill="#E4ECF5"/>
+                    <rect x="58" y="45" width="12" height="12" fill="#E4ECF5"/>
+                    <circle cx="55" cy="75" r="1.5" fill="#141B2D" stroke="none"/>
+                </svg>`,
+            'standBase': `
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" stroke="#141B2D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                    <rect x="20" y="110" width="160" height="70" fill="#D2B48C" rx="2"/>
+                    <line x1="20" y1="133" x2="180" y2="133"/><line x1="20" y1="156" x2="180" y2="156"/>
+                    <line x1="40" y1="110" x2="40" y2="133"/><line x1="120" y1="133" x2="120" y2="156"/>
+                    <rect x="10" y="105" width="180" height="10" fill="#F5DEB3" rx="3"/>
+                    <rect x="30" y="60" width="8" height="45" fill="#DEB887"/>
+                    <rect x="162" y="60" width="8" height="45" fill="#DEB887"/>
+                    <path d="M 15 30 L 185 30 L 175 70 L 25 70 Z" fill="#FDE047"/>
+                    <path d="M 15 30 L 45 30 L 50 70 L 25 70 Z" fill="#FFF"/>
+                    <path d="M 75 30 L 105 30 L 110 70 L 80 70 Z" fill="#FFF"/>
+                    <path d="M 135 30 L 165 30 L 160 70 L 140 70 Z" fill="#FFF"/>
+                    <path d="M 45 30 L 50 70 M 75 30 L 80 70 M 105 30 L 110 70 M 135 30 L 140 70 M 165 30 L 160 70" fill="none"/>
+                    <path d="M 25 70 A 12.5 12.5 0 0 0 50 70 A 15 15 0 0 0 80 70 A 15 15 0 0 0 110 70 A 15 15 0 0 0 140 70 A 10 10 0 0 0 160 70 A 7.5 7.5 0 0 0 175 70" fill="#FDE047"/>
+                </svg>`,
+            'pitcher': `
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" stroke="#141B2D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                    <path d="M 30 25 C 20 50 20 70 25 90 L 65 90 C 70 70 70 50 60 25 Z" fill="#FEF08A"/>
+                    <!-- Lemons -->
+                    <circle cx="40" cy="55" r="8" fill="#FDE047"/><path d="M 40 47 V 63 M 32 55 H 48" fill="none"/>
+                    <circle cx="55" cy="75" r="8" fill="#FDE047"/><path d="M 55 67 V 83 M 47 75 H 63" fill="none"/>
+                    <circle cx="35" cy="80" r="6" fill="#FDE047"/><path d="M 35 74 V 86 M 29 80 H 41" fill="none"/>
+                    <!-- Ice -->
+                    <rect x="45" y="35" width="12" height="12" fill="#FFF" rx="2" opacity="0.8"/>
+                    <rect x="30" y="40" width="10" height="10" fill="#FFF" rx="2" opacity="0.8"/>
+                    <!-- Handle (Smooth) -->
+                    <path d="M 55 35 C 80 35 80 75 60 80" fill="none"/>
+                    <path d="M 30 25 L 20 20 L 25 35 Z" fill="#FEF08A"/>
+                </svg>`,
+            'emptyCup': `
+                <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" stroke="#141B2D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                    <path d="M 15 10 L 18 45 H 32 L 35 10 Z" fill="#FFF"/>
+                </svg>`,
+            'fullCup': `
+                <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" stroke="#141B2D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                    <path d="M 15 10 L 18 45 H 32 L 35 10 Z" fill="#FFF"/>
+                    <path d="M 16 15 L 18 43 H 32 L 34 15 Z" fill="#FEF08A" stroke="none"/>
+                    <path d="M 30 15 Q 40 5 30 -5" fill="none" stroke="#141B2D" stroke-width="1.5"/>
+                </svg>`,
+            'cupStack': `
+                <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" stroke="#141B2D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                    <path d="M 17 20 L 19 45 H 31 L 33 20 Z" fill="#FFF"/>
+                    <path d="M 16 15 L 17 25 H 33 L 34 15 Z" fill="#FFF"/>
+                    <path d="M 15 10 L 16 20 H 34 L 35 10 Z" fill="#FFF"/>
+                </svg>`,
+            'sign': `
+                <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" stroke="#141B2D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                    <rect x="55" y="20" width="10" height="90" fill="#D2B48C"/>
+                    <rect x="10" y="30" width="100" height="45" fill="#F5DEB3" rx="4"/>
+                    <text x="60" y="50" font-family="'Instrument Serif', serif" font-weight="700" font-size="14" fill="#141B2D" stroke="none" text-anchor="middle">COLD &amp;</text>
+                    <text x="60" y="65" font-family="'Instrument Serif', serif" font-weight="700" font-size="14" fill="#141B2D" stroke="none" text-anchor="middle">FRESH</text>
+                </svg>`,
+            'tipjar': `
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" stroke="#141B2D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                    <path d="M 30 30 L 30 80 C 30 85 35 90 40 90 H 60 C 65 90 70 85 70 80 L 70 30 Z" fill="#E4ECF5"/>
+                    <rect x="25" y="20" width="50" height="10" fill="#A3D9A5" rx="2"/>
+                    <text x="50" y="65" font-family="'Inter', sans-serif" font-weight="700" font-size="24" fill="#10B981" stroke="none" text-anchor="middle">$</text>
+                </svg>`,
+            'cooler': `
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" stroke="#141B2D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                    <rect x="15" y="40" width="70" height="45" fill="#EF4444" rx="4"/>
+                    <rect x="10" y="30" width="80" height="15" fill="#FFF" rx="3"/>
+                    <rect x="40" y="45" width="20" height="6" fill="#FFF" rx="2"/>
+                </svg>`,
+            'arch': `
+                <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" stroke="#141B2D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                    <path d="M 20 130 C 20 20 180 20 180 130" fill="none" stroke-dasharray="6,4"/>
+                    <circle cx="30" cy="110" r="12" fill="#3B82F6"/><circle cx="20" cy="90" r="14" fill="#FDE047"/><circle cx="35" cy="70" r="16" fill="#EF4444"/><circle cx="60" cy="50" r="14" fill="#FDE047"/><circle cx="85" cy="40" r="18" fill="#3B82F6"/><circle cx="115" cy="40" r="16" fill="#EF4444"/><circle cx="140" cy="50" r="14" fill="#FDE047"/><circle cx="165" cy="70" r="16" fill="#3B82F6"/><circle cx="180" cy="90" r="14" fill="#FDE047"/><circle cx="170" cy="110" r="12" fill="#EF4444"/>
+                </svg>`,
+            'balloons': `
+                <svg viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg" stroke="#141B2D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                    <path d="M 50 120 L 30 50 M 50 120 L 50 40 M 50 120 L 70 50 M 50 120 L 40 60 M 50 120 L 60 60" fill="none"/>
+                    <ellipse cx="30" cy="50" rx="12" ry="16" fill="#EF4444"/><ellipse cx="70" cy="50" rx="12" ry="16" fill="#FDE047"/><ellipse cx="50" cy="35" rx="14" ry="18" fill="#3B82F6"/><ellipse cx="40" cy="65" rx="10" ry="14" fill="#FDE047"/><ellipse cx="60" cy="65" rx="10" ry="14" fill="#EF4444"/>
+                </svg>`,
+            'tree': `
+                <svg viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg" stroke="#141B2D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                    <rect x="42" y="120" width="16" height="30" fill="#DEB887"/>
+                    <path d="M 50 10 L 80 50 H 60 L 90 90 H 70 L 95 120 H 5 L 30 90 H 10 L 40 50 H 20 Z" fill="#A3D9A5"/>
+                </svg>`,
+            'cloud': `
+                <svg viewBox="0 0 150 80" xmlns="http://www.w3.org/2000/svg" stroke="#141B2D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                    <path d="M 30 60 A 15 15 0 0 1 30 30 A 25 25 0 0 1 80 20 A 20 20 0 0 1 120 30 A 15 15 0 0 1 120 60 Z" fill="#FFF"/>
+                </svg>`
+        };
+
+        // Inject Static Assets
+        document.getElementById('item-stand').innerHTML = svgAssets.standBase;
+        document.getElementById('interactive-pitcher').innerHTML = svgAssets.pitcher;
+        document.getElementById('empty-cup').innerHTML = svgAssets.emptyCup;
+        document.getElementById('full-cup').innerHTML = svgAssets.fullCup;
+        document.getElementById('cup-stack').innerHTML = svgAssets.cupStack;
+        
+        document.getElementById('scenery-cloud1').innerHTML = svgAssets.cloud;
+        document.getElementById('scenery-cloud2').innerHTML = svgAssets.cloud;
+        document.getElementById('scenery-tree1').innerHTML = svgAssets.tree;
+        document.getElementById('scenery-tree2').innerHTML = svgAssets.tree;
+
+        document.getElementById('shop-preview-sign').innerHTML = svgAssets.sign;
+        document.getElementById('shop-preview-tipjar').innerHTML = svgAssets.tipjar;
+        document.getElementById('shop-preview-cooler').innerHTML = svgAssets.cooler;
+        document.getElementById('shop-preview-arch').innerHTML = svgAssets.arch;
+        document.getElementById('shop-preview-balloons').innerHTML = svgAssets.balloons;
+        document.getElementById('shop-preview-house').innerHTML = svgAssets.house;
+
+        const customerConfigs = [
+            { skin: '#FCD34D', hairStyle: 'hair-pigtails', hairColor: '#FDE047', shirtColor: '#EF4444', shirtDesign: 'plain', pantsStyle: 'pants-skirt', pantsColor: '#1E293B' },
+            { skin: '#FFEDD5', hairStyle: 'hair-spiky', hairColor: '#8B4513', shirtColor: '#3B82F6', shirtDesign: 'star', pantsStyle: 'pants-shorts', pantsColor: '#64748B' },
+            { skin: '#D2B48C', hairStyle: 'hair-curly', hairColor: '#141B2D', shirtColor: '#FDE047', shirtDesign: 'stripes', pantsStyle: 'pants-long', pantsColor: '#1E293B' },
+            { skin: '#FFEDD5', hairStyle: 'hair-bob', hairColor: '#D97706', shirtColor: '#10B981', shirtDesign: 'plain', pantsStyle: 'pants-shorts', pantsColor: '#DEB887' },
+            { skin: '#8B4513', hairStyle: 'hair-spiky', hairColor: '#141B2D', shirtColor: '#A855F7', shirtDesign: 'buttons', pantsStyle: 'pants-long', pantsColor: '#64748B' },
+            { skin: '#FCD34D', hairStyle: 'hair-curly', hairColor: '#8B4513', shirtColor: '#3B82F6', shirtDesign: 'plain', pantsStyle: 'pants-skirt', pantsColor: '#F472B6' }
+        ];
+
+        // Inject 6 Customers into their svg wrappers
+        for(let i=1; i<=6; i++) {
+            document.querySelector(`#guide-${i} .svg-wrapper`).innerHTML = getMasterSVG(customerConfigs[i-1], false);
+        }
+
+        let coins = 0;
+        let baseClickValue = 1;
+        let addedClickValue = 0; 
+        
+        let isDragging = false;
+        let activeLessonId = null;
+        let completedQuests = {}; 
+        let currentPourState = 'idle'; // 'idle', 'pouring', 'fullCup'
+
+        const shopStock = { 'sign': 5, 'tipjar': 3, 'cooler': 3, 'arch': 2, 'balloons': 5, 'house': 1 };
+
+        function switchView(viewId) {
+            document.querySelectorAll('.view-container').forEach(v => v.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+        }
+
+        function updateColorSelectBg(selectId) {
+            const sel = document.getElementById(selectId);
+            const opt = sel.options[sel.selectedIndex];
+            if(opt.style.background) {
+                sel.style.background = opt.style.background;
+                sel.style.color = opt.style.color || 'var(--text-dark)';
+            } else {
+                sel.style.background = 'white';
+                sel.style.color = 'var(--text-dark)';
+            }
+        }
+
+        function updateCreatorPreview() {
+            ['sel-skin', 'sel-haircolor', 'sel-shirtcolor', 'sel-pantscolor'].forEach(updateColorSelectBg);
+
+            const config = {
+                skin: document.getElementById('sel-skin').value,
+                hairStyle: document.getElementById('sel-hairstyle').value,
+                hairColor: document.getElementById('sel-haircolor').value,
+                shirtColor: document.getElementById('sel-shirtcolor').value,
+                shirtDesign: document.getElementById('sel-shirtdesign').value,
+                pantsStyle: document.getElementById('sel-pantsstyle').value,
+                pantsColor: document.getElementById('sel-pantscolor').value
+            };
+            document.getElementById('creatorPreviewBox').innerHTML = getMasterSVG(config, false);
+        }
+
+        function startGame() {
+            const playerName = document.getElementById('inp-name').value || 'Player 1';
+            
+            const config = {
+                skin: document.getElementById('sel-skin').value,
+                hairStyle: document.getElementById('sel-hairstyle').value,
+                hairColor: document.getElementById('sel-haircolor').value,
+                shirtColor: document.getElementById('sel-shirtcolor').value,
+                shirtDesign: document.getElementById('sel-shirtdesign').value,
+                pantsStyle: document.getElementById('sel-pantsstyle').value,
+                pantsColor: document.getElementById('sel-pantscolor').value
+            };
+            
+            let charEl = document.getElementById('player-char');
+            if(!charEl) {
+                charEl = document.createElement('div');
+                charEl.id = 'player-char';
+                charEl.className = `figurine size-character`;
+                charEl.style.top = '45%'; charEl.style.left = '45%';
+                document.getElementById('worldCanvas').appendChild(charEl);
+                makeDraggable(charEl);
+            }
+            
+            charEl.innerHTML = `<div class="figurine-name">${playerName}</div>` + getMasterSVG(config, false);
+            
+            switchView('view-world');
+            showToast(`Welcome to the Lemonade Stand, ${playerName}!`);
+        }
+
+        function switchShopTab(category) {
+            document.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.shop-category').forEach(c => c.classList.remove('active'));
+            
+            document.querySelector(`.shop-tab[onclick="switchShopTab('${category}')"]`).classList.add('active');
+            document.getElementById(`shop-${category}`).classList.add('active');
+        }
+
+        function getClickPower() { return baseClickValue + addedClickValue; }
+
+        function updateBank() {
+            document.getElementById('coinCount').innerText = coins;
+            document.getElementById('powerCount').innerText = getClickPower();
+            
+            ['sign', 'tipjar', 'cooler', 'arch', 'balloons', 'house'].forEach(id => {
+                const btn = document.getElementById(`btn-buy-${id}`);
+                if(btn) {
+                    const cost = parseInt(btn.innerText.match(/\$(\d+)/)[1]);
+                    if (shopStock[id] <= 0) {
+                        btn.disabled = true; btn.innerText = "SOLD OUT";
+                    } else {
+                        btn.disabled = (coins < cost);
+                    }
+                }
+            });
+        }
+        
+        function showToast(message) {
+            const tContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast'; toast.innerHTML = message;
+            tContainer.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function earnMoney(e) {
+            if(isDragging || currentPourState !== 'idle') return; 
+            
+            const earned = getClickPower();
+            coins += earned;
+            updateBank();
+
+            const rect = e.target.closest('.figurine').getBoundingClientRect();
+            const canvasRect = document.getElementById('worldCanvas').getBoundingClientRect();
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX) || (rect.left + rect.width/2);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY) || (rect.top + rect.height/2);
+            
+            const floatEl = document.createElement('div');
+            floatEl.className = 'floating-text'; floatEl.innerText = '+$' + earned;
+            floatEl.style.left = (clientX - canvasRect.left) + 'px';
+            floatEl.style.top = (clientY - canvasRect.top - 20) + 'px';
+            
+            document.getElementById('worldCanvas').appendChild(floatEl);
+            setTimeout(() => floatEl.remove(), 1000);
+        }
+
+        function buyItem(id, cost, sizeClass, affectsPower, powerAmount) {
+            if (coins >= cost && shopStock[id] > 0) {
+                coins -= cost;
+                shopStock[id]--;
+                
+                if (affectsPower) {
+                    addedClickValue += powerAmount;
+                    showToast(`Purchased! +$${powerAmount}/click added.`);
+                } else {
+                    showToast("Purchased! Drag it from your inventory into the world.");
+                }
+
+                document.getElementById(`stock-${id}`).innerText = shopStock[id];
+                updateBank();
+
+                const newFig = document.createElement('div');
+                newFig.className = `figurine ${sizeClass}`;
+                newFig.style.position = 'relative'; 
+                newFig.innerHTML = svgAssets[id];
+                
+                const helperText = document.getElementById('invHelper');
+                if(helperText) helperText.style.display = 'none';
+
+                document.getElementById('inventoryContainer').appendChild(newFig);
+                makeDraggable(newFig); 
+            }
+        }
+
+        const curriculumData = {
+            'quest1': { title: "The Bicycle Dilemma", text: "\"I want to buy a brand new bicycle for the park. Is this a Need or a Want?\"", isNeed: false },
+            'quest2': { title: "Business Supplies", text: "\"We ran out of lemons! I need to buy more to keep making lemonade. Need or Want?\"", isNeed: true },
+            'quest3': { title: "Clean Drinking Water", text: "\"We need clean drinking water to stay hydrated in the hot sun. Need or Want?\"", isNeed: true },
+            'quest4': { title: "Designer Sunglasses", text: "\"I want to buy $200 designer sunglasses to look cool while working. Need or Want?\"", isNeed: false },
+            'quest5': { title: "Safe Storage", text: "\"We should buy a secure cash box to keep our money safe. Need or Want?\"", isNeed: true },
+            'quest6': { title: "New Video Game", text: "\"I saw a cool new video game at the store. Is this a Need or a Want?\"", isNeed: false }
+        };
+
+        function handleCustomerClick(questId) {
+            if(isDragging || currentPourState !== 'idle') return;
+            if(completedQuests[questId]) return;
+            
+            activeLessonId = questId;
+            const data = curriculumData[questId];
+            
+            document.getElementById('questionTitle').innerText = data.title;
+            document.getElementById('questionText').innerText = data.text;
+            document.getElementById('quizOptions').style.display = 'flex';
+            document.getElementById('quizFeedback').style.display = 'none';
+            document.getElementById('closeModalBtn').style.display = 'none';
+            document.getElementById('helpSection').style.display = 'none'; 
+            
+            document.getElementById('lessonModal').style.display = 'flex';
+            
+            const indicator = document.querySelector(`#${activeLessonId.replace('quest', 'guide-')} .guide-indicator`);
+            if(indicator) indicator.style.display = 'none';
+        }
+
+        function toggleHelp() {
+            const helpSec = document.getElementById('helpSection');
+            helpSec.style.display = helpSec.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function checkAnswer(userSelectedNeed) {
+            if (!activeLessonId || completedQuests[activeLessonId]) return; 
+
+            const isCorrect = (userSelectedNeed === curriculumData[activeLessonId].isNeed);
+            const feedbackEl = document.getElementById('quizFeedback');
+            document.getElementById('quizOptions').style.display = 'none';
+            document.getElementById('helpSection').style.display = 'none';
+            feedbackEl.style.display = 'block';
+
+            if(isCorrect) {
+                feedbackEl.innerHTML = "Correct! Now prepare their drink!";
+                feedbackEl.style.borderColor = "var(--success-green)";
+                document.getElementById('closeModalBtn').style.display = 'block';
+            } else {
+                feedbackEl.innerHTML = "Not quite! Think about survival or basic operation.";
+                feedbackEl.style.borderColor = "var(--warning-red)";
+                setTimeout(() => { document.getElementById('quizOptions').style.display = 'flex'; feedbackEl.style.display = 'none'; }, 2000);
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('lessonModal').style.display = 'none';
+            if (activeLessonId && !completedQuests[activeLessonId]) {
+                startPouringPhase();
+            }
+        }
+
+        const pitcherEl = document.getElementById('interactive-pitcher');
+        const emptyCupEl = document.getElementById('empty-cup');
+        const fullCupEl = document.getElementById('full-cup');
+        const pourOverlay = document.getElementById('pourOverlay');
+
+        function startPouringPhase() {
+            currentPourState = 'pouring';
+            pourOverlay.style.display = 'block';
+            pourOverlay.innerText = "DRAG PITCHER TO EMPTY CUP 🍋";
+            
+            pitcherEl.classList.add('glow-active');
+            emptyCupEl.classList.add('glow-target');
+            emptyCupEl.style.display = 'flex';
+        }
+
+        function checkOverlap(el1, el2) {
+            const rect1 = el1.getBoundingClientRect();
+            const rect2 = el2.getBoundingClientRect();
+            return !(rect1.right < rect2.left || rect1.left > rect2.right || rect1.bottom < rect2.top || rect1.top > rect2.bottom);
+        }
+
+        function handlePouringCollision() {
+            if(currentPourState === 'pouring' && checkOverlap(pitcherEl, emptyCupEl)) {
+                currentPourState = 'pouring_animating';
+                
+                // Fill effect: Instantly swap empty cup for full cup, snap pitcher back
+                pitcherEl.classList.remove('glow-active');
+                emptyCupEl.classList.remove('glow-target');
+                emptyCupEl.style.display = 'none';
+                
+                pitcherEl.style.top = '42%'; pitcherEl.style.left = '45%';
+                
+                fullCupEl.style.display = 'flex';
+                fullCupEl.classList.add('glow-active');
+                
+                const charEl = document.getElementById(activeLessonId.replace('quest', 'guide-'));
+                charEl.classList.add('glow-target');
+                
+                pourOverlay.innerText = "DRAG CUP TO CUSTOMER! 🥤";
+                currentPourState = 'fullCup';
+            }
+        }
+
+        function handleServingCollision() {
+            if(currentPourState === 'fullCup') {
+                const charEl = document.getElementById(activeLessonId.replace('quest', 'guide-'));
+                if(checkOverlap(fullCupEl, charEl)) {
+                    fullCupEl.classList.remove('glow-active');
+                    fullCupEl.style.display = 'none';
+                    charEl.classList.remove('glow-target');
+                    
+                    const charIndex = parseInt(activeLessonId.replace('quest', '')) - 1;
+                    
+                    // Update Customer SVG to holding state inside the wrapper
+                    const wrapper = charEl.querySelector('.svg-wrapper');
+                    wrapper.innerHTML = getMasterSVG(customerConfigs[charIndex], true);
+                    
+                    charEl.classList.remove('interact-guide');
+                    charEl.style.cursor = 'grab'; // Restore normal cursor
+                    
+                    completedQuests[activeLessonId] = true;
+                    coins += 50;
+                    updateBank();
+                    showToast(`Quest Complete: <span style="color:var(--success-green)">+$50</span>`);
+                    
+                    pourOverlay.style.display = 'none';
+                    activeLessonId = null;
+                    currentPourState = 'idle';
+                    
+                    fullCupEl.style.top = '48%';
+                    fullCupEl.style.left = '52%';
+                }
+            }
+        }
+
+        let draggedItem = null;
+        let offsetX = 0, offsetY = 0, dragStartTime = 0;
+
+        function makeDraggable(element) {
+            element.addEventListener('mousedown', dragStart);
+            element.addEventListener('touchstart', dragStart, {passive: false});
+        }
+
+        function dragStart(e) {
+            if (e.target.tagName.toLowerCase() === 'button') return;
+            
+            draggedItem = e.currentTarget;
+            isDragging = false;
+            dragStartTime = Date.now();
+            
+            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+
+            const rect = draggedItem.getBoundingClientRect();
+            offsetX = clientX - rect.left;
+            offsetY = clientY - rect.top;
+
+            if(draggedItem.parentElement.id === 'inventoryContainer') {
+                const canvasRect = document.getElementById('worldCanvas').getBoundingClientRect();
+                document.getElementById('worldCanvas').appendChild(draggedItem);
+                draggedItem.style.position = 'absolute';
+                draggedItem.style.left = (clientX - canvasRect.left - offsetX) + 'px';
+                draggedItem.style.top = (clientY - canvasRect.top - offsetY) + 'px';
+            }
+
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('touchmove', drag, {passive: false});
+            document.addEventListener('mouseup', dragEnd);
+            document.addEventListener('touchend', dragEnd);
+        }
+
+        function drag(e) {
+            if (!draggedItem) return;
+            e.preventDefault(); 
+            isDragging = true; 
+
+            const parentRect = document.getElementById('worldCanvas').getBoundingClientRect();
+            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+
+            let newX = clientX - parentRect.left - offsetX;
+            let newY = clientY - parentRect.top - offsetY;
+
+            draggedItem.style.left = newX + 'px';
+            draggedItem.style.top = newY + 'px';
+
+            if(draggedItem.id === 'interactive-pitcher') handlePouringCollision();
+            if(draggedItem.id === 'full-cup') handleServingCollision();
+        }
+
+        function dragEnd(e) {
+            if(Date.now() - dragStartTime < 150) { isDragging = false; } 
+            else { setTimeout(() => { isDragging = false; }, 50); }
+
+            if(draggedItem && (draggedItem.id === 'interactive-pitcher' || draggedItem.id === 'full-cup')) {
+                if (currentPourState === 'pouring' && draggedItem.id === 'interactive-pitcher') {
+                    draggedItem.style.top = '42%'; draggedItem.style.left = '45%';
+                }
+                if (currentPourState === 'fullCup' && draggedItem.id === 'full-cup') {
+                    draggedItem.style.top = '48%'; draggedItem.style.left = '52%';
+                }
+            }
+
+            draggedItem = null;
+            document.removeEventListener('mousemove', drag);
+            document.removeEventListener('touchmove', drag);
+            document.removeEventListener('mouseup', dragEnd);
+            document.removeEventListener('touchend', dragEnd);
+        }
+
+        document.querySelectorAll('.figurine').forEach(makeDraggable);
+        updateCreatorPreview(); 
+        updateBank();
+
+    </script>
+</body>
+</html>
