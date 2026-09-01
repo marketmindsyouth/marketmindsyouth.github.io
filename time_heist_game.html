@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Heist | Market Minds</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-bg-light': '#F0F4F9',
+                        'brand-bg-dark': '#E4ECF5',
+                        'brand-primary': '#6C88C4',
+                        'brand-primary-hover': '#4A607A',
+                        'brand-navy': '#141B2D',
+                        'brand-slate': '#4A5568',
+                    },
+                    fontFamily: {
+                        serif: ['"Instrument Serif"', 'serif'],
+                        sans: ['"Inter"', 'sans-serif'],
+                        mono: ['"Space Mono"', 'monospace'], // For the time machine aesthetic
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #F0F4F9, #E4ECF5);
+            color: #141B2D;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background-color: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid #141B2D;
+            border-radius: 16px;
+            box-shadow: 8px 8px 0px rgba(20, 27, 45, 0.1);
+        }
+
+        /* Artistic Retro-Tech Button Specification */
+        .btn-retro {
+            border: 2px solid #141B2D;
+            border-radius: 12px;
+            box-shadow: 4px 4px 0px #141B2D;
+            transition: all 0.2s ease-in-out;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            padding: 0.75rem 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .btn-retro-primary {
+            background-color: #6C88C4;
+            color: #ffffff;
+        }
+
+        .btn-retro-primary:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #4A607A;
+            background-color: #5b75ad;
+        }
+
+        .btn-retro-secondary {
+            background-color: #ffffff;
+            color: #141B2D;
+        }
+
+        .btn-retro-secondary:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #4A607A;
+        }
+
+        h1, h2, h3, h4 {
+            text-transform: uppercase;
+            line-height: 1.08;
+            letter-spacing: 0.015em;
+        }
+
+        /* Glitch & Dark Mode specific classes */
+        .dark-mode-overlay {
+            background-color: #141B2D;
+            color: #F0F4F9;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .glitch-text {
+            animation: glitch 1s linear infinite;
+        }
+
+        @keyframes glitch {
+            2%, 64% { transform: translate(2px,0) skew(0deg); }
+            4%, 60% { transform: translate(-2px,0) skew(0deg); }
+            62% { transform: translate(0,0) skew(5deg); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom scrollbar for inner content if needed */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #6C88C4;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+
+    <div id="app" class="w-full max-w-4xl relative">
+        
+        <!-- Dark Intro Screen -->
+        <div id="intro-screen" class="dark-mode-overlay p-6 text-center">
+            <h1 class="font-serif text-5xl md:text-7xl mb-4 text-[#E4ECF5]">AGE 67</h1>
+            <p class="font-mono text-xl md:text-2xl text-red-400 mb-2">RETIREMENT ACC BALANCE: $84,000</p>
+            <p class="font-mono text-lg text-gray-400 mb-12">YOU EXPECTED: $1.2 MILLION</p>
+            
+            <p class="font-sans text-lg md:text-xl max-w-2xl mx-auto mb-12 fade-in" style="animation-delay: 2s; opacity: 0;">
+                "Someone made some bad financial decisions. Unfortunately....that someone was you."
+            </p>
+            
+            <div id="machine-reveal" class="hidden flex-col items-center gap-6 fade-in">
+                <div class="glitch-text text-brand-primary text-2xl md:text-4xl font-black font-mono border-4 border-brand-primary p-4 rounded-md">
+                    [ TIME MACHINE ACTIVATED ]
+                </div>
+                <p class="text-[#E4ECF5] text-lg">Available Jumps: 06</p>
+                <p class="text-xl font-bold italic mb-6">MISSION: Go back. Make better choices. Steal back your future.</p>
+                
+                <button onclick="startGame()" class="btn-retro btn-retro-primary text-xl">
+                    INITIATE JUMP TO AGE 18
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Game Interface (Hidden initially) -->
+        <div id="main-game" class="hidden w-full">
+            
+            <!-- Header Status -->
+            <div class="flex justify-between items-center mb-6 px-2">
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full bg-brand-primary animate-pulse"></div>
+                    <span class="font-bold text-brand-navy tracking-wider text-sm md:text-base">TIMELINE ALTERATION IN PROGRESS</span>
+                </div>
+                <div class="text-brand-slate font-bold font-mono">
+                    JUMP: <span id="jump-counter">1/6</span>
+                </div>
+            </div>
+
+            <!-- Glassmorphism Main Panel -->
+            <div class="glass-panel p-6 md:p-10 min-h-[500px] flex flex-col relative overflow-hidden">
+                
+                <!-- Dynamic Content Container -->
+                <div id="level-content" class="flex-grow flex flex-col justify-center transition-opacity duration-300">
+                    <!-- JS will inject content here -->
+                </div>
+
+                <!-- Footer branding -->
+                <div class="mt-8 pt-4 border-t-2 border-brand-navy/10 flex justify-between items-center">
+                    <span class="font-serif font-bold text-brand-navy">MARKET MINDS</span>
+                    <span class="text-xs font-bold text-brand-slate tracking-widest">TIME HEIST</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State variables
+        let currentState = {
+            levelIndex: 0,
+            rothContributions: 0,
+            tradContributions: 0,
+            employerMatch: 0,
+            spentMoney: 0,
+            panicSold: false,
+            taxFlexibility: [], // Tracks types of accounts used ('roth', 'trad')
+            scores: {
+                knowledge: 0, // Max ~10
+                decision: 0,  // Max ~10
+            }
+        };
+
+        const STARTING_BALANCE = 84000;
+        const TARGET_BALANCE = 1200000;
+
+        // Intro Animations
+        setTimeout(() => {
+            const machine = document.getElementById('machine-reveal');
+            machine.classList.remove('hidden');
+            machine.classList.add('flex');
+        }, 4000);
+
+        function startGame() {
+            document.getElementById('intro-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('intro-screen').classList.add('hidden');
+                document.getElementById('main-game').classList.remove('hidden');
+                document.getElementById('main-game').classList.add('fade-in');
+                renderLevel();
+            }, 1000);
+        }
+
+        const levels = [
+            {
+                age: 18,
+                title: "THE FIRST PAYCHECK",
+                situation: "You just earned $1,200. Nobody is telling you what to do with it.",
+                choices: [
+                    {
+                        text: "ROTH IRA",
+                        desc: "Pay taxes now and put money into a Roth.",
+                        action: () => {
+                            currentState.rothContributions += 1200;
+                            if(!currentState.taxFlexibility.includes('roth')) currentState.taxFlexibility.push('roth');
+                            currentState.scores.knowledge += 1;
+                            currentState.scores.decision += 2;
+                        },
+                        feedback: "Good move. Taxes are likely very low for you at age 18. Your choice created a new timeline."
+                    },
+                    {
+                        text: "TRADITIONAL IRA",
+                        desc: "Potentially receive a tax deduction now and generally pay taxes when withdrawing later.",
+                        action: () => {
+                            currentState.tradContributions += 1200;
+                            if(!currentState.taxFlexibility.includes('trad')) currentState.taxFlexibility.push('trad');
+                            currentState.scores.knowledge += 1;
+                            currentState.scores.decision += 1;
+                        },
+                        feedback: "A solid start! Though your tax rate is low now, getting invested early is the most important part. Your choice created a new timeline."
+                    },
+                    {
+                        text: "SPEND IT",
+                        desc: "Use the money immediately.",
+                        action: () => {
+                            currentState.spentMoney += 1200;
+                            currentState.scores.knowledge -= 1;
+                            currentState.scores.decision -= 1;
+                        },
+                        feedback: "That $1,200 is gone. If invested, compound interest over 50 years could have turned it into massive wealth. Your choice created a new timeline."
+                    }
+                ]
+            },
+            {
+                age: 22,
+                title: "THE MATCH",
+                situation: "You get your first full-time job. Your employer offers a 401(k) and says: 'We'll match part of what you contribute.'",
+                choices: [
+                    {
+                        text: "CONTRIBUTE TO GET THE MATCH",
+                        desc: "Invest enough of your paycheck to get the full employer match.",
+                        action: () => {
+                            currentState.tradContributions += 3000;
+                            currentState.employerMatch += 1500; // Symbolic early match
+                            if(!currentState.taxFlexibility.includes('trad')) currentState.taxFlexibility.push('trad');
+                            currentState.scores.knowledge += 2;
+                            currentState.scores.decision += 2;
+                        },
+                        feedback: "You just unlocked MONEY YOU DIDN'T HAVE TO EARN YOURSELF. This is free money added to your timeline."
+                    },
+                    {
+                        text: "SKIP CONTRIBUTING",
+                        desc: "Keep all your paycheck now.",
+                        action: () => {
+                            currentState.scores.knowledge -= 1;
+                            currentState.scores.decision -= 1;
+                        },
+                        feedback: "You left free money on the table. Over time, that missed match drastically lowers your future timeline."
+                    }
+                ]
+            },
+            {
+                age: 27,
+                title: "THE TAX MAZE",
+                situation: "You are earning more money. You must choose how to treat your taxes going forward without being told which is 'better'.",
+                choices: [
+                    {
+                        text: "DOOR A",
+                        desc: "Pay taxes later (Traditional).",
+                        action: () => {
+                            currentState.tradContributions += 15000;
+                            if(!currentState.taxFlexibility.includes('trad')) currentState.taxFlexibility.push('trad');
+                            currentState.scores.knowledge += 1;
+                            currentState.scores.decision += 1;
+                        },
+                        feedback: "Traditional Path: You get a tax break NOW, but you will pay taxes when you withdraw the money in retirement."
+                    },
+                    {
+                        text: "DOOR B",
+                        desc: "Pay taxes now (Roth).",
+                        action: () => {
+                            currentState.rothContributions += 15000;
+                            if(!currentState.taxFlexibility.includes('roth')) currentState.taxFlexibility.push('roth');
+                            currentState.scores.knowledge += 1;
+                            currentState.scores.decision += 1;
+                        },
+                        feedback: "Roth Path: You paid taxes NOW, meaning your qualified withdrawals in retirement can generally be tax-free."
+                    }
+                ]
+            },
+            {
+                age: 35,
+                title: "THE CRASH",
+                situation: "The market drops suddenly. Your retirement investments are down -23%.",
+                choices: [
+                    {
+                        text: "🚨 PANIC SELL",
+                        desc: "Sell everything to stop the bleeding.",
+                        action: () => {
+                            currentState.panicSold = true;
+                            currentState.scores.knowledge -= 3;
+                            currentState.scores.decision -= 3;
+                        },
+                        feedback: "You locked in your losses. This simulation doesn't predict the market, but history shows that selling during a crash often permanently damages long-term wealth timelines."
+                    },
+                    {
+                        text: "STAY INVESTED",
+                        desc: "Do nothing and ride it out.",
+                        action: () => {
+                            currentState.scores.knowledge += 1;
+                            currentState.scores.decision += 1;
+                        },
+                        feedback: "You stayed the course. The market eventually recovers, and your timeline remains intact."
+                    },
+                    {
+                        text: "CONTINUE CONTRIBUTING",
+                        desc: "Keep investing while prices are low.",
+                        action: () => {
+                            currentState.tradContributions += 5000;
+                            currentState.scores.knowledge += 2;
+                            currentState.scores.decision += 2;
+                        },
+                        feedback: "Excellent move. By continuing to invest during a downturn, you bought assets at a discount, accelerating your future wealth."
+                    }
+                ]
+            },
+            {
+                age: 45,
+                title: "THE TAX SWITCH",
+                situation: "Your income is much higher than when you were 18. Your tax bracket has increased significantly.",
+                choices: [
+                    {
+                        text: "TRADITIONAL 401(K) FOCUS",
+                        desc: "Take the immediate tax deduction to lower your high current tax bill.",
+                        action: () => {
+                            currentState.tradContributions += 40000;
+                            if(!currentState.taxFlexibility.includes('trad')) currentState.taxFlexibility.push('trad');
+                            currentState.scores.knowledge += 2;
+                            currentState.scores.decision += 2;
+                        },
+                        feedback: "Smart! Because your income (and tax rate) is high now, taking the immediate tax deduction is often a very powerful strategy."
+                    },
+                    {
+                        text: "ROTH IRA FOCUS",
+                        desc: "Continue paying high taxes now for tax-free growth later.",
+                        action: () => {
+                            currentState.rothContributions += 40000;
+                            if(!currentState.taxFlexibility.includes('roth')) currentState.taxFlexibility.push('roth');
+                            currentState.scores.knowledge += 1;
+                            currentState.scores.decision += 1;
+                        },
+                        feedback: "This builds a large tax-free bucket, though you gave up a valuable tax deduction during your highest-earning years."
+                    },
+                    {
+                        text: "SPLIT BETWEEN BOTH",
+                        desc: "Hedge your bets.",
+                        action: () => {
+                            currentState.tradContributions += 20000;
+                            currentState.rothContributions += 20000;
+                            if(!currentState.taxFlexibility.includes('trad')) currentState.taxFlexibility.push('trad');
+                            if(!currentState.taxFlexibility.includes('roth')) currentState.taxFlexibility.push('roth');
+                            currentState.scores.knowledge += 2;
+                            currentState.scores.decision += 2;
+                        },
+                        feedback: "Tax timing can become more important as circumstances change. Splitting gives you flexibility in retirement to choose which account to pull from."
+                    }
+                ]
+            },
+            {
+                age: 55,
+                title: "THE FINAL DECISION",
+                situation: "Retirement is getting close. You can change your strategy one last time to finalize your timeline.",
+                choices: [
+                    {
+                        text: "ROTH FOCUS",
+                        desc: "Build more after-tax retirement savings.",
+                        action: () => {
+                            currentState.rothContributions += 50000;
+                            if(!currentState.taxFlexibility.includes('roth')) currentState.taxFlexibility.push('roth');
+                        },
+                        feedback: "Finalizing timeline trajectory..."
+                    },
+                    {
+                        text: "TRADITIONAL FOCUS",
+                        desc: "Prioritize the potential tax benefit / deferred taxation.",
+                        action: () => {
+                            currentState.tradContributions += 50000;
+                            if(!currentState.taxFlexibility.includes('trad')) currentState.taxFlexibility.push('trad');
+                        },
+                        feedback: "Finalizing timeline trajectory..."
+                    },
+                    {
+                        text: "BALANCED",
+                        desc: "Use both types of tax treatment.",
+                        action: () => {
+                            currentState.rothContributions += 25000;
+                            currentState.tradContributions += 25000;
+                            if(!currentState.taxFlexibility.includes('trad')) currentState.taxFlexibility.push('trad');
+                            if(!currentState.taxFlexibility.includes('roth')) currentState.taxFlexibility.push('roth');
+                        },
+                        feedback: "Finalizing timeline trajectory..."
+                    }
+                ]
+            }
+        ];
+
+        function renderLevel() {
+            const contentDiv = document.getElementById('level-content');
+            contentDiv.style.opacity = '0';
+            
+            setTimeout(() => {
+                if (currentState.levelIndex >= levels.length) {
+                    renderEnding();
+                    return;
+                }
+
+                const level = levels[currentState.levelIndex];
+                document.getElementById('jump-counter').innerText = `${currentState.levelIndex + 1}/6`;
+
+                let html = `
+                    <div class="mb-4">
+                        <span class="bg-brand-navy text-white px-3 py-1 rounded-full text-xs font-bold tracking-widest">AGE ${level.age}</span>
+                    </div>
+                    <h2 class="font-serif text-4xl md:text-5xl text-brand-navy mb-4">${level.title}</h2>
+                    <p class="text-brand-slate text-lg mb-8">${level.situation}</p>
+                    <div class="flex flex-col gap-4 w-full md:w-3/4">
+                `;
+
+                level.choices.forEach((choice, index) => {
+                    html += `
+                        <button onclick="handleChoice(${index})" class="btn-retro btn-retro-secondary flex flex-col items-start p-4 text-left group w-full">
+                            <span class="text-brand-primary text-lg group-hover:text-brand-navy transition-colors">${choice.text}</span>
+                            <span class="text-brand-slate text-sm normal-case font-normal mt-1">${choice.desc}</span>
+                        </button>
+                    `;
+                });
+
+                html += `</div>`;
+                contentDiv.innerHTML = html;
+                contentDiv.style.opacity = '1';
+            }, 300);
+        }
+
+        function handleChoice(choiceIndex) {
+            const level = levels[currentState.levelIndex];
+            const choice = level.choices[choiceIndex];
+            
+            // Execute the action logic
+            choice.action();
+
+            // Show feedback
+            const contentDiv = document.getElementById('level-content');
+            contentDiv.style.opacity = '0';
+
+            setTimeout(() => {
+                let feedbackHtml = `
+                    <div class="flex flex-col items-center text-center">
+                        <div class="text-brand-primary mb-4 text-6xl">⚛</div>
+                        <h3 class="font-serif text-3xl text-brand-navy mb-4">TIMELINE ALTERED</h3>
+                        <p class="text-brand-slate text-lg max-w-xl">${choice.feedback}</p>
+                        <button onclick="nextLevel()" class="btn-retro btn-retro-primary mt-8">
+                            CONTINUE TIMELINE
+                        </button>
+                    </div>
+                `;
+                contentDiv.innerHTML = feedbackHtml;
+                contentDiv.style.opacity = '1';
+            }, 300);
+        }
+
+        function nextLevel() {
+            currentState.levelIndex++;
+            renderLevel();
+        }
+
+        function calculateFinalWealth() {
+            let base = 25000; // Minimum baseline
+            
+            // Simulate compounding effects based on actions
+            // Multipliers represent decades of growth
+            let rothGrowth = currentState.rothContributions * 4.5; 
+            let tradGrowth = currentState.tradContributions * 4.5;
+            let employerGrowth = currentState.employerMatch * 4.5;
+            
+            let total = base + rothGrowth + tradGrowth + employerGrowth;
+
+            // Massive penalty for panic selling
+            if (currentState.panicSold) {
+                total = total * 0.4;
+            }
+
+            // Penalty for not investing at 18/22
+            if (currentState.spentMoney > 0) {
+                total -= 100000; 
+            }
+
+            // Cap and floor for realism
+            if (total < 84000) total = 84000 + Math.floor(Math.random() * 20000); // slightly better than original bad timeline
+            if (total > 2500000) total = 2500000;
+
+            return total;
+        }
+
+        function determineTimelineType() {
+            let totalContributions = currentState.rothContributions + currentState.tradContributions;
+            if (totalContributions === 0) return "CATASTROPHIC";
+            
+            let rothRatio = currentState.rothContributions / totalContributions;
+            
+            if (rothRatio > 0.65) return "ROTH IRA HEAVY";
+            if (rothRatio < 0.35) return "TRADITIONAL IRA HEAVY";
+            return "BALANCED";
+        }
+
+        function formatCurrency(num) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(num);
+        }
+
+        function renderEnding() {
+            const contentDiv = document.getElementById('level-content');
+            contentDiv.style.opacity = '0';
+            document.getElementById('jump-counter').innerText = 'COMPLETE';
+
+            setTimeout(() => {
+                let finalWealth = calculateFinalWealth();
+                let timelineType = determineTimelineType();
+                
+                // Calculate conceptual scores
+                let flexScore = currentState.taxFlexibility.length === 2 ? "HIGH (Multiple tax treatments)" : "LOW (Single tax treatment)";
+                let knowledgeScore = Math.max(0, Math.min(10, currentState.scores.knowledge));
+                let decisionScore = Math.max(0, Math.min(10, currentState.scores.decision));
+                
+                let timelineDescription = "";
+                if (timelineType === "ROTH IRA HEAVY") {
+                    timelineDescription = "Taxes were generally paid earlier, and qualified Roth withdrawals can generally be tax-free.";
+                } else if (timelineType === "TRADITIONAL IRA HEAVY") {
+                    timelineDescription = "Contributions may have received tax benefits earlier, while withdrawals are generally taxable.";
+                } else {
+                    timelineDescription = "You created multiple sources with different tax treatments, providing great flexibility.";
+                }
+
+                let html = `
+                    <div class="text-center w-full max-w-3xl mx-auto">
+                        <span class="bg-brand-navy text-white px-3 py-1 rounded-full text-xs font-bold tracking-widest">AGE 67 (RESTORED)</span>
+                        <h2 class="font-serif text-4xl md:text-5xl text-brand-navy mt-4 mb-2">TIMELINE: ${timelineType}</h2>
+                        <p class="text-brand-slate text-lg mb-8 font-medium italic">"${timelineDescription}"</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 text-left">
+                            
+                            <!-- Financial Stats Card -->
+                            <div class="bg-brand-bg-light border-2 border-brand-navy p-6 rounded-xl shadow-[4px_4px_0px_#141B2D]">
+                                <h4 class="text-brand-primary font-bold tracking-widest text-sm mb-4">WEALTH ACCUMULATION</h4>
+                                <div class="text-4xl font-serif text-brand-navy mb-4">${formatCurrency(finalWealth)}</div>
+                                
+                                <div class="space-y-2 text-sm text-brand-slate">
+                                    <div class="flex justify-between border-b border-gray-300 pb-1">
+                                        <span>Roth Contributions:</span>
+                                        <span class="font-bold text-brand-navy">${formatCurrency(currentState.rothContributions)}</span>
+                                    </div>
+                                    <div class="flex justify-between border-b border-gray-300 pb-1">
+                                        <span>Trad Contributions:</span>
+                                        <span class="font-bold text-brand-navy">${formatCurrency(currentState.tradContributions)}</span>
+                                    </div>
+                                    <div class="flex justify-between pb-1">
+                                        <span>Employer Match:</span>
+                                        <span class="font-bold text-brand-primary">${formatCurrency(currentState.employerMatch)}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Performance Scores Card -->
+                            <div class="bg-brand-bg-light border-2 border-brand-navy p-6 rounded-xl shadow-[4px_4px_0px_#141B2D]">
+                                <h4 class="text-brand-primary font-bold tracking-widest text-sm mb-4">HEIST METRICS</h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <div class="text-xs text-brand-slate tracking-wider uppercase mb-1">Tax Flexibility</div>
+                                        <div class="font-bold text-brand-navy">${flexScore}</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-brand-slate tracking-wider uppercase mb-1">Financial Knowledge</div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="bg-brand-primary h-2.5 rounded-full" style="width: ${(knowledgeScore/10)*100}%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-brand-slate tracking-wider uppercase mb-1">Decision Consistency</div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="bg-brand-navy h-2.5 rounded-full" style="width: ${(decisionScore/10)*100}%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="font-serif text-2xl text-brand-navy mb-6">"You didn't just play a game, you built a financial timeline."</p>
+                        
+                        <div class="flex flex-col sm:flex-row justify-center gap-4">
+                            <button onclick="resetGame()" class="btn-retro btn-retro-primary">
+                                RUN THE HEIST AGAIN
+                            </button>
+                            <button onclick="goToMarketMinds()" class="btn-retro btn-retro-secondary">
+                                LEARN REAL STRATEGIES
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                contentDiv.innerHTML = html;
+                contentDiv.style.opacity = '1';
+            }, 300);
+        }
+
+        function resetGame() {
+            currentState = {
+                levelIndex: 0,
+                rothContributions: 0,
+                tradContributions: 0,
+                employerMatch: 0,
+                spentMoney: 0,
+                panicSold: false,
+                taxFlexibility: [],
+                scores: { knowledge: 0, decision: 0 }
+            };
+            
+            const contentDiv = document.getElementById('level-content');
+            contentDiv.style.opacity = '0';
+            
+            setTimeout(() => {
+                renderLevel();
+            }, 300);
+        }
+
+        function goToMarketMinds() {
+            // In a real implementation, this would link to the resources page.
+            const contentDiv = document.getElementById('level-content');
+            contentDiv.style.opacity = '0';
+            setTimeout(() => {
+                contentDiv.innerHTML = `
+                    <div class="text-center">
+                        <h2 class="font-serif text-4xl text-brand-navy mb-4">WELCOME TO MARKET MINDS</h2>
+                        <p class="text-brand-slate text-lg mb-8">Ready to learn more about how to navigate these decisions in the real world?</p>
+                        <p class="text-sm text-brand-primary mb-4">(This would link to the broader Market Minds website resources in production)</p>
+                        <button onclick="resetGame()" class="btn-retro btn-retro-secondary mt-4">BACK TO GAME</button>
+                    </div>
+                `;
+                contentDiv.style.opacity = '1';
+            }, 300);
+        }
+    </script>
+</body>
+</html>
