@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AP Human Geography Regions | Market Minds</title>
+  
+  <!-- Circular Favicon -->
+  <link rel="icon" href="https://lh3.googleusercontent.com/pw/AP1GczM9ixFMsp95jjxMuOg9RPqWXqj7ZmOx1eTTx4sjxv3sZnda7Di2Z7KxzRyRqWwgkrMr8H9uv8Lpj95ZmEV7Pzxoh-A-_iW8H9m-_DPmlgwFvleZwW6Gp_jnjwPv2VQd5Erk8WzNIgsTRNsKLyTLGd6I=w1000-h1000-s-no-gm?authuser=0" type="image/jpeg">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- D3.js and TopoJSON -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://unpkg.com/topojson-client@3"></script>
+  
+  <!-- Google Fonts: Instrument Serif & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Inter"', 'sans-serif'],
+            serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+          },
+          colors: {
+            mm: {
+              primary: '#6C88C4',
+              hover: '#4A607A',
+              navy: '#141B2D',
+              slate: '#4A5568',
+              red: '#E53E3E',
+              green: '#38A169',
+              amber: '#D69E2E',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    :root {
+      --bg-gradient-start: #F0F4F9;
+      --bg-gradient-end: #E4ECF5;
+      --text-navy: #141B2D;
+      --glass-white: rgba(255, 255, 255, 0.88);
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+      color: var(--text-navy);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    .serif-font {
+      font-family: 'Instrument Serif', Georgia, serif;
+      letter-spacing: 0.02em;
+    }
+
+    /* Market Minds Glassmorphic Panel */
+    .glass-panel {
+      background: var(--glass-white);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 2px solid var(--text-navy);
+      border-radius: 16px;
+      box-shadow: 4px 4px 0px var(--text-navy);
+    }
+
+    /* Market Minds Neo-Brutalist Buttons */
+    .btn-retro {
+      background-color: #6C88C4;
+      color: #FFFFFF;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: 2px solid var(--text-navy);
+      border-radius: 12px;
+      box-shadow: 4px 4px 0px var(--text-navy);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-retro:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px #4A607A;
+      background-color: #4A607A;
+    }
+
+    .btn-retro:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px var(--text-navy);
+    }
+    
+    .btn-retro.active-tab {
+      background-color: var(--text-navy);
+      color: #FFF;
+      box-shadow: 2px 2px 0px #6C88C4;
+      transform: translate(2px, 2px);
+    }
+
+    /* Dark Mode Map Overrides */
+    .dark-map-container {
+      background-color: #0F172A; /* Deep Slate */
+      border: 2px solid var(--text-navy);
+      border-radius: 16px;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 4px 4px 0px var(--text-navy);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .country-path {
+      transition: fill 0.18s ease, stroke 0.18s ease, stroke-width 0.18s ease, filter 0.18s ease;
+      cursor: pointer;
+    }
+    .country-path:hover {
+      filter: brightness(1.25);
+      stroke: #ffffff !important;
+      stroke-width: 1.5px !important;
+    }
+    .country-highlighted {
+      stroke: #ffffff !important;
+      stroke-width: 1.8px !important;
+      filter: drop-shadow(0 0 6px rgba(255,255,255,0.7));
+    }
+    .country-dimmed {
+      opacity: 0.2;
+    }
+
+    /* Footer */
+    .site-footer {
+      text-align: center;
+      padding: 30px 20px;
+      margin-top: auto;
+      font-size: 0.95rem;
+      color: #4A5568;
+      font-weight: 500;
+    }
+    .site-footer a {
+      color: #6C88C4;
+      font-weight: 800;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .site-footer a:hover {
+      border-bottom-color: #6C88C4;
+    }
+
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 9999px; border: 2px solid var(--text-navy); }
+  </style>
+</head>
+<body class="selection:bg-mm-primary selection:text-white">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-[#F0F4F9]/90 backdrop-blur-md border-b-2 border-mm-navy px-4 py-3 shadow-sm">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <a href="https://marketmindsyouth.org/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center md:justify-start hover:scale-105 transition-transform" title="Visit Market Minds">
+        <img src="https://lh3.googleusercontent.com/pw/AP1GczM6nrmaHQ4cGTx0z-eOJM-fqo-K9rlJ8ojBBZzrEbzDUyR90feZLpnA2En6xjx3_1rSjeM8v-qB7QUd_JqBKZ4mgvWHxDj62tt8F06I31teXwAyQi0llvvQ7kfJLdJDAEBvU4LZepCDmdjuNUKhKrLC=w1000-h347-s-no-gm?authuser=0" alt="Market Minds Logo" class="h-10 w-auto">
+      </a>
+      
+      <div class="flex flex-wrap items-center justify-center gap-2">
+        <button id="tabBtn-explore" onclick="switchTab('explore')" class="btn-retro active-tab px-4 py-2 text-xs md:text-sm">
+          🌍 Map Explorer
+        </button>
+        <button id="tabBtn-anchors" onclick="switchTab('anchors')" class="btn-retro px-4 py-2 text-xs md:text-sm !bg-white !text-mm-navy hover:!bg-gray-100">
+          📍 Sub-Regions
+        </button>
+        <button id="tabBtn-quiz" onclick="switchTab('quiz')" class="btn-retro px-4 py-2 text-xs md:text-sm !bg-white !text-mm-navy hover:!bg-gray-100">
+          🎯 Seterra Quiz
+        </button>
+        <button id="tabBtn-continent" onclick="switchTab('continent')" class="btn-retro px-4 py-2 text-xs md:text-sm !bg-white !text-mm-navy hover:!bg-gray-100">
+          🧩 Continents
+        </button>
+        <button id="tabBtn-traps" onclick="switchTab('traps')" class="btn-retro px-4 py-2 text-xs md:text-sm !bg-white !text-mm-navy hover:!bg-gray-100">
+          ⚠️ Boundary Traps
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-6 flex flex-col gap-6">
+
+    <!-- Title Section -->
+    <div class="text-center mb-2">
+      <h1 class="serif-font text-4xl md:text-5xl font-bold text-mm-navy mb-2">AP Human Geography: World Regions</h1>
+      <p class="text-mm-slate text-sm md:text-base max-w-2xl mx-auto font-medium">An interactive study tool for mastering regional positioning, identifying anchor countries, and building global geographic literacy.</p>
+    </div>
+
+    <!-- VIEW 1: INTERACTIVE MAP EXPLORER -->
+    <section id="view-explore" class="space-y-4">
+      
+      <!-- Top Control Bar -->
+      <div class="glass-panel p-4 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+        <div class="space-y-1">
+          <div class="flex items-center gap-2">
+            <h2 class="serif-font text-2xl font-bold text-mm-navy">Closer Look Map Explorer</h2>
+            <button onclick="startGuidedTour()" class="ml-2 px-3 py-1 rounded-lg text-xs font-bold bg-[#FEFCBF] text-mm-amber border-2 border-mm-amber hover:bg-[#FAF089] transition shadow-[2px_2px_0px_#D69E2E] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none">
+              ✨ Guided Beginner Tour
+            </button>
+          </div>
+          <p class="text-sm text-mm-slate font-medium">
+            Search, hover, or click any country on Earth to inspect its AP region and neighbors.
+          </p>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="relative w-full lg:w-72">
+          <input 
+            type="text" 
+            id="countrySearchInput" 
+            placeholder="Search country (e.g. Nigeria)..." 
+            oninput="handleSearch(this.value)"
+            class="w-full px-4 py-2.5 bg-white text-sm text-mm-navy placeholder-mm-slate font-medium rounded-xl border-2 border-mm-navy focus:outline-none focus:ring-2 focus:ring-mm-primary shadow-[2px_2px_0px_#141B2D]"
+          >
+          <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-mm-slate hover:text-mm-navy font-bold">✕</button>
+          <div id="searchResultsDropdown" class="hidden absolute top-full left-0 right-0 mt-2 bg-white border-2 border-mm-navy rounded-xl shadow-[4px_4px_0px_#141B2D] max-h-56 overflow-y-auto z-50 divide-y divide-gray-100"></div>
+        </div>
+      </div>
+
+      <!-- Filter Buttons -->
+      <div class="glass-panel p-4 space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-mm-navy uppercase tracking-wider">Filter Sub-Regions:</span>
+          <button onclick="resetRegionFilter()" class="text-xs text-mm-primary hover:text-mm-hover font-bold transition-colors uppercase tracking-wider">
+            Reset (Show All)
+          </button>
+        </div>
+        <div class="flex flex-wrap gap-2" id="subregionButtonsContainer"></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Left: Dark Mode Interactive Map -->
+        <div class="lg:col-span-8 dark-map-container flex flex-col min-h-[460px] md:min-h-[520px]">
+          <div class="absolute top-5 left-5 z-20 flex items-center gap-2">
+            <span id="activeFilterBadge" class="hidden px-3 py-1.5 rounded-lg text-xs font-bold border-2 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] bg-slate-800 text-white border-slate-600"></span>
+          </div>
+
+          <div class="absolute top-5 right-5 z-20 flex items-center gap-2 bg-slate-800/80 backdrop-blur p-1.5 rounded-xl border-2 border-slate-600 shadow-[2px_2px_0px_rgba(0,0,0,0.5)]">
+            <button onclick="zoomMap(1.3)" title="Zoom In" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-700 text-white font-bold transition text-lg">＋</button>
+            <button onclick="zoomMap(0.7)" title="Zoom Out" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-slate-700 text-white font-bold transition text-lg">－</button>
+            <button onclick="resetMapZoom()" title="Reset Zoom" class="px-3 h-8 flex items-center justify-center rounded-lg hover:bg-slate-700 text-white transition text-xs font-bold uppercase">Reset</button>
+          </div>
+
+          <div id="mapWrapper" class="w-full flex-1 flex items-center justify-center relative select-none overflow-hidden cursor-grab active:cursor-grabbing">
+            <svg id="worldMapSvg" class="w-full h-full min-h-[420px]" viewBox="0 0 960 500"></svg>
+            
+            <div id="mapLoader" class="absolute inset-0 bg-slate-900/90 flex flex-col items-center justify-center gap-3 z-30 transition-opacity">
+              <div class="w-8 h-8 border-4 border-mm-primary border-t-transparent rounded-full animate-spin"></div>
+              <p class="text-sm text-white font-bold">Drawing Map...</p>
+            </div>
+          </div>
+
+          <!-- Tooltip element -->
+          <div id="mapTooltip" class="pointer-events-none absolute z-50 hidden bg-white border-2 border-mm-navy px-3 py-2 rounded-xl text-sm shadow-[4px_4px_0px_rgba(20,27,45,1)]">
+            <div class="font-bold text-base text-mm-navy" id="ttName">Country</div>
+            <div class="text-xs text-mm-primary font-bold mt-0.5" id="ttRegion">Sub-Region</div>
+          </div>
+        </div>
+
+        <!-- Right: Detail Card -->
+        <div class="lg:col-span-4 space-y-4">
+          <div id="countryDetailCard" class="glass-panel p-6 relative transition-all min-h-[300px] flex flex-col justify-between bg-white">
+            <div id="cardContent" class="space-y-4">
+              <div class="flex items-start justify-between gap-2 border-b-2 border-gray-200 pb-4">
+                <div>
+                  <span id="detailBadgeMacro" class="inline-block text-[10px] font-bold tracking-wider uppercase px-2 py-1 rounded-md bg-mm-navy text-white">
+                    Macro-Region
+                  </span>
+                  <h3 id="detailCountryName" class="serif-font text-3xl font-bold text-mm-navy mt-2 leading-none">Select a Country</h3>
+                </div>
+                <span id="detailFlag" class="text-4xl drop-shadow-md">🌐</span>
+              </div>
+
+              <div id="detailRegionBox" class="p-4 rounded-xl border-2 border-mm-primary bg-blue-50 space-y-1 shadow-[2px_2px_0px_#141B2D]">
+                <span class="text-xs uppercase tracking-wider font-bold text-mm-primary">Closer Look Sub-Region:</span>
+                <p id="detailSubRegionName" class="text-lg font-black text-mm-navy">Click any country</p>
+              </div>
+
+              <div id="detailAnchorBox" class="space-y-2">
+                <div class="flex items-center gap-2 font-bold text-mm-amber text-lg" id="detailAnchorTitle">
+                  <span>⭐ Anchor Country Status</span>
+                </div>
+                <p class="text-mm-navy text-sm font-medium leading-relaxed" id="detailAnchorDesc">
+                  Anchor countries are the key reference nations that help you instantly anchor sub-regions in your memory.
+                </p>
+              </div>
+
+              <div class="space-y-2 pt-4 border-t-2 border-gray-200">
+                <span class="text-xs font-bold text-mm-navy uppercase tracking-wider">Other countries in this region:</span>
+                <div id="detailSiblingsList" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pr-1">
+                  <span class="text-sm text-mm-slate italic">Select a country first</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t-2 border-gray-200 text-xs font-bold text-mm-slate flex items-center justify-between">
+              <span>Need a hint?</span>
+              <button onclick="selectRandomCountry()" class="text-mm-primary hover:text-mm-hover underline uppercase tracking-wider">
+                Pick random
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: SUB-REGIONS & ANCHORS DIRECTORY -->
+    <section id="view-anchors" class="hidden space-y-6">
+      <div class="glass-panel p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="serif-font text-3xl font-bold text-mm-navy">World Regions & Anchor Countries</h2>
+          <p class="text-sm text-mm-slate mt-2 max-w-2xl font-medium">
+            Every sub-region has a landmark <strong>Anchor Country</strong>. Click any card's <strong>"📍 View on Map"</strong> button or click any country chip to fly directly to it on the interactive map!
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-sm text-mm-green font-bold bg-green-50 px-4 py-2 rounded-xl border-2 border-mm-green shadow-[2px_2px_0px_#38A169]">
+            ✓ 23 Sub-Regions
+          </span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="regionsDirectoryCards"></div>
+    </section>
+
+    <!-- VIEW 3: CANVAS QUIZ SIMULATOR -->
+    <section id="view-quiz" class="hidden space-y-6">
+      <div class="glass-panel p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="px-3 py-1 rounded-md text-xs font-bold bg-mm-navy text-white uppercase tracking-wider">
+              Quiz Simulation
+            </span>
+          </div>
+          <h2 id="quiz-main-title" class="serif-font text-3xl font-bold text-mm-navy">20-Country Global Quiz</h2>
+          <p class="text-sm text-mm-slate mt-1 font-medium">
+            Find and click the correct sub-region on the map for the given country.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-6">
+          <div class="text-right">
+            <div class="text-xs font-bold text-mm-slate uppercase tracking-wider">Score</div>
+            <div class="text-3xl font-black text-mm-primary font-serif" id="quizScoreDisplay">0 / 0</div>
+          </div>
+          <button onclick="startNewQuiz(20)" class="btn-retro px-6 py-3 text-sm">
+            Start Fresh Quiz
+          </button>
+        </div>
+      </div>
+
+      <!-- Active Quiz Card -->
+      <div id="quizContainer" class="glass-panel p-6 max-w-5xl mx-auto space-y-6 bg-white">
+        <div class="space-y-2">
+          <div class="flex justify-between text-sm text-mm-navy font-bold uppercase tracking-wider">
+            <span id="quizQuestionNumber">Question 1 of 20</span>
+            <span id="quizAccuracyRate">Accuracy: 100%</span>
+          </div>
+          <div class="w-full bg-gray-200 h-3 rounded-full overflow-hidden border-2 border-mm-navy">
+            <div id="quizProgressBar" class="bg-mm-primary h-full w-[5%] transition-all duration-300"></div>
+          </div>
+        </div>
+
+        <div class="bg-white border-2 border-mm-navy rounded-xl p-6 text-center space-y-3 shadow-[4px_4px_0px_#141B2D]">
+          <div class="text-sm uppercase tracking-wider text-mm-slate font-bold">Locate the sub-region on the map for:</div>
+          <div class="flex items-center justify-center gap-4">
+            <span id="quizCountryFlag" class="text-5xl drop-shadow-md">🏳️</span>
+            <span id="quizCountryName" class="serif-font text-4xl md:text-5xl font-bold text-mm-navy">Nigeria</span>
+          </div>
+          <p id="quizCountryCapital" class="text-sm text-mm-slate font-medium">Capital: Abuja</p>
+        </div>
+
+        <!-- Seterra Style Quiz Map -->
+        <div id="quizMapContainer" class="dark-map-container relative overflow-hidden flex flex-col min-h-[400px] md:min-h-[500px] w-full cursor-crosshair">
+          <svg id="quizMapSvg" class="w-full h-full min-h-[400px] md:min-h-[500px]" viewBox="0 0 960 500"></svg>
+          <div id="quizMapTooltip" class="pointer-events-none absolute z-50 hidden bg-white border-2 border-mm-navy text-mm-navy px-4 py-2 rounded-xl text-sm font-bold shadow-[4px_4px_0px_#141B2D]"></div>
+        </div>
+
+        <div id="quizFeedbackBox" class="hidden p-5 rounded-xl border-2 space-y-2 shadow-[2px_2px_0px_#141B2D]"></div>
+
+        <div class="flex justify-end">
+          <button id="quizNextBtn" onclick="nextQuizQuestion()" class="hidden btn-retro !bg-mm-green !border-mm-navy px-8 py-3 text-sm">
+            Next Country ➔
+          </button>
+        </div>
+      </div>
+
+      <!-- Finished Quiz Results Modal -->
+      <div id="quizResultsCard" class="hidden glass-panel p-8 max-w-2xl mx-auto text-center space-y-6 bg-white">
+        <div class="w-20 h-20 rounded-full bg-green-100 border-4 border-mm-green text-mm-green flex items-center justify-center text-4xl mx-auto font-black shadow-[4px_4px_0px_#38A169]">🏆</div>
+        <div class="space-y-2">
+          <h3 class="serif-font text-4xl font-bold text-mm-navy">Quiz Completed!</h3>
+          <p class="text-sm text-mm-slate font-medium">Diagnostic report:</p>
+        </div>
+        
+        <div class="text-5xl font-bold text-mm-primary serif-font" id="finalScoreGrade">18 / 20</div>
+        <p class="text-base font-bold text-mm-navy" id="finalFeedbackText">Excellent job!</p>
+
+        <div id="missedQuestionsSection" class="text-left space-y-3 pt-6 border-t-2 border-gray-200 hidden">
+          <span class="text-sm font-bold text-mm-red uppercase tracking-wider">Countries to Review:</span>
+          <div id="missedList" class="space-y-2 max-h-60 overflow-y-auto pr-2"></div>
+        </div>
+
+        <div class="pt-4">
+            <button onclick="startNewQuiz(20)" class="btn-retro px-8 py-4 text-base w-full">
+            🔄 Take Another Quiz
+            </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: CONTINENT ISOLATION PRACTICE -->
+    <section id="view-continent" class="hidden space-y-6">
+      <div class="glass-panel p-8 flex flex-col gap-6 bg-white">
+        <div>
+          <h2 class="serif-font text-4xl font-bold text-mm-navy mb-2">🧩 Continent Isolation Practice</h2>
+          <p class="text-sm text-mm-slate font-medium max-w-3xl leading-relaxed">
+            Select a macro-region below. It will automatically take you to the map game, but lock the questions so you are <strong>only tested on sub-regions inside that specific continent</strong>. Master one area at a time before taking the global quiz!
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-4">
+          <button onclick="startContinentQuiz('Africa')" class="btn-retro px-6 py-3">Africa</button>
+          <button onclick="startContinentQuiz('Latin America')" class="btn-retro px-6 py-3">Latin America</button>
+          <button onclick="startContinentQuiz('Europe')" class="btn-retro px-6 py-3">Europe</button>
+          <button onclick="startContinentQuiz('Asia')" class="btn-retro px-6 py-3">Asia</button>
+          <button onclick="startContinentQuiz('Oceania')" class="btn-retro px-6 py-3">Oceania</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 5: BOUNDARY TRAPS CHEAT SHEET -->
+    <section id="view-traps" class="hidden space-y-6">
+      <div class="glass-panel p-8 bg-white">
+        <h2 class="serif-font text-3xl font-bold text-mm-navy mb-6">⚠️ Tricky AP Boundaries & Cheat Sheet</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="p-6 bg-[#FEFCBF] rounded-xl border-2 border-mm-amber shadow-[4px_4px_0px_#D69E2E] space-y-3">
+            <strong class="text-mm-navy block text-lg font-bold">🏜️ The Saharan Divide</strong>
+            <p class="text-sm leading-relaxed text-mm-slate font-medium">While some regions are grouped by culture, others are based on physiographic features. The Sahara Desert serves as the strict dividing line separating <strong>North Africa</strong> from <strong>Sub-Saharan Africa</strong>.</p>
+          </div>
+          <div class="p-6 bg-[#FEFCBF] rounded-xl border-2 border-mm-amber shadow-[4px_4px_0px_#D69E2E] space-y-3">
+            <strong class="text-mm-navy block text-lg font-bold">🇦🇲 Armenia and Azerbaijan</strong>
+            <p class="text-sm leading-relaxed text-mm-slate font-medium">Geographers debate regional definitions! Because both countries were formerly parts of the Soviet Union, some geographers place them in <strong>Central Asia</strong>, while others group them into the <strong>Middle East</strong>.</p>
+          </div>
+          <div class="p-6 bg-[#FEFCBF] rounded-xl border-2 border-mm-amber shadow-[4px_4px_0px_#D69E2E] space-y-3">
+            <strong class="text-mm-navy block text-lg font-bold">🌎 Latin America vs. North America</strong>
+            <p class="text-sm leading-relaxed text-mm-slate font-medium">Look closely at the APHG Closer Look map: <strong>Mexico</strong> and the <strong>Caribbean</strong> are grouped down into Latin America, leaving only the United States and Canada in the "North America" region.</p>
+          </div>
+          <div class="p-6 bg-[#FEFCBF] rounded-xl border-2 border-mm-amber shadow-[4px_4px_0px_#D69E2E] space-y-3">
+            <strong class="text-mm-navy block text-lg font-bold">🥶 The Russian Federation</strong>
+            <p class="text-sm leading-relaxed text-mm-slate font-medium">Russia is so massive that it is categorized as its own distinct overarching region north of Europe and Asia. <strong>Siberia</strong> is identified as its specific eastern sub-region.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    This is a free educational resource provided by <br class="md:hidden">
+    <a href="https://marketmindsyouth.org/" target="_blank" rel="noopener noreferrer">Market Minds</a>
+  </footer>
+
+  <script>
+    /*
+     * MASTER DATASET: AP HUMAN GEOGRAPHY WORLD REGIONS
+     * Strictly aligned with the AP Closer Look and Big Picture Maps.
+     */
+    const SUBREGIONS_INFO = {
+      "Canada": { macro: "North America", color: "#38bdf8", anchor: "Canada", anchorWhy: "Occupies the northern half of North America from the 49th parallel to the Arctic." },
+      "United States": { macro: "North America", color: "#0ea5e9", anchor: "United States", anchorWhy: "Spans coast-to-coast from Atlantic to Pacific, including Alaska and Hawaii." },
+      "Central America": { macro: "Latin America", color: "#06b6d4", anchor: "Mexico", anchorWhy: "The continental isthmus bridging North America to South America; Mexico is the cultural giant." },
+      "Caribbean": { macro: "Latin America", color: "#2dd4bf", anchor: "Cuba", anchorWhy: "Island archipelagos in the Caribbean Sea (Greater & Lesser Antilles)." },
+      "Brazil": { macro: "Latin America", color: "#10b981", anchor: "Brazil", anchorWhy: "Separated out on the APHG Closer Look map due to its Portuguese heritage and massive continental scale." },
+      "South America": { macro: "Latin America", color: "#059669", anchor: "Argentina & Colombia", anchorWhy: "Spanish-speaking Andean and Southern Cone countries stretching to Tierra del Fuego." },
+      "Western Europe": { macro: "Europe", color: "#6366f1", anchor: "Germany, France & UK", anchorWhy: "Industrial core of Western, Northern, and Mediterranean Europe." },
+      "Eastern Europe": { macro: "Europe", color: "#8b5cf6", anchor: "Poland & Ukraine", anchorWhy: "Nations east of Germany extending to the Russian border, down through the Balkans." },
+      "Russian Federation": { macro: "Russian Federation", color: "#ec4899", anchor: "Russia (including Siberia)", anchorWhy: "World's largest country by area; spans Eastern Europe across the Urals and all of northern Asia (Siberia)." },
+      "North Africa": { macro: "Africa", color: "#f59e0b", anchor: "Egypt", anchorWhy: "Arab and Berber nations north of the Sahara Desert with Mediterranean coasts; Egypt is the anchor." },
+      "West Africa": { macro: "Sub-Saharan Africa", color: "#b45309", anchor: "Nigeria", anchorWhy: "The bulge of Africa along the Atlantic; Nigeria is Africa's demographic anchor." },
+      "Central Africa": { macro: "Sub-Saharan Africa", color: "#d97706", anchor: "DRC", anchorWhy: "Equatorial rainforest basin dominated by the Congo River." },
+      "East Africa": { macro: "Sub-Saharan Africa", color: "#e11d48", anchor: "Kenya & Ethiopia", anchorWhy: "The Great Rift Valley, Horn of Africa, and Swahili Coast." },
+      "Southern Africa": { macro: "Sub-Saharan Africa", color: "#9333ea", anchor: "South Africa", anchorWhy: "The southern tip of Africa below the Zambezi River; South Africa is the economic anchor." },
+      "Middle East": { macro: "Asia", color: "#f97316", anchor: "Saudi Arabia, Iran & Turkey", anchorWhy: "Southwest Asia at the crossroads of three continents." },
+      "Central Asia": { macro: "Asia", color: "#84cc16", anchor: "Kazakhstan", anchorWhy: "Former Soviet republics ('the Stans') between the Caspian Sea and western China." },
+      "South Asia": { macro: "Asia", color: "#eab308", anchor: "India", anchorWhy: "The Indian subcontinent bounded by the Indian Ocean and the Himalayan barrier." },
+      "East Asia": { macro: "Asia", color: "#ef4444", anchor: "China & Japan", anchorWhy: "Pacific Rim demographic and economic powerhouses." },
+      "Southeast Asia": { macro: "Asia", color: "#14b8a6", anchor: "Indonesia", anchorWhy: "Mainland Indochina plus the world's largest island archipelago." },
+      "Australia & New Zealand": { macro: "Oceania", color: "#3b82f6", anchor: "Australia", anchorWhy: "The continental Australian landmass and the islands of New Zealand." },
+      "Melanesia": { macro: "Oceania", color: "#60a5fa", anchor: "Papua New Guinea", anchorWhy: "Island arc directly north and northeast of Australia." },
+      "Micronesia": { macro: "Oceania", color: "#93c5fd", anchor: "Micronesia (Federated States)", anchorWhy: "Scattered small islands in the western Pacific north of the equator." },
+      "Polynesia": { macro: "Oceania", color: "#a855f7", anchor: "Samoa / Hawaii Triangle", anchorWhy: "Vast triangle of islands spanning Hawaii, Easter Island, and New Zealand." }
+    };
+
+    /* Comprehensive Database mapping ALL countries so there are no "World Territory" gaps. */
+    const COUNTRIES_DB = [
+      { name: "Canada", iso: "124", sub: "Canada", macro: "North America", flag: "🇨🇦", cap: "Ottawa", anchor: true },
+      { name: "United States", iso: "840", sub: "United States", macro: "North America", flag: "🇺🇸", cap: "Washington, D.C.", anchor: true },
+      { name: "Greenland", iso: "304", sub: "Western Europe", macro: "Europe", flag: "🇬🇱", cap: "Nuuk", anchor: false },
+      { name: "Mexico", iso: "484", sub: "Central America", macro: "Latin America", flag: "🇲🇽", cap: "Mexico City", anchor: true },
+      { name: "Guatemala", iso: "320", sub: "Central America", macro: "Latin America", flag: "🇬🇹", cap: "Guatemala City", anchor: false },
+      { name: "Belize", iso: "084", sub: "Central America", macro: "Latin America", flag: "🇧🇿", cap: "Belmopan", anchor: false },
+      { name: "Honduras", iso: "340", sub: "Central America", macro: "Latin America", flag: "🇭🇳", cap: "Tegucigalpa", anchor: false },
+      { name: "El Salvador", iso: "222", sub: "Central America", macro: "Latin America", flag: "🇸🇻", cap: "San Salvador", anchor: false },
+      { name: "Nicaragua", iso: "558", sub: "Central America", macro: "Latin America", flag: "🇳🇮", cap: "Managua", anchor: false },
+      { name: "Costa Rica", iso: "188", sub: "Central America", macro: "Latin America", flag: "🇨🇷", cap: "San José", anchor: false },
+      { name: "Panama", iso: "591", sub: "Central America", macro: "Latin America", flag: "🇵🇦", cap: "Panama City", anchor: false },
+      { name: "Cuba", iso: "192", sub: "Caribbean", macro: "Latin America", flag: "🇨🇺", cap: "Havana", anchor: true },
+      { name: "Dominican Republic", iso: "214", sub: "Caribbean", macro: "Latin America", flag: "🇩🇴", cap: "Santo Domingo", anchor: false },
+      { name: "Haiti", iso: "332", sub: "Caribbean", macro: "Latin America", flag: "🇭🇹", cap: "Port-au-Prince", anchor: false },
+      { name: "Jamaica", iso: "388", sub: "Caribbean", macro: "Latin America", flag: "🇯🇲", cap: "Kingston", anchor: false },
+      { name: "Bahamas", iso: "044", sub: "Caribbean", macro: "Latin America", flag: "🇧🇸", cap: "Nassau", anchor: false },
+      { name: "Trinidad and Tobago", iso: "780", sub: "Caribbean", macro: "Latin America", flag: "🇹🇹", cap: "Port of Spain", anchor: false },
+      { name: "Puerto Rico", iso: "630", sub: "Caribbean", macro: "Latin America", flag: "🇵🇷", cap: "San Juan", anchor: false },
+      { name: "Brazil", iso: "076", sub: "Brazil", macro: "Latin America", flag: "🇧🇷", cap: "Brasília", anchor: true },
+      { name: "Argentina", iso: "032", sub: "South America", macro: "Latin America", flag: "🇦🇷", cap: "Buenos Aires", anchor: true },
+      { name: "Colombia", iso: "170", sub: "South America", macro: "Latin America", flag: "🇨🇴", cap: "Bogotá", anchor: true },
+      { name: "Peru", iso: "604", sub: "South America", macro: "Latin America", flag: "🇵🇪", cap: "Lima", anchor: false },
+      { name: "Chile", iso: "152", sub: "South America", macro: "Latin America", flag: "🇨🇱", cap: "Santiago", anchor: false },
+      { name: "Venezuela", iso: "862", sub: "South America", macro: "Latin America", flag: "🇻🇪", cap: "Caracas", anchor: false },
+      { name: "Ecuador", iso: "218", sub: "South America", macro: "Latin America", flag: "🇪🇨", cap: "Quito", anchor: false },
+      { name: "Bolivia", iso: "068", sub: "South America", macro: "Latin America", flag: "🇧🇴", cap: "La Paz", anchor: false },
+      { name: "Paraguay", iso: "600", sub: "South America", macro: "Latin America", flag: "🇵🇾", cap: "Asunción", anchor: false },
+      { name: "Uruguay", iso: "858", sub: "South America", macro: "Latin America", flag: "🇺🇾", cap: "Montevideo", anchor: false },
+      { name: "Guyana", iso: "328", sub: "South America", macro: "Latin America", flag: "🇬🇾", cap: "Georgetown", anchor: false },
+      { name: "Suriname", iso: "740", sub: "South America", macro: "Latin America", flag: "🇸🇷", cap: "Paramaribo", anchor: false },
+      { name: "French Guiana", iso: "254", sub: "South America", macro: "Latin America", flag: "🇬🇫", cap: "Cayenne", anchor: false },
+      { name: "United Kingdom", iso: "826", sub: "Western Europe", macro: "Europe", flag: "🇬🇧", cap: "London", anchor: true },
+      { name: "France", iso: "250", sub: "Western Europe", macro: "Europe", flag: "🇫🇷", cap: "Paris", anchor: true },
+      { name: "Germany", iso: "276", sub: "Western Europe", macro: "Europe", flag: "🇩🇪", cap: "Berlin", anchor: true },
+      { name: "Italy", iso: "380", sub: "Western Europe", macro: "Europe", flag: "🇮🇹", cap: "Rome", anchor: false },
+      { name: "Spain", iso: "724", sub: "Western Europe", macro: "Europe", flag: "🇪🇸", cap: "Madrid", anchor: false },
+      { name: "Portugal", iso: "620", sub: "Western Europe", macro: "Europe", flag: "🇵🇹", cap: "Lisbon", anchor: false },
+      { name: "Netherlands", iso: "528", sub: "Western Europe", macro: "Europe", flag: "🇳🇱", cap: "Amsterdam", anchor: false },
+      { name: "Belgium", iso: "056", sub: "Western Europe", macro: "Europe", flag: "🇧🇪", cap: "Brussels", anchor: false },
+      { name: "Switzerland", iso: "756", sub: "Western Europe", macro: "Europe", flag: "🇨🇭", cap: "Bern", anchor: false },
+      { name: "Austria", iso: "040", sub: "Western Europe", macro: "Europe", flag: "🇦🇹", cap: "Vienna", anchor: false },
+      { name: "Ireland", iso: "372", sub: "Western Europe", macro: "Europe", flag: "🇮🇪", cap: "Dublin", anchor: false },
+      { name: "Sweden", iso: "752", sub: "Western Europe", macro: "Europe", flag: "🇸🇪", cap: "Stockholm", anchor: false },
+      { name: "Norway", iso: "578", sub: "Western Europe", macro: "Europe", flag: "🇳🇴", cap: "Oslo", anchor: false },
+      { name: "Denmark", iso: "208", sub: "Western Europe", macro: "Europe", flag: "🇩🇰", cap: "Copenhagen", anchor: false },
+      { name: "Finland", iso: "246", sub: "Western Europe", macro: "Europe", flag: "🇫🇮", cap: "Helsinki", anchor: false },
+      { name: "Greece", iso: "300", sub: "Western Europe", macro: "Europe", flag: "🇬🇷", cap: "Athens", anchor: false },
+      { name: "Iceland", iso: "352", sub: "Western Europe", macro: "Europe", flag: "🇮🇸", cap: "Reykjavik", anchor: false },
+      { name: "Poland", iso: "616", sub: "Eastern Europe", macro: "Europe", flag: "🇵🇱", cap: "Warsaw", anchor: true },
+      { name: "Ukraine", iso: "804", sub: "Eastern Europe", macro: "Europe", flag: "🇺🇦", cap: "Kyiv", anchor: true },
+      { name: "Romania", iso: "642", sub: "Eastern Europe", macro: "Europe", flag: "🇷🇴", cap: "Bucharest", anchor: false },
+      { name: "Czechia", iso: "203", sub: "Eastern Europe", macro: "Europe", flag: "🇨🇿", cap: "Prague", anchor: false },
+      { name: "Hungary", iso: "348", sub: "Eastern Europe", macro: "Europe", flag: "🇭🇺", cap: "Budapest", anchor: false },
+      { name: "Belarus", iso: "112", sub: "Eastern Europe", macro: "Europe", flag: "🇧🇾", cap: "Minsk", anchor: false },
+      { name: "Bulgaria", iso: "100", sub: "Eastern Europe", macro: "Europe", flag: "🇧🇬", cap: "Sofia", anchor: false },
+      { name: "Slovakia", iso: "703", sub: "Eastern Europe", macro: "Europe", flag: "🇸🇰", cap: "Bratislava", anchor: false },
+      { name: "Croatia", iso: "191", sub: "Eastern Europe", macro: "Europe", flag: "🇭🇷", cap: "Zagreb", anchor: false },
+      { name: "Serbia", iso: "688", sub: "Eastern Europe", macro: "Europe", flag: "🇷🇸", cap: "Belgrade", anchor: false },
+      { name: "Bosnia and Herzegovina", iso: "070", sub: "Eastern Europe", macro: "Europe", flag: "🇧🇦", cap: "Sarajevo", anchor: false },
+      { name: "Lithuania", iso: "440", sub: "Eastern Europe", macro: "Europe", flag: "🇱🇹", cap: "Vilnius", anchor: false },
+      { name: "Latvia", iso: "428", sub: "Eastern Europe", macro: "Europe", flag: "🇱🇻", cap: "Riga", anchor: false },
+      { name: "Estonia", iso: "233", sub: "Eastern Europe", macro: "Europe", flag: "🇪🇪", cap: "Tallinn", anchor: false },
+      { name: "Moldova", iso: "498", sub: "Eastern Europe", macro: "Europe", flag: "🇲🇩", cap: "Chisinau", anchor: false },
+      { name: "Albania", iso: "008", sub: "Eastern Europe", macro: "Europe", flag: "🇦🇱", cap: "Tirana", anchor: false },
+      { name: "North Macedonia", iso: "807", sub: "Eastern Europe", macro: "Europe", flag: "🇲🇰", cap: "Skopje", anchor: false },
+      { name: "Slovenia", iso: "705", sub: "Eastern Europe", macro: "Europe", flag: "🇸🇮", cap: "Ljubljana", anchor: false },
+      { name: "Montenegro", iso: "499", sub: "Eastern Europe", macro: "Europe", flag: "🇲🇪", cap: "Podgorica", anchor: false },
+      { name: "Russia", iso: "643", sub: "Russian Federation", macro: "Russian Federation", flag: "🇷🇺", cap: "Moscow", anchor: true },
+      { name: "Egypt", iso: "818", sub: "North Africa", macro: "Africa", flag: "🇪🇬", cap: "Cairo", anchor: true },
+      { name: "Algeria", iso: "012", sub: "North Africa", macro: "Africa", flag: "🇩🇿", cap: "Algiers", anchor: false },
+      { name: "Morocco", iso: "504", sub: "North Africa", macro: "Africa", flag: "🇲🇦", cap: "Rabat", anchor: false },
+      { name: "Sudan", iso: "729", sub: "North Africa", macro: "Africa", flag: "🇸🇩", cap: "Khartoum", anchor: false },
+      { name: "Libya", iso: "434", sub: "North Africa", macro: "Africa", flag: "🇱🇾", cap: "Tripoli", anchor: false },
+      { name: "Tunisia", iso: "788", sub: "North Africa", macro: "Africa", flag: "🇹🇳", cap: "Tunis", anchor: false },
+      { name: "Western Sahara", iso: "732", sub: "North Africa", macro: "Africa", flag: "🇪🇭", cap: "Laayoune", anchor: false },
+      { name: "Nigeria", iso: "566", sub: "West Africa", macro: "Sub-Saharan Africa", flag: "🇳🇬", cap: "Abuja", anchor: true },
+      { name: "Ghana", iso: "288", sub: "West Africa", macro: "Sub-Saharan Africa", flag: "🇬🇭", cap: "Accra", anchor: false },
+      { name: "Senegal", iso: "686", sub: "West Africa", macro: "Sub-Saharan Africa", flag: "🇸🇳", cap: "Dakar", anchor: false },
+      { name: "Ivory Coast", iso: "384", sub: "West Africa", macro: "Sub-Saharan Africa", flag: "🇨🇮", cap: "Yamoussoukro", anchor: false },
+      { name: "Mali", iso: "466", sub: "West Africa", macro: "Sub-Saharan Africa", flag: "🇲🇱", cap: "Bamako", anchor: false },
+      { name: "Niger", iso: "562", sub: "West Africa", macro: "Sub-Saharan Africa", flag: "🇳🇪", cap: "Niamey", anchor: false },
+      { name: "Burkina Faso", iso: "854", sub: "West Africa", macro: "Sub-Saharan Africa", flag: "🇧🇫", cap: "Ouagadougou", anchor: false },
+      { name: "Guinea", iso: "324", sub: "West Africa", macro: "Sub-Saharan Africa", flag: "🇬🇳", cap: "Conakry", anchor: false },
+      { name: "Benin", iso: "204", sub: "West Africa", macro: "Sub-Saharan Africa", flag: "🇧🇯", cap: "Porto-Novo", anchor: false },
+      { name: "Togo", iso: "768", sub: "West Africa", macro: "Sub-Saharan Africa", flag: "🇹🇬", cap: "Lomé", anchor: false },
+      { name: "Sierra Leone", iso: "694", sub: "West Africa", macro: "Sub-Saharan Africa", flag: "🇸🇱", cap: "Freetown", anchor: false },
+      { name: "Liberia", iso: "430", sub: "West Africa", macro: "Sub-Saharan Africa", flag: "🇱🇷", cap: "Monrovia", anchor: false },
+      { name: "Mauritania", iso: "478", sub: "West Africa", macro: "Sub-Saharan Africa", flag: "🇲🇷", cap: "Nouakchott", anchor: false },
+      { name: "Gambia", iso: "270", sub: "West Africa", macro: "Sub-Saharan Africa", flag: "🇬🇲", cap: "Banjul", anchor: false },
+      { name: "Guinea-Bissau", iso: "624", sub: "West Africa", macro: "Sub-Saharan Africa", flag: "🇬🇼", cap: "Bissau", anchor: false },
+      { name: "Democratic Republic of the Congo", iso: "180", sub: "Central Africa", macro: "Sub-Saharan Africa", flag: "🇨🇩", cap: "Kinshasa", anchor: true },
+      { name: "Cameroon", iso: "120", sub: "Central Africa", macro: "Sub-Saharan Africa", flag: "🇨🇲", cap: "Yaoundé", anchor: false },
+      { name: "Central African Republic", iso: "140", sub: "Central Africa", macro: "Sub-Saharan Africa", flag: "🇨🇫", cap: "Bangui", anchor: false },
+      { name: "Chad", iso: "148", sub: "Central Africa", macro: "Sub-Saharan Africa", flag: "🇹🇩", cap: "N'Djamena", anchor: false },
+      { name: "Congo", iso: "178", sub: "Central Africa", macro: "Sub-Saharan Africa", flag: "🇨🇬", cap: "Brazzaville", anchor: false },
+      { name: "Gabon", iso: "266", sub: "Central Africa", macro: "Sub-Saharan Africa", flag: "🇬🇦", cap: "Libreville", anchor: false },
+      { name: "Equatorial Guinea", iso: "226", sub: "Central Africa", macro: "Sub-Saharan Africa", flag: "🇬🇶", cap: "Malabo", anchor: false },
+      { name: "Kenya", iso: "404", sub: "East Africa", macro: "Sub-Saharan Africa", flag: "🇰🇪", cap: "Nairobi", anchor: true },
+      { name: "Ethiopia", iso: "231", sub: "East Africa", macro: "Sub-Saharan Africa", flag: "🇪🇹", cap: "Addis Ababa", anchor: true },
+      { name: "Tanzania", iso: "834", sub: "East Africa", macro: "Sub-Saharan Africa", flag: "🇹🇿", cap: "Dodoma", anchor: false },
+      { name: "Uganda", iso: "800", sub: "East Africa", macro: "Sub-Saharan Africa", flag: "🇺🇬", cap: "Kampala", anchor: false },
+      { name: "Rwanda", iso: "646", sub: "East Africa", macro: "Sub-Saharan Africa", flag: "🇷🇼", cap: "Kigali", anchor: false },
+      { name: "Burundi", iso: "108", sub: "East Africa", macro: "Sub-Saharan Africa", flag: "🇧🇮", cap: "Gitega", anchor: false },
+      { name: "Somalia", iso: "706", sub: "East Africa", macro: "Sub-Saharan Africa", flag: "🇸🇴", cap: "Mogadishu", anchor: false },
+      { name: "South Sudan", iso: "728", sub: "East Africa", macro: "Sub-Saharan Africa", flag: "🇸🇸", cap: "Juba", anchor: false },
+      { name: "Eritrea", iso: "232", sub: "East Africa", macro: "Sub-Saharan Africa", flag: "🇪🇷", cap: "Asmara", anchor: false },
+      { name: "Madagascar", iso: "450", sub: "East Africa", macro: "Sub-Saharan Africa", flag: "🇲🇬", cap: "Antananarivo", anchor: false },
+      { name: "Djibouti", iso: "262", sub: "East Africa", macro: "Sub-Saharan Africa", flag: "🇩🇯", cap: "Djibouti City", anchor: false },
+      { name: "South Africa", iso: "710", sub: "Southern Africa", macro: "Sub-Saharan Africa", flag: "🇿🇦", cap: "Pretoria", anchor: true },
+      { name: "Angola", iso: "024", sub: "Southern Africa", macro: "Sub-Saharan Africa", flag: "🇦🇴", cap: "Luanda", anchor: false },
+      { name: "Mozambique", iso: "508", sub: "Southern Africa", macro: "Sub-Saharan Africa", flag: "🇲🇿", cap: "Maputo", anchor: false },
+      { name: "Zambia", iso: "894", sub: "Southern Africa", macro: "Sub-Saharan Africa", flag: "🇿🇲", cap: "Lusaka", anchor: false },
+      { name: "Zimbabwe", iso: "716", sub: "Southern Africa", macro: "Sub-Saharan Africa", flag: "🇿🇼", cap: "Harare", anchor: false },
+      { name: "Namibia", iso: "516", sub: "Southern Africa", macro: "Sub-Saharan Africa", flag: "🇳🇦", cap: "Windhoek", anchor: false },
+      { name: "Botswana", iso: "072", sub: "Southern Africa", macro: "Sub-Saharan Africa", flag: "🇧🇼", cap: "Gaborone", anchor: false },
+      { name: "Malawi", iso: "454", sub: "Southern Africa", macro: "Sub-Saharan Africa", flag: "🇲🇼", cap: "Lilongwe", anchor: false },
+      { name: "Lesotho", iso: "426", sub: "Southern Africa", macro: "Sub-Saharan Africa", flag: "🇱🇸", cap: "Maseru", anchor: false },
+      { name: "Eswatini", iso: "748", sub: "Southern Africa", macro: "Sub-Saharan Africa", flag: "🇸🇿", cap: "Mbabane", anchor: false },
+      { name: "Saudi Arabia", iso: "682", sub: "Middle East", macro: "Asia", flag: "🇸🇦", cap: "Riyadh", anchor: true },
+      { name: "Iran", iso: "364", sub: "Middle East", macro: "Asia", flag: "🇮🇷", cap: "Tehran", anchor: true },
+      { name: "Turkey", iso: "792", sub: "Middle East", macro: "Asia", flag: "🇹🇷", cap: "Ankara", anchor: true },
+      { name: "Iraq", iso: "368", sub: "Middle East", macro: "Asia", flag: "🇮🇶", cap: "Baghdad", anchor: false },
+      { name: "Israel", iso: "376", sub: "Middle East", macro: "Asia", flag: "🇮🇱", cap: "Jerusalem", anchor: false },
+      { name: "United Arab Emirates", iso: "784", sub: "Middle East", macro: "Asia", flag: "🇦🇪", cap: "Abu Dhabi", anchor: false },
+      { name: "Jordan", iso: "400", sub: "Middle East", macro: "Asia", flag: "🇯🇴", cap: "Amman", anchor: false },
+      { name: "Syria", iso: "760", sub: "Middle East", macro: "Asia", flag: "🇸🇾", cap: "Damascus", anchor: false },
+      { name: "Lebanon", iso: "422", sub: "Middle East", macro: "Asia", flag: "🇱🇧", cap: "Beirut", anchor: false },
+      { name: "Oman", iso: "512", sub: "Middle East", macro: "Asia", flag: "🇴🇲", cap: "Muscat", anchor: false },
+      { name: "Yemen", iso: "887", sub: "Middle East", macro: "Asia", flag: "🇾🇪", cap: "Sanaa", anchor: false },
+      { name: "Qatar", iso: "634", sub: "Middle East", macro: "Asia", flag: "🇶🇦", cap: "Doha", anchor: false },
+      { name: "Kuwait", iso: "414", sub: "Middle East", macro: "Asia", flag: "🇰🇼", cap: "Kuwait City", anchor: false },
+      { name: "Cyprus", iso: "196", sub: "Middle East", macro: "Asia", flag: "🇨🇾", cap: "Nicosia", anchor: false },
+      { name: "Armenia", iso: "051", sub: "Middle East", macro: "Asia", flag: "🇦🇲", cap: "Yerevan", anchor: false },
+      { name: "Azerbaijan", iso: "031", sub: "Middle East", macro: "Asia", flag: "🇦🇿", cap: "Baku", anchor: false },
+      { name: "Georgia", iso: "268", sub: "Middle East", macro: "Asia", flag: "🇬🇪", cap: "Tbilisi", anchor: false },
+      { name: "Kazakhstan", iso: "398", sub: "Central Asia", macro: "Asia", flag: "🇰🇿", cap: "Astana", anchor: true },
+      { name: "Uzbekistan", iso: "860", sub: "Central Asia", macro: "Asia", flag: "🇺🇿", cap: "Tashkent", anchor: false },
+      { name: "Turkmenistan", iso: "795", sub: "Central Asia", macro: "Asia", flag: "🇹🇲", cap: "Ashgabat", anchor: false },
+      { name: "Kyrgyzstan", iso: "417", sub: "Central Asia", macro: "Asia", flag: "🇰🇬", cap: "Bishkek", anchor: false },
+      { name: "Tajikistan", iso: "762", sub: "Central Asia", macro: "Asia", flag: "🇹🇯", cap: "Dushanbe", anchor: false },
+      { name: "Afghanistan", iso: "004", sub: "Central Asia", macro: "Asia", flag: "🇦🇫", cap: "Kabul", anchor: false },
+      { name: "India", iso: "356", sub: "South Asia", macro: "Asia", flag: "🇮🇳", cap: "New Delhi", anchor: true },
+      { name: "Pakistan", iso: "586", sub: "South Asia", macro: "Asia", flag: "🇵🇰", cap: "Islamabad", anchor: false },
+      { name: "Bangladesh", iso: "050", sub: "South Asia", macro: "Asia", flag: "🇧🇩", cap: "Dhaka", anchor: false },
+      { name: "Nepal", iso: "524", sub: "South Asia", macro: "Asia", flag: "🇳🇵", cap: "Kathmandu", anchor: false },
+      { name: "Sri Lanka", iso: "144", sub: "South Asia", macro: "Asia", flag: "🇱🇰", cap: "Colombo", anchor: false },
+      { name: "Bhutan", iso: "064", sub: "South Asia", macro: "Asia", flag: "🇧🇹", cap: "Thimphu", anchor: false },
+      { name: "China", iso: "156", sub: "East Asia", macro: "Asia", flag: "🇨🇳", cap: "Beijing", anchor: true },
+      { name: "Japan", iso: "392", sub: "East Asia", macro: "Asia", flag: "🇯🇵", cap: "Tokyo", anchor: true },
+      { name: "South Korea", iso: "410", sub: "East Asia", macro: "Asia", flag: "🇰🇷", cap: "Seoul", anchor: false },
+      { name: "North Korea", iso: "408", sub: "East Asia", macro: "Asia", flag: "🇰🇵", cap: "Pyongyang", anchor: false },
+      { name: "Mongolia", iso: "496", sub: "East Asia", macro: "Asia", flag: "🇲🇳", cap: "Ulaanbaatar", anchor: false },
+      { name: "Taiwan", iso: "158", sub: "East Asia", macro: "Asia", flag: "🇹🇼", cap: "Taipei", anchor: false },
+      { name: "Indonesia", iso: "360", sub: "Southeast Asia", macro: "Asia", flag: "🇮🇩", cap: "Jakarta", anchor: true },
+      { name: "Philippines", iso: "608", sub: "Southeast Asia", macro: "Asia", flag: "🇵🇭", cap: "Manila", anchor: false },
+      { name: "Vietnam", iso: "704", sub: "Southeast Asia", macro: "Asia", flag: "🇻🇳", cap: "Hanoi", anchor: false },
+      { name: "Thailand", iso: "764", sub: "Southeast Asia", macro: "Asia", flag: "🇹🇭", cap: "Bangkok", anchor: false },
+      { name: "Myanmar", iso: "104", sub: "Southeast Asia", macro: "Asia", flag: "🇲🇲", cap: "Naypyidaw", anchor: false },
+      { name: "Malaysia", iso: "458", sub: "Southeast Asia", macro: "Asia", flag: "🇲🇾", cap: "Kuala Lumpur", anchor: false },
+      { name: "Cambodia", iso: "116", sub: "Southeast Asia", macro: "Asia", flag: "🇰🇭", cap: "Phnom Penh", anchor: false },
+      { name: "Laos", iso: "418", sub: "Southeast Asia", macro: "Asia", flag: "🇱🇦", cap: "Vientiane", anchor: false },
+      { name: "Singapore", iso: "702", sub: "Southeast Asia", macro: "Asia", flag: "🇸🇬", cap: "Singapore", anchor: false },
+      { name: "Australia", iso: "036", sub: "Australia & New Zealand", macro: "Oceania", flag: "🇦🇺", cap: "Canberra", anchor: true },
+      { name: "New Zealand", iso: "554", sub: "Australia & New Zealand", macro: "Oceania", flag: "🇳🇿", cap: "Wellington", anchor: false },
+      { name: "Papua New Guinea", iso: "598", sub: "Melanesia", macro: "Oceania", flag: "🇵🇬", cap: "Port Moresby", anchor: true },
+      { name: "Fiji", iso: "242", sub: "Melanesia", macro: "Oceania", flag: "🇫🇯", cap: "Suva", anchor: false },
+      { name: "Solomon Islands", iso: "090", sub: "Melanesia", macro: "Oceania", flag: "🇸🇧", cap: "Honiara", anchor: false },
+      { name: "Vanuatu", iso: "548", sub: "Melanesia", macro: "Oceania", flag: "🇻🇺", cap: "Port Vila", anchor: false },
+      { name: "Micronesia", iso: "583", sub: "Micronesia", macro: "Oceania", flag: "🇫🇲", cap: "Palikir", anchor: true }
+    ];
+
+    const ISO_MAP = new Map();
+    const NAME_MAP = new Map();
+    COUNTRIES_DB.forEach(c => {
+      ISO_MAP.set(c.iso, c);
+      ISO_MAP.set(parseInt(c.iso, 10).toString(), c);
+      ISO_MAP.set(String(parseInt(c.iso, 10)).padStart(3, '0'), c);
+      NAME_MAP.set(c.name.toLowerCase(), c);
+    });
+
+    let currentActiveRegion = null;
+    let selectedCountry = null;
+    let svg, g, path, projection, zoom;
+    let quizSvg, quizG, quizPath, quizProjection;
+    let worldGeoData = [];
+
+    // Tab Navigation Logic
+    function switchTab(tabId) {
+      ['explore', 'anchors', 'quiz', 'continent', 'traps'].forEach(t => {
+        const viewEl = document.getElementById(`view-${t}`);
+        const btnEl = document.getElementById(`tabBtn-${t}`);
+        
+        if (!viewEl) return;
+        if (t === tabId) {
+          viewEl.classList.remove('hidden');
+          if (btnEl) btnEl.className = "btn-retro active-tab px-4 py-2 text-xs md:text-sm";
+        } else {
+          viewEl.classList.add('hidden');
+          if (btnEl) btnEl.className = "btn-retro px-4 py-2 text-xs md:text-sm !bg-white !text-mm-navy hover:!bg-gray-100";
+        }
+      });
+      if (tabId === 'quiz' && quizState.questions.length === 0) startNewQuiz(20);
+    }
+
+    // Camera Navigation Helper
+    function zoomToCountry(country) {
+      if (!country || !worldGeoData.length || !path) return;
+      const targetFeature = worldGeoData.find(d => {
+        const c = ISO_MAP.get(String(d.id));
+        return c && c.name === country.name;
+      });
+
+      if (targetFeature) {
+        const bounds = path.bounds(targetFeature);
+        const dx = bounds[1][0] - bounds[0][0], dy = bounds[1][1] - bounds[0][1];
+        const x = (bounds[0][0] + bounds[1][0]) / 2, y = (bounds[0][1] + bounds[1][1]) / 2;
+        const scale = Math.max(1.2, Math.min(5, 0.7 / Math.max(dx / 960, dy / 500)));
+        const translate = [960 / 2 - scale * x, 500 / 2 - scale * y];
+        svg.transition().duration(650).call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale));
+      }
+    }
+
+    function zoomToSubRegion(subRegionName) {
+      if (!worldGeoData.length || !path) return;
+      const regionFeatures = worldGeoData.filter(d => {
+        const c = ISO_MAP.get(String(d.id));
+        return c && c.sub === subRegionName;
+      });
+
+      if (regionFeatures.length > 0) {
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        regionFeatures.forEach(f => {
+          const b = path.bounds(f);
+          minX = Math.min(minX, b[0][0]); minY = Math.min(minY, b[0][1]);
+          maxX = Math.max(maxX, b[1][0]); maxY = Math.max(maxY, b[1][1]);
+        });
+        const dx = maxX - minX, dy = maxY - minY;
+        const x = (minX + maxX) / 2, y = (minY + maxY) / 2;
+        const scale = Math.max(1.2, Math.min(4.5, 0.75 / Math.max(dx / 960, dy / 500)));
+        const translate = [960 / 2 - scale * x, 500 / 2 - scale * y];
+        svg.transition().duration(700).call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale));
+      }
+    }
+
+    function navigateToMap(subRegionName, countryName = null) {
+      switchTab('explore');
+      filterBySubRegion(subRegionName);
+      if (countryName) {
+        const target = COUNTRIES_DB.find(c => c.name.toLowerCase() === countryName.toLowerCase());
+        if (target) {
+          selectCountry(target);
+          setTimeout(() => zoomToCountry(target), 120);
+          return;
+        }
+      }
+      setTimeout(() => zoomToSubRegion(subRegionName), 120);
+    }
+
+    // Filter Buttons Renderer
+    function renderSubregionButtons() {
+      const container = document.getElementById('subregionButtonsContainer');
+      container.innerHTML = '';
+      Object.keys(SUBREGIONS_INFO).forEach(sub => {
+        const info = SUBREGIONS_INFO[sub];
+        const btn = document.createElement('button');
+        btn.id = `btn-sub-${sub.replace(/[^a-zA-Z0-9]/g, '-')}`;
+        btn.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-2 bg-white text-mm-navy border-2 border-gray-200 hover:border-mm-navy shadow-[2px_2px_0px_#141B2D] uppercase tracking-wider";
+        btn.innerHTML = `<span class="w-3 h-3 rounded-full border border-gray-300" style="background-color: ${info.color}"></span> ${sub}`;
+        btn.onclick = () => filterBySubRegion(sub);
+        container.appendChild(btn);
+      });
+    }
+
+    // Map Renderer Logic
+    function initializeMap() {
+      const width = 960, height = 500;
+      svg = d3.select("#worldMapSvg");
+      svg.selectAll("*").remove();
+
+      projection = d3.geoEqualEarth().scale(165).translate([width / 2, height / 2]);
+      path = d3.geoPath().projection(projection);
+
+      zoom = d3.zoom().scaleExtent([1, 8]).on("zoom", (event) => g.attr("transform", event.transform));
+      svg.call(zoom);
+      g = svg.append("g");
+
+      g.append("path").datum(d3.geoGraticule()).attr("class", "graticule").attr("d", path).attr("fill", "none").attr("stroke", "#1e293b").attr("stroke-width", 0.5);
+
+      // Using the 50m resolution map guarantees Melanesia islands (Fiji, Vanuatu, Solomon Islands) load properly
+      fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json")
+        .then(res => res.json())
+        .then(worldData => {
+          worldGeoData = topojson.feature(worldData, worldData.objects.countries).features;
+          
+          g.selectAll(".country-path")
+            .data(worldGeoData)
+            .enter()
+            .append("path")
+            .attr("class", "country-path")
+            .attr("d", path)
+            .attr("id", d => `country-${d.id}`)
+            .attr("fill", d => {
+              const countryInfo = ISO_MAP.get(String(d.id));
+              if (countryInfo && SUBREGIONS_INFO[countryInfo.sub]) return SUBREGIONS_INFO[countryInfo.sub].color;
+              return "#334155"; // Base slate color for non-listed territories
+            })
+            .attr("stroke", "#090d16")
+            .attr("stroke-width", 0.6)
+            .on("mouseenter", (event, d) => handleCountryHover(event, d))
+            .on("mousemove", (event) => moveTooltip(event))
+            .on("mouseleave", handleCountryLeave)
+            .on("click", (event, d) => handleCountryClick(d));
+
+          document.getElementById('mapLoader').classList.add('opacity-0', 'pointer-events-none');
+          initializeQuizMap();
+        });
+    }
+
+    function handleCountryHover(event, d) {
+      const country = ISO_MAP.get(String(d.id));
+      const tooltip = document.getElementById('mapTooltip');
+      
+      if (country) {
+        document.getElementById('ttName').textContent = `${country.flag || '📍'} ${country.name}`;
+        document.getElementById('ttRegion').textContent = `${country.sub} • ${country.macro}`;
+      } else {
+        const fallbackName = d.properties && d.properties.name ? d.properties.name : `Territory`;
+        document.getElementById('ttName').textContent = `📍 ${fallbackName}`;
+        document.getElementById('ttRegion').textContent = "Not explicitly in AP list";
+      }
+      tooltip.classList.remove('hidden');
+    }
+
+    function moveTooltip(event) {
+      const tooltip = document.getElementById('mapTooltip');
+      const rect = document.getElementById('mapWrapper').getBoundingClientRect();
+      tooltip.style.left = `${Math.min(event.clientX - rect.left + 15, rect.width - 150)}px`;
+      tooltip.style.top = `${Math.min(event.clientY - rect.top + 15, rect.height - 50)}px`;
+    }
+
+    function handleCountryLeave() { document.getElementById('mapTooltip').classList.add('hidden'); }
+    function handleCountryClick(d) { const country = ISO_MAP.get(String(d.id)); if (country) selectCountry(country); }
+    function zoomMap(scaleFactor) { svg.transition().duration(350).call(zoom.scaleBy, scaleFactor); }
+    function resetMapZoom() { svg.transition().duration(400).call(zoom.transform, d3.zoomIdentity); }
+
+    // Detail Panel Logic
+    function filterBySubRegion(subRegionName) {
+      currentActiveRegion = subRegionName;
+      const subInfo = SUBREGIONS_INFO[subRegionName];
+      if (!subInfo) return;
+
+      Object.keys(SUBREGIONS_INFO).forEach(s => {
+        const btn = document.getElementById(`btn-sub-${s.replace(/[^a-zA-Z0-9]/g, '-')}`);
+        if (btn) {
+          if (s === subRegionName) {
+            btn.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-2 bg-mm-navy text-white border-2 border-mm-navy shadow-[2px_2px_0px_#141B2D] uppercase tracking-wider";
+          } else {
+            btn.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-2 bg-white text-mm-navy border-2 border-gray-200 hover:border-mm-navy shadow-[2px_2px_0px_#141B2D] uppercase tracking-wider";
+          }
+        }
+      });
+
+      const badge = document.getElementById('activeFilterBadge');
+      badge.classList.remove('hidden');
+      badge.innerHTML = `<span class="w-3 h-3 rounded-full inline-block mr-2 border border-slate-600" style="background:${subInfo.color}"></span> Active Sub-Region: ${subRegionName}`;
+
+      d3.selectAll(".country-path").each(function(d) {
+        const c = ISO_MAP.get(String(d.id));
+        if (c && c.sub === subRegionName) {
+          d3.select(this).classed("country-dimmed", false).classed("country-highlighted", true).attr("fill", subInfo.color);
+        } else {
+          d3.select(this).classed("country-dimmed", true).classed("country-highlighted", false);
+        }
+      });
+
+      const anchorCountryRecord = COUNTRIES_DB.find(c => c.sub === subRegionName && c.anchor) || COUNTRIES_DB.find(c => c.sub === subRegionName);
+      if (anchorCountryRecord) selectCountry(anchorCountryRecord);
+    }
+
+    function resetRegionFilter() {
+      currentActiveRegion = null;
+      document.getElementById('activeFilterBadge').classList.add('hidden');
+
+      Object.keys(SUBREGIONS_INFO).forEach(s => {
+        const btn = document.getElementById(`btn-sub-${s.replace(/[^a-zA-Z0-9]/g, '-')}`);
+        if (btn) btn.className = "px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-2 bg-white text-mm-navy border-2 border-gray-200 hover:border-mm-navy shadow-[2px_2px_0px_#141B2D] uppercase tracking-wider";
+      });
+
+      d3.selectAll(".country-path").classed("country-dimmed", false).classed("country-highlighted", false)
+        .attr("fill", d => {
+          const c = ISO_MAP.get(String(d.id));
+          return (c && SUBREGIONS_INFO[c.sub]) ? SUBREGIONS_INFO[c.sub].color : "#334155";
+        });
+    }
+
+    function selectCountry(country) {
+      selectedCountry = country;
+      const subInfo = SUBREGIONS_INFO[country.sub];
+
+      document.getElementById('detailBadgeMacro').textContent = country.macro;
+      document.getElementById('detailCountryName').textContent = country.name;
+      document.getElementById('detailFlag').textContent = country.flag || "📍";
+      
+      const regionBox = document.getElementById('detailRegionBox');
+      regionBox.style.borderColor = subInfo.color;
+      document.getElementById('detailSubRegionName').textContent = country.sub;
+
+      const anchorTitle = document.getElementById('detailAnchorTitle');
+      const anchorDesc = document.getElementById('detailAnchorDesc');
+      if (country.anchor) {
+        anchorTitle.innerHTML = `<span>⭐</span> <span>Anchor Country (${country.name})</span>`;
+        anchorDesc.textContent = subInfo.anchorWhy || "Key landmark country for this AP region.";
+      } else {
+        anchorTitle.innerHTML = `Member of ${country.sub}`;
+        anchorDesc.textContent = `Anchored primarily by: ${subInfo.anchor || 'Regional cluster'}. Remember: ${country.name} belongs here!`;
+      }
+
+      const siblingsContainer = document.getElementById('detailSiblingsList');
+      siblingsContainer.innerHTML = '';
+      COUNTRIES_DB.filter(c => c.sub === country.sub).forEach(sib => {
+        const btn = document.createElement('button');
+        const isCurrent = sib.name === country.name;
+        btn.className = `px-2 py-1 rounded-md text-[11px] font-bold uppercase transition border ${isCurrent ? 'bg-mm-navy text-white border-mm-navy' : 'bg-gray-100 text-mm-slate border-gray-300 hover:bg-gray-200'}`;
+        btn.textContent = `${sib.flag || ''} ${sib.name}`;
+        btn.onclick = () => { selectCountry(sib); zoomToCountry(sib); };
+        siblingsContainer.appendChild(btn);
+      });
+
+      d3.selectAll(".country-path").classed("country-highlighted", false);
+      d3.select(`#country-${country.iso}`).classed("country-highlighted", true);
+    }
+
+    function selectRandomCountry() {
+      const rand = COUNTRIES_DB[Math.floor(Math.random() * COUNTRIES_DB.length)];
+      selectCountry(rand);
+      zoomToCountry(rand);
+    }
+
+    // Search Component
+    function handleSearch(query) {
+      const val = query.trim().toLowerCase();
+      const dropdown = document.getElementById('searchResultsDropdown');
+      const clearBtn = document.getElementById('clearSearchBtn');
+
+      if (!val) { dropdown.classList.add('hidden'); clearBtn.classList.add('hidden'); return; }
+
+      clearBtn.classList.remove('hidden');
+      const matches = COUNTRIES_DB.filter(c => c.name.toLowerCase().includes(val) || c.sub.toLowerCase().includes(val) || c.macro.toLowerCase().includes(val)).slice(0, 7);
+
+      if (matches.length === 0) {
+        dropdown.innerHTML = `<div class="p-3 text-sm text-mm-slate font-medium">No match for "${query}"</div>`;
+        dropdown.classList.remove('hidden'); return;
+      }
+
+      dropdown.innerHTML = '';
+      matches.forEach(c => {
+        const item = document.createElement('div');
+        item.className = "p-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between transition";
+        item.innerHTML = `
+          <div class="flex items-center gap-3"><span class="text-xl drop-shadow-sm">${c.flag || '📍'}</span>
+          <div><div class="text-sm font-bold text-mm-navy">${c.name}</div>
+          <div class="text-[10px] text-mm-slate font-bold uppercase tracking-wider mt-0.5">${c.sub}</div></div></div>
+          ${c.anchor ? '<span class="text-[10px] text-mm-amber font-bold">⭐ Anchor</span>' : ''}
+        `;
+        item.onclick = () => { selectCountry(c); filterBySubRegion(c.sub); zoomToCountry(c); dropdown.classList.add('hidden'); document.getElementById('countrySearchInput').value = c.name; };
+        dropdown.appendChild(item);
+      });
+      dropdown.classList.remove('hidden');
+    }
+
+    function clearSearch() {
+      document.getElementById('countrySearchInput').value = '';
+      document.getElementById('searchResultsDropdown').classList.add('hidden');
+      document.getElementById('clearSearchBtn').classList.add('hidden');
+      resetRegionFilter();
+    }
+
+    // Anchor Directory
+    function renderAnchorsDirectory() {
+      const container = document.getElementById('regionsDirectoryCards');
+      container.innerHTML = '';
+      Object.keys(SUBREGIONS_INFO).forEach(subKey => {
+        const sub = SUBREGIONS_INFO[subKey];
+        const card = document.createElement('div');
+        card.className = "bg-white border-2 border-mm-navy rounded-xl p-5 flex flex-col justify-between transition space-y-4 shadow-[4px_4px_0px_#141B2D]";
+        const countriesInRegion = COUNTRIES_DB.filter(c => c.sub === subKey);
+
+        card.innerHTML = `
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold tracking-wider uppercase px-2 py-1 rounded bg-gray-100 text-mm-slate border border-gray-200">${sub.macro}</span>
+              <span class="w-4 h-4 rounded-full border-2 border-mm-navy" style="background-color: ${sub.color}"></span>
+            </div>
+            <div class="flex items-center justify-between">
+              <h3 class="serif-font text-2xl font-bold text-mm-navy leading-none">${subKey}</h3>
+              <button onclick="navigateToMap('${subKey}')" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-blue-50 text-mm-primary hover:bg-mm-primary hover:text-white transition border-2 border-mm-primary shadow-sm uppercase">📍 Map</button>
+            </div>
+            <div class="p-3 rounded-xl border-2 border-mm-amber bg-[#FEFCBF] text-xs space-y-1">
+              <div class="text-[11px] font-bold text-mm-amber uppercase tracking-wide">⭐ Anchor: ${sub.anchor}</div>
+              <p class="text-mm-navy text-[11px] font-medium leading-snug">${sub.anchorWhy}</p>
+            </div>
+          </div>
+          <div class="space-y-2 pt-3 border-t-2 border-gray-100">
+            <div class="flex flex-wrap gap-1.5">
+              ${countriesInRegion.map(c => `<button onclick="navigateToMap('${subKey}', '${c.name}')" class="px-2 py-1 rounded-md text-[10px] font-bold transition border-2 ${c.anchor ? 'bg-orange-50 text-mm-amber border-mm-amber' : 'bg-gray-50 text-mm-slate border-gray-200 hover:bg-gray-100'}">${c.flag || ''} ${c.name}</button>`).join('')}
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Seterra Quiz Game Logic
+    let quizState = { currentIdx: 0, score: 0, totalQuestions: 20, questions: [], answered: false, missed: [] };
+
+    function initializeQuizMap() {
+      const width = 960, height = 500;
+      quizSvg = d3.select("#quizMapSvg");
+      quizSvg.selectAll("*").remove();
+      quizProjection = d3.geoEqualEarth().scale(165).translate([width / 2, height / 2]);
+      quizPath = d3.geoPath().projection(quizProjection);
+      quizG = quizSvg.append("g");
+      quizG.append("path").datum(d3.geoGraticule()).attr("class", "graticule").attr("d", quizPath).attr("fill", "none").attr("stroke", "#1e293b").attr("stroke-width", 0.5);
+
+      quizG.selectAll(".quiz-country-path")
+        .data(worldGeoData).enter().append("path")
+        .attr("class", "quiz-country-path transition-all duration-200")
+        .attr("d", quizPath).attr("fill", "#334155").attr("stroke", "#090d16").attr("stroke-width", 0.6)
+        .on("mouseenter", handleQuizMapHover)
+        .on("mousemove", moveQuizTooltip)
+        .on("mouseleave", handleQuizMapLeave)
+        .on("click", (event, d) => handleQuizMapClick(d));
+    }
+
+    function handleQuizMapHover(event, d) {
+      if (quizState.answered) return;
+      const country = ISO_MAP.get(String(d.id));
+      if (!country || !SUBREGIONS_INFO[country.sub]) return;
+      const subRegionName = country.sub;
+      d3.select("#quizMapSvg").selectAll(".quiz-country-path")
+        .attr("opacity", data => { const c = ISO_MAP.get(String(data.id)); return (c && c.sub === subRegionName) ? 1 : 0.3; })
+        .attr("fill", data => { const c = ISO_MAP.get(String(data.id)); if (c && c.sub === subRegionName) return SUBREGIONS_INFO[subRegionName].color; return "#334155"; });
+      const tooltip = document.getElementById('quizMapTooltip');
+      tooltip.textContent = subRegionName;
+      tooltip.classList.remove('hidden');
+    }
+
+    function handleQuizMapLeave() {
+      if (quizState.answered) return;
+      d3.select("#quizMapSvg").selectAll(".quiz-country-path").attr("opacity", 1).attr("fill", "#334155");
+      document.getElementById('quizMapTooltip').classList.add('hidden');
+    }
+
+    function moveQuizTooltip(event) {
+      if (quizState.answered) return;
+      const tooltip = document.getElementById('quizMapTooltip');
+      const rect = document.getElementById('quizMapContainer').getBoundingClientRect();
+      tooltip.style.left = `${Math.min(event.clientX - rect.left + 15, rect.width - 150)}px`;
+      tooltip.style.top = `${Math.min(event.clientY - rect.top + 15, rect.height - 40)}px`;
+    }
+
+    function handleQuizMapClick(d) {
+      if (quizState.answered) return;
+      const country = ISO_MAP.get(String(d.id));
+      if (!country || !SUBREGIONS_INFO[country.sub]) return;
+      
+      quizState.answered = true;
+      document.getElementById('quizMapTooltip').classList.add('hidden');
+      
+      const selectedSub = country.sub;
+      const currentQuestion = quizState.questions[quizState.currentIdx];
+      const correctSub = currentQuestion.sub;
+      const isCorrect = selectedSub === correctSub;
+      
+      d3.select("#quizMapSvg").selectAll(".quiz-country-path")
+        .attr("opacity", 1)
+        .attr("fill", function(data) {
+            const c = ISO_MAP.get(String(data.id));
+            if (!c || !SUBREGIONS_INFO[c.sub]) return "#1e293b";
+            if (c.sub === correctSub) return "#38A169"; 
+            if (!isCorrect && c.sub === selectedSub) return "#E53E3E"; 
+            return "#334155"; 
+        });
+
+      const fb = document.getElementById('quizFeedbackBox');
+      if (isCorrect) {
+        quizState.score++;
+        fb.className = "p-4 rounded-xl border-2 space-y-1 bg-green-50 border-mm-green text-mm-green block mt-4 shadow-[2px_2px_0px_#141B2D]";
+        fb.innerHTML = `<div class="font-bold flex items-center gap-1.5 text-lg"><span>✓ Correct!</span></div><p class="text-sm text-mm-navy font-medium">You identified <strong>${correctSub}</strong>! <strong>${currentQuestion.name}</strong> is located here.</p>`;
+      } else {
+        quizState.missed.push({ country: currentQuestion, selected: selectedSub });
+        fb.className = "p-4 rounded-xl border-2 space-y-1 bg-red-50 border-mm-red text-mm-red block mt-4 shadow-[2px_2px_0px_#141B2D]";
+        fb.innerHTML = `<div class="font-bold flex items-center gap-1.5 text-lg"><span>✕ Incorrect</span></div><p class="text-sm text-mm-navy font-medium">You clicked <strong>${selectedSub}</strong>. <strong>${currentQuestion.name}</strong> is actually located in <strong>${correctSub}</strong> (highlighted in green).</p>`;
+      }
+      updateQuizScoreDisplay();
+      document.getElementById('quizNextBtn').classList.remove('hidden');
+    }
+
+    function startNewQuiz(numQuestions = 20) {
+      document.getElementById('quizResultsCard').classList.add('hidden');
+      document.getElementById('quizContainer').classList.remove('hidden');
+      const shuffled = [...COUNTRIES_DB].sort(() => 0.5 - Math.random());
+      quizState.questions = shuffled.slice(0, numQuestions);
+      quizState.totalQuestions = quizState.questions.length;
+      quizState.currentIdx = 0; quizState.score = 0; quizState.missed = []; quizState.answered = false;
+      document.getElementById('quiz-main-title').textContent = `20-Country Global Quiz`;
+      updateQuizScoreDisplay(); renderCurrentQuizQuestion();
+    }
+
+    function startContinentQuiz(macroRegion) {
+      switchTab('quiz');
+      document.getElementById('quizResultsCard').classList.add('hidden');
+      document.getElementById('quizContainer').classList.remove('hidden');
+      const filteredCountries = COUNTRIES_DB.filter(c => c.macro === macroRegion || (macroRegion === 'Africa' && c.macro === 'Sub-Saharan Africa'));
+      const shuffled = [...filteredCountries].sort(() => 0.5 - Math.random());
+      quizState.questions = shuffled.slice(0, Math.min(20, shuffled.length));
+      quizState.totalQuestions = quizState.questions.length;
+      quizState.currentIdx = 0; quizState.score = 0; quizState.missed = []; quizState.answered = false;
+      document.getElementById('quiz-main-title').textContent = `${macroRegion} Isolation Practice`;
+      updateQuizScoreDisplay(); renderCurrentQuizQuestion();
+    }
+
+    function updateQuizScoreDisplay() {
+      document.getElementById('quizScoreDisplay').textContent = `${quizState.score} / ${quizState.currentIdx}`;
+      const pct = quizState.currentIdx === 0 ? 100 : Math.round((quizState.score / quizState.currentIdx) * 100);
+      document.getElementById('quizAccuracyRate').textContent = `Accuracy: ${pct}%`;
+    }
+
+    function renderCurrentQuizQuestion() {
+      quizState.answered = false;
+      const current = quizState.questions[quizState.currentIdx];
+      document.getElementById('quizQuestionNumber').textContent = `Question ${quizState.currentIdx + 1} of ${quizState.totalQuestions}`;
+      document.getElementById('quizProgressBar').style.width = `${((quizState.currentIdx + 1) / quizState.totalQuestions) * 100}%`;
+      document.getElementById('quizCountryName').textContent = current.name;
+      document.getElementById('quizCountryFlag').textContent = current.flag || '🏳️';
+      document.getElementById('quizCountryCapital').textContent = `Capital: ${current.cap}`;
+      document.getElementById('quizFeedbackBox').className = "hidden";
+      document.getElementById('quizNextBtn').classList.add('hidden');
+      if (quizSvg) quizSvg.selectAll(".quiz-country-path").attr("opacity", 1).attr("fill", "#334155");
+    }
+
+    function nextQuizQuestion() {
+      quizState.currentIdx++;
+      if (quizState.currentIdx < quizState.totalQuestions) renderCurrentQuizQuestion();
+      else finishQuiz();
+    }
+
+    function finishQuiz() {
+      document.getElementById('quizContainer').classList.add('hidden');
+      const resultsCard = document.getElementById('quizResultsCard');
+      resultsCard.classList.remove('hidden');
+      const pct = Math.round((quizState.score / quizState.totalQuestions) * 100);
+      document.getElementById('finalScoreGrade').textContent = `${quizState.score} / ${quizState.totalQuestions} (${pct}%)`;
+      const missedSection = document.getElementById('missedQuestionsSection');
+      const missedList = document.getElementById('missedList');
+      if (quizState.missed.length > 0) {
+        missedSection.classList.remove('hidden');
+        missedList.innerHTML = quizState.missed.map(m => `<div class="p-2 rounded bg-gray-50 border-2 border-gray-200 flex justify-between items-center"><span class="font-bold text-mm-navy">${m.country.name}</span><span class="text-mm-primary font-bold text-xs uppercase">${m.country.sub}</span></div>`).join('');
+      } else missedSection.classList.add('hidden');
+    }
+
+    // Guided Tour Logic
+    const GUIDED_STOPS = [
+      { sub: "West Africa", country: "Nigeria", title: "Stop 1: West Africa (Anchor: Nigeria)", text: "Start with the Atlantic bulge of Africa! Nigeria is Africa's most populous country." },
+      { sub: "Middle East", country: "Saudi Arabia", title: "Stop 2: Middle East (Anchor: Saudi Arabia)", text: "At the crossroads of Europe, Africa, and Asia sits Southwest Asia (Middle East)." },
+      { sub: "South Asia", country: "India", title: "Stop 3: South Asia (Anchor: India)", text: "South Asia is the giant subcontinent walled off by the Himalayas." }
+    ];
+    let tourIndex = 0;
+    function startGuidedTour() { tourIndex = 0; runTourStop(tourIndex); }
+    function runTourStop(index) {
+      const stop = GUIDED_STOPS[index];
+      navigateToMap(stop.sub, stop.country);
+      document.getElementById('detailAnchorDesc').innerHTML = `<span class="text-mm-primary font-bold block mb-1">🧭 ${stop.title}</span>${stop.text}<div class="mt-2.5 flex items-center justify-between"><span class="text-[10px] text-mm-slate font-bold uppercase">Step ${index + 1} of ${GUIDED_STOPS.length}</span><button onclick="nextTourStop()" class="px-2.5 py-1 bg-mm-primary text-white rounded font-bold text-xs border border-mm-navy shadow-sm">${index < GUIDED_STOPS.length - 1 ? 'Next Stop →' : 'Finish Tour ✓'}</button></div>`;
+    }
+    function nextTourStop() {
+      tourIndex++;
+      if (tourIndex < GUIDED_STOPS.length) runTourStop(tourIndex);
+      else document.getElementById('detailAnchorDesc').innerHTML = "🎉 <strong>Great job!</strong> You completed the beginner tour. Now test yourself in the <strong>Seterra Quiz</strong> tab!";
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderSubregionButtons();
+      renderAnchorsDirectory();
+      initializeMap();
+      const defaultAnchor = COUNTRIES_DB.find(c => c.name === "Nigeria");
+      if (defaultAnchor) selectCountry(defaultAnchor);
+    });
+  </script>
+</body>
+</html>
