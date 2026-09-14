@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Degree Dilemma | Market Minds</title>
+    
+    <!-- Circular Favicon from Market Minds -->
+    <link rel="icon" href="https://lh3.googleusercontent.com/pw/AP1GczM7dpwqAoD3jtUidsgOIQFPZDEIKJ7EGbftLFTFiav-DhaJgi0Q11HiGT4W356SuFpAhDLxDeVI4xhP1eEt8IeylLovcNhQXZ90Rw_q2fkQpnOo6JsnYH42l8TxXwCZ4WtBqKrM7AHyn1ozyKZBnQSq=w992-h992-s-no-gm?authuser=0" type="image/jpeg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS Configuration -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-bg-light': '#F0F4F9',
+                        'brand-bg-dark': '#E4ECF5',
+                        'brand-primary': '#6C88C4',
+                        'brand-primary-hover': '#4A607A',
+                        'brand-navy': '#141B2D',
+                        'brand-slate': '#4A5568',
+                        'brand-accent': '#D0E2EE',
+                        'danger-red': '#E53E3E',
+                        'success-green': '#38A169',
+                        'warning-amber': '#D69E2E',
+                    },
+                    fontFamily: {
+                        serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+                        sans: ['"Inter"', 'sans-serif'],
+                        mono: ['"Space Mono"', 'monospace'], 
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-gradient-start: #F0F4F9;
+            --bg-gradient-end: #E4ECF5;
+            --brand-primary: #6C88C4;
+            --brand-primary-hover: #4A607A;
+            --text-navy: #141B2D;
+            --text-slate: #4A5568;
+            --glass-white: rgba(255, 255, 255, 0.88);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            color: var(--text-navy);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .serif-font {
+            font-family: 'Instrument Serif', Georgia, serif;
+            letter-spacing: 0.02em;
+            color: var(--text-navy);
+            text-transform: uppercase;
+        }
+
+        .glass-panel {
+            background: var(--glass-white);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid var(--text-navy);
+            border-radius: 16px;
+            box-shadow: 4px 4px 0px var(--text-navy);
+        }
+
+        .btn-retro {
+            background-color: var(--brand-primary);
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 14px 28px;
+            border: 2px solid var(--text-navy);
+            border-radius: 12px;
+            box-shadow: 4px 4px 0px var(--text-navy);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+
+        .btn-retro:hover:not(:disabled) {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--brand-primary-hover);
+            background-color: var(--brand-primary-hover);
+        }
+
+        .btn-retro:active:not(:disabled) {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--text-navy);
+        }
+
+        .btn-secondary {
+            background-color: #FFFFFF;
+            color: var(--text-navy);
+        }
+        
+        .btn-secondary:hover:not(:disabled) {
+            background-color: #F8FAFC;
+        }
+
+        .btn-choice {
+            text-align: left;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 20px;
+            height: 100%;
+            width: 100%;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(240, 244, 249, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--text-navy);
+            padding: 12px 24px;
+        }
+
+        .nav-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-logo-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+        
+        .brand-logo-wrap:hover {
+            transform: scale(1.02);
+        }
+
+        .brand-logo {
+            height: 44px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            width: 100%;
+        }
+
+        #app-container {
+            width: 100%;
+            max-width: 1000px;
+            position: relative;
+        }
+
+        .slide-up { animation: slideUp 0.5s ease-out forwards; }
+        .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        .fade-in { animation: fadeIn 0.4s ease-in-out forwards; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        .time-jump-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: var(--text-navy);
+            color: white;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .time-jump-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 28px;
+            width: 28px;
+            border-radius: 50%;
+            background: var(--brand-primary);
+            cursor: pointer;
+            margin-top: -10px;
+            border: 3px solid var(--text-navy);
+            box-shadow: 2px 2px 0px var(--text-navy);
+            transition: transform 0.1s;
+        }
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 10px;
+            cursor: pointer;
+            background: var(--text-navy);
+            border-radius: 5px;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .site-footer {
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 0.95rem;
+            color: var(--text-slate);
+            font-weight: 500;
+            margin-top: auto;
+        }
+
+        .site-footer a {
+            color: var(--brand-primary);
+            font-weight: 800;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.2s;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="https://marketmindsyouth.org/" target="_blank" rel="noopener noreferrer" class="brand-logo-wrap" title="Visit Market Minds">
+                <img src="https://lh3.googleusercontent.com/pw/AP1GczNsoqlPUEDJuh6m6J5ROUJS5meKcDo2Lu7D2LH93YTpEQpL7jF4X4-HvoKSn3blk9gKJHwWo5b6U0ODJ8ef518iTImmMffKDjDJzIJEsSkgtwrvqNcYY6Ginzh5f4uqKyu-U9rZFuxbSD8ejhHzzax2=w964-h190-s-no-gm?authuser=0" alt="Market Minds Logo" class="brand-logo">
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <div id="app-container">
+            <!-- Dynamic Content injected here by JS -->
+        </div>
+    </main>
+
+    <!-- Full Screen Time Jump Overlay -->
+    <div id="time-jump" class="time-jump-overlay">
+        <h2 class="font-serif text-6xl md:text-8xl mb-4 text-brand-bg-light" style="letter-spacing: 0.1em;">FAST FORWARD</h2>
+        <div class="font-mono text-xl md:text-3xl text-brand-primary animate-pulse">YEARS LATER...</div>
+        <div class="mt-12 text-6xl">🎓 ⏳ 💼</div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        This is a free educational resource provided by <br class="sm:hidden block">
+        <a href="https://marketmindsyouth.org/" target="_blank" rel="noopener noreferrer">Market Minds</a>
+    </footer>
+
+    <script>
+        const PATHS = {
+            elite: {
+                id: 'elite',
+                title: "Elite Private University",
+                desc: "Ivy League or top-tier private. Unmatched prestige and a massive alumni network.",
+                baseDebt: 220000, 
+                years: 4,
+                emoji: "🏛️"
+            },
+            state: {
+                id: 'state',
+                title: "Flagship State University",
+                desc: "The classic big-campus college experience. Great sports, diverse academics.",
+                baseDebt: 95000,
+                years: 4,
+                emoji: "🏟️"
+            },
+            community: {
+                id: 'community',
+                title: "Community College to State",
+                desc: "Live at home for 2 years to finish general ed, then transfer to a state school to graduate.",
+                baseDebt: 35000, 
+                years: 4,
+                emoji: "🚌"
+            },
+            trade: {
+                id: 'trade',
+                title: "Trade / Vocational School",
+                desc: "Focused, hands-on skills training. Skip the campus fluff and enter the workforce fast.",
+                baseDebt: 15000,
+                years: 2,
+                emoji: "🛠️"
+            }
+        };
+
+        const EXPERIENCES = {
+            greek: {
+                id: 'greek',
+                title: "Greek Life / Social Heavy",
+                desc: "Prioritize joining a fraternity/sorority, attending formals, and building a massive social network.",
+                debtMod: 30000, // Dues, events, going out, clothes over 4 years
+                networkBonus: 45,
+                gpaBonus: -0.4,
+                emoji: "🎉",
+                statText: "High Cost, Massive Network, Lower GPA"
+            },
+            academic: {
+                id: 'academic',
+                title: "The Academic Grind",
+                desc: "Live in the library. Hunt for merit scholarships, take research positions, and fight for a 4.0.",
+                debtMod: -25000, // Merit scholarships, RA positions, saving money
+                networkBonus: 10,
+                gpaBonus: 0.7,
+                emoji: "📚",
+                statText: "Earned Aid/Saved $, Moderate Network, High GPA"
+            },
+            athlete_major: {
+                id: 'athlete_major',
+                title: "D1 Basketball (Revenue Sport)",
+                desc: "Recruited athlete. Full ride scholarship + potential NIL money. Zero free time, brutal schedule.",
+                debtMod: -150000, // Full ride + NIL
+                networkBonus: 35,
+                gpaBonus: -0.1,
+                emoji: "🏀",
+                statText: "Massive Aid/Income, Good Network, Neutral GPA"
+            },
+            athlete_minor: {
+                id: 'athlete_minor',
+                title: "D1 Crew/Track (Niche Sport)",
+                desc: "Recruited for a non-revenue sport. You get preferred admission and a partial scholarship. Very early mornings.",
+                debtMod: -30000, // Partial scholarship
+                networkBonus: 25,
+                gpaBonus: 0.1,
+                emoji: "🚣",
+                statText: "Partial Aid, Solid Network, Strong Work Ethic"
+            }
+        };
+
+        const CAREERS = {
+            finance: {
+                id: 'finance',
+                title: "Investment Banking Analyst",
+                desc: "Brutal hours, massive pay. Mostly recruits directly from Elite schools or highly networked individuals.",
+                baseSalary: 140000,
+                emoji: "📈",
+                type: "degree",
+                reqEliteOrNetwork: true // Custom logic flag
+            },
+            tech: {
+                id: 'tech',
+                title: "Software Engineer",
+                desc: "High starting salary, competitive field. Cares more about your skills and GPA than campus prestige.",
+                baseSalary: 95000,
+                emoji: "💻",
+                type: "degree",
+                reqEliteOrNetwork: false
+            },
+            education: {
+                id: 'education',
+                title: "Public School Teacher",
+                desc: "Incredibly important work, excellent benefits, lower starting pay. Highly stable.",
+                baseSalary: 52000,
+                emoji: "🍎",
+                type: "degree",
+                reqEliteOrNetwork: false
+            },
+            electrician: {
+                id: 'electrician',
+                title: "Journeyman Electrician",
+                desc: "High demand, paid apprenticeships leading to strong middle-class income without college debt.",
+                baseSalary: 72000,
+                emoji: "⚡",
+                type: "trade",
+                reqEliteOrNetwork: false
+            }
+        };
+
+        // Fixed Basic Living Expenses per month (Rent, Food, Utilities, Transport, Insurance)
+        const LIVING_EXPENSES = 3200; 
+
+        let state = {
+            stage: 'intro', 
+            totalDebt: 0,
+            networkScore: 10, // Baseline network
+            gpa: 3.2,         // Baseline GPA
+            
+            selectedPath: null,
+            selectedExp: null,
+            selectedCareer: null,
+            rejectedCareer: null, // Tracks if they got denied a job
+            
+            monthlyLoanPayment: 0,
+            monthlyNetIncome: 0,
+            
+            predictedLoanPayment: 0 // User's prediction for the budget phase
+        };
+
+        const appContainer = document.getElementById('app-container');
+
+        const formatMoney = (amount) => {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(amount);
+        };
+
+        // Standard 10-year student loan calculation (6% interest)
+        const calculateMonthlyLoan = (principal) => {
+            if (principal <= 0) return 0;
+            const r = 0.06 / 12; // 6% annual
+            const n = 120; // 10 years * 12 months
+            const payment = principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+            return Math.round(payment);
+        };
+
+        // Rough Net Income Calculator (deducts approx 25% for taxes/benefits)
+        const calculateNetIncome = (grossAnnual) => {
+            const grossMonthly = grossAnnual / 12;
+            return Math.round(grossMonthly * 0.75);
+        };
+
+        // Main Render Loop
+        function render() {
+            appContainer.innerHTML = ''; 
+            let content = '';
+
+            switch(state.stage) {
+                case 'intro': content = renderIntro(); break;
+                
+                case 'path_select': content = renderPathSelect(); break;
+                case 'path_reveal': content = renderPathReveal(); break;
+                
+                case 'exp_select': content = renderExpSelect(); break;
+                case 'exp_reveal': content = renderExpReveal(); break;
+                
+                case 'career_select': content = renderCareerSelect(); break;
+                case 'rejection': content = renderRejection(); break;
+                
+                case 'graduation': content = renderGraduation(); break;
+                
+                case 'budget_predict': content = renderBudgetPredict(); break;
+                case 'budget_reveal': content = renderBudgetReveal(); break;
+                
+                case 'result': content = renderResult(); break;
+            }
+
+            appContainer.innerHTML = content;
+            
+            if(state.stage === 'budget_predict') setupSliderListener();
+        }
+
+        function renderIntro() {
+            return `
+                <div class="glass-panel p-8 md:p-12 text-center slide-up">
+                    <div class="text-6xl mb-6">📝</div>
+                    <span class="font-bold text-xs tracking-widest text-brand-slate uppercase bg-brand-bg-dark px-3 py-1 rounded-full border border-gray-300">AGE 17</span>
+                    
+                    <h1 class="font-serif text-5xl md:text-7xl mb-6 mt-4 leading-none text-brand-navy">THE DEGREE DILEMMA</h1>
+                    
+                    <p class="text-xl mb-8 max-w-2xl mx-auto text-brand-slate font-medium">
+                        You are about to make decisions that involve borrowing tens of thousands of dollars. The catch? You don't get to see the final bill until after you sign the paperwork.
+                    </p>
+                    
+                    <div class="bg-white border-2 border-brand-navy p-6 rounded-xl mb-10 max-w-md mx-auto shadow-[4px_4px_0px_#141B2D]">
+                        <h3 class="font-serif text-2xl mb-3 text-brand-primary border-b-2 border-brand-bg-dark pb-2">YOUR MISSION</h3>
+                        <p class="text-left font-sans text-brand-slate font-medium">Choose an education path, navigate the tradeoffs of your college lifestyle, apply for jobs, and predict if your resulting salary can actually support your student loans.</p>
+                    </div>
+
+                    <button onclick="setStage('path_select')" class="btn-retro px-10 py-4 text-xl">
+                        START YOUR JOURNEY ➔
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderPathSelect() {
+            let pathCards = Object.values(PATHS).map(path => {
+                return `
+                    <button onclick="selectPath('${path.id}')" class="btn-retro btn-secondary btn-choice group">
+                        <div class="text-4xl mb-3 group-hover:scale-110 transition-transform origin-left">${path.emoji}</div>
+                        <h3 class="font-serif text-2xl text-brand-navy mb-2 leading-tight">${path.title}</h3>
+                        <p class="text-sm font-medium text-brand-slate mb-4 normal-case tracking-normal">${path.desc}</p>
+                        
+                        <div class="mt-auto pt-4 border-t-2 border-gray-100 w-full flex justify-between items-center font-mono text-sm">
+                            <span class="text-brand-slate font-bold tracking-normal uppercase text-xs">Cost Hidden</span>
+                            <span class="bg-gray-100 text-brand-navy px-2 py-1 rounded font-bold">${path.years} Years</span>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+
+            return `
+                <div class="glass-panel p-6 md:p-10 slide-up flex flex-col items-center w-full">
+                    <div class="w-full flex justify-between items-center border-b-2 border-brand-navy/10 pb-4 mb-6">
+                        <span class="font-bold text-sm tracking-widest text-brand-slate uppercase">Phase 1: The Foundation</span>
+                        <span class="font-mono text-xs bg-brand-navy text-white px-3 py-1 rounded-full font-bold shadow-[2px_2px_0px_#6C88C4]">1/3</span>
+                    </div>
+                    
+                    <h2 class="font-serif text-4xl md:text-5xl mb-3 text-center text-brand-navy">CHOOSE YOUR PATH</h2>
+                    <p class="text-brand-slate mb-8 text-center text-lg font-medium max-w-2xl">
+                        Where are you going after high school? Just like real life, you won't know the exact financial impact until you commit.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+                        ${pathCards}
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectPath(pathId) {
+            state.selectedPath = PATHS[pathId];
+            state.totalDebt = state.selectedPath.baseDebt;
+            setStage('path_reveal');
+        }
+
+        function renderPathReveal() {
+            return `
+                <div class="glass-panel p-8 md:p-12 fade-in flex flex-col items-center w-full text-center">
+                    <div class="text-6xl mb-6">${state.selectedPath.emoji}</div>
+                    <h2 class="font-serif text-4xl md:text-5xl mb-2 text-brand-navy">${state.selectedPath.title.toUpperCase()}</h2>
+                    <p class="text-brand-slate text-lg mb-8 font-medium">You signed the enrollment paperwork.</p>
+                    
+                    <div class="bg-red-50 border-2 border-danger-red p-6 rounded-xl max-w-md w-full mb-10 shadow-[4px_4px_0px_#E53E3E]">
+                        <span class="text-xs font-bold tracking-widest text-danger-red uppercase block mb-2">Estimated Base Cost</span>
+                        <div class="font-mono text-5xl font-bold text-danger-red">${formatMoney(state.selectedPath.baseDebt)}</div>
+                        <p class="text-sm mt-3 text-brand-navy font-medium">This is your starting debt before any lifestyle choices or financial aid.</p>
+                    </div>
+
+                    <button onclick="${state.selectedPath.id === 'trade' ? "setStage('career_select')" : "setStage('exp_select')"}" class="btn-retro px-10 py-4 text-lg">
+                        ${state.selectedPath.id === 'trade' ? "ENTER WORKFORCE ➔" : "MOVE TO CAMPUS ➔"}
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderExpSelect() {
+            let expCards = Object.values(EXPERIENCES).map(exp => {
+                return `
+                    <button onclick="selectExp('${exp.id}')" class="btn-retro btn-secondary btn-choice group">
+                        <div class="text-4xl mb-3 group-hover:scale-110 transition-transform origin-left">${exp.emoji}</div>
+                        <h3 class="font-serif text-2xl text-brand-navy mb-2 leading-tight">${exp.title}</h3>
+                        <p class="text-sm font-medium text-brand-slate mb-4 normal-case tracking-normal">${exp.desc}</p>
+                        
+                        <div class="mt-auto pt-4 border-t-2 border-gray-100 w-full font-mono text-xs text-left">
+                            <span class="text-brand-slate font-bold tracking-normal uppercase text-xs">Financial Impact Hidden</span>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+
+            return `
+                <div class="glass-panel p-6 md:p-10 fade-in flex flex-col items-center w-full">
+                    <div class="w-full flex justify-between items-center border-b-2 border-brand-navy/10 pb-4 mb-6">
+                        <span class="font-bold text-sm tracking-widest text-brand-slate uppercase">Phase 2: The Lifestyle</span>
+                        <span class="font-mono text-xs bg-brand-navy text-white px-3 py-1 rounded-full font-bold shadow-[2px_2px_0px_#6C88C4]">2/3</span>
+                    </div>
+                    
+                    <h2 class="font-serif text-4xl md:text-5xl mb-3 text-center text-brand-navy">WHAT ARE YOUR PRIORITIES?</h2>
+                    <p class="text-brand-slate mb-8 text-center text-lg font-medium max-w-2xl">
+                        College isn't just classes. Are you here to build a network, study 24/7, or play a sport? Every choice alters your financial and academic reality.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+                        ${expCards}
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectExp(expId) {
+            state.selectedExp = EXPERIENCES[expId];
+            
+            // Apply modifiers
+            state.totalDebt += state.selectedExp.debtMod;
+            if (state.totalDebt < 0) state.totalDebt = 0; // Cap floor
+            
+            state.networkScore += state.selectedExp.networkBonus;
+            state.gpa += state.selectedExp.gpaBonus;
+            if (state.gpa > 4.0) state.gpa = 4.0; // Cap ceiling
+            
+            setStage('exp_reveal');
+        }
+
+        function renderExpReveal() {
+            const isDebtPositive = state.selectedExp.debtMod > 0;
+            const debtColorClass = isDebtPositive ? "text-danger-red" : "text-success-green";
+            const debtBgClass = isDebtPositive ? "bg-red-50 border-danger-red shadow-[4px_4px_0px_#E53E3E]" : "bg-green-50 border-success-green shadow-[4px_4px_0px_#38A169]";
+            const debtText = isDebtPositive ? `+${formatMoney(state.selectedExp.debtMod)}` : `${formatMoney(state.selectedExp.debtMod)}`;
+
+            return `
+                <div class="glass-panel p-8 md:p-12 fade-in flex flex-col items-center w-full text-center">
+                    <div class="text-6xl mb-6">${state.selectedExp.emoji}</div>
+                    <h2 class="font-serif text-4xl md:text-5xl mb-2 text-brand-navy">LIFESTYLE IMPACT</h2>
+                    <p class="text-brand-slate text-lg mb-8 font-medium">Here is what your choice actually cost (or saved) you.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-3xl mb-10">
+                        <!-- Financial Impact -->
+                        <div class="border-2 p-6 rounded-xl flex flex-col justify-center items-center ${debtBgClass}">
+                            <span class="text-xs font-bold tracking-widest uppercase mb-2 ${debtColorClass}">Student Debt Impact</span>
+                            <div class="font-mono text-4xl font-bold ${debtColorClass}">${debtText}</div>
+                        </div>
+                        
+                        <!-- Network Impact -->
+                        <div class="bg-white border-2 border-brand-navy p-6 rounded-xl flex flex-col justify-center items-center shadow-[4px_4px_0px_#141B2D]">
+                            <span class="text-xs font-bold tracking-widest text-brand-slate uppercase mb-2">Network Power</span>
+                            <div class="font-mono text-4xl font-bold text-brand-primary">+${state.selectedExp.networkBonus}</div>
+                        </div>
+
+                        <!-- GPA Impact -->
+                        <div class="bg-white border-2 border-brand-navy p-6 rounded-xl flex flex-col justify-center items-center shadow-[4px_4px_0px_#141B2D]">
+                            <span class="text-xs font-bold tracking-widest text-brand-slate uppercase mb-2">Final GPA</span>
+                            <div class="font-mono text-4xl font-bold text-brand-navy">${state.gpa.toFixed(1)}</div>
+                        </div>
+                    </div>
+
+                    <button onclick="setStage('career_select')" class="btn-retro px-10 py-4 text-lg">
+                        START APPLYING FOR JOBS ➔
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderCareerSelect() {
+            const isTrade = state.selectedPath.id === 'trade';
+            let availableCareers = Object.values(CAREERS).filter(c => isTrade ? c.type === 'trade' : c.type === 'degree');
+            
+            let careerCards = availableCareers.map(career => {
+                return `
+                    <button onclick="attemptCareer('${career.id}')" class="btn-retro btn-secondary flex flex-col items-center p-8 h-full w-full group">
+                        <span class="text-5xl mb-4 group-hover:scale-110 transition-transform">${career.emoji}</span>
+                        <span class="font-serif text-2xl mb-2 text-brand-navy">${career.title}</span>
+                        <p class="text-sm text-brand-slate normal-case tracking-normal mb-4 font-medium">${career.desc}</p>
+                        <div class="bg-brand-bg-light px-3 py-2 rounded border border-gray-200 mt-auto w-full">
+                            <span class="text-xs uppercase tracking-widest text-brand-slate font-bold block mb-1">Starting Salary</span>
+                            <span class="font-mono font-bold text-success-green text-xl tracking-normal">${formatMoney(career.baseSalary)}</span>
+                        </div>
+                        ${career.reqEliteOrNetwork ? '<div class="mt-3 text-[10px] font-bold text-danger-red uppercase tracking-widest text-center w-full">Requires Prestige / Heavy Network</div>' : ''}
+                    </button>
+                `;
+            }).join('');
+
+            return `
+                <div class="glass-panel p-6 md:p-10 fade-in flex flex-col items-center w-full">
+                    <div class="w-full flex justify-between items-center border-b-2 border-brand-navy/10 pb-4 mb-6">
+                        <span class="font-bold text-sm tracking-widest text-brand-slate uppercase">Phase 3: The Job Hunt</span>
+                        <span class="font-mono text-xs bg-brand-navy text-white px-3 py-1 rounded-full font-bold shadow-[2px_2px_0px_#6C88C4]">3/3</span>
+                    </div>
+                    
+                    <h2 class="font-serif text-4xl md:text-5xl mb-3 text-center text-brand-navy">CHOOSE YOUR CAREER</h2>
+                    <p class="text-brand-slate mb-8 text-center text-lg font-medium max-w-2xl">
+                        You are about to enter the workforce. What job are you applying for?
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+                        ${careerCards}
+                    </div>
+                </div>
+            `;
+        }
+
+        function attemptCareer(careerId) {
+            const career = CAREERS[careerId];
+            
+            if (career.reqEliteOrNetwork) {
+                // IB requires Elite school OR massive network (Greek Life)
+                if (state.selectedPath.id !== 'elite' && state.networkScore < 40) {
+                    state.rejectedCareer = career;
+                    setStage('rejection');
+                    return;
+                }
+            }
+            finalizeCareer(career);
+        }
+
+        function renderRejection() {
+            return `
+                <div class="glass-panel p-8 md:p-12 fade-in flex flex-col items-center w-full text-center">
+                    <div class="text-6xl mb-6">❌</div>
+                    <h2 class="font-serif text-4xl md:text-5xl mb-4 text-brand-navy">RESUME REJECTED</h2>
+                    
+                    <div class="bg-red-50 border-2 border-danger-red p-6 rounded-xl max-w-2xl w-full mb-8 text-left shadow-[4px_4px_0px_#E53E3E]">
+                        <p class="text-danger-red font-medium text-lg">
+                            "We regret to inform you that we are moving forward with other candidates for the ${state.rejectedCareer.title} role."
+                        </p>
+                        <p class="text-brand-navy font-medium mt-4">
+                            <strong>Why did this happen?</strong> Highly competitive roles like Investment Banking rely heavily on campus recruiting at Elite universities or massive personal networks. Because you chose the <strong>${state.selectedPath.title}</strong> and didn't prioritize heavy networking, your resume was filtered out.
+                        </p>
+                    </div>
+
+                    <p class="text-brand-slate text-lg mb-8 font-medium">
+                        You have to settle for a standard Corporate Financial Analyst role instead. (Starting Salary: $70,000)
+                    </p>
+
+                    <button onclick="finalizeCareer({id: 'analyst', title: 'Corporate Analyst', baseSalary: 70000})" class="btn-retro px-8 py-4 text-lg">
+                        ACCEPT BACKUP JOB ➔
+                    </button>
+                </div>
+            `;
+        }
+
+        function finalizeCareer(career) {
+            state.selectedCareer = career;
+            
+            // Math calculations
+            state.monthlyLoanPayment = calculateMonthlyLoan(state.totalDebt);
+            state.monthlyNetIncome = calculateNetIncome(state.selectedCareer.baseSalary);
+
+            // Time Jump Animation
+            const jumpOverlay = document.getElementById('time-jump');
+            jumpOverlay.classList.add('active');
+            
+            setTimeout(() => {
+                setStage('graduation');
+                setTimeout(() => {
+                    jumpOverlay.classList.remove('active');
+                }, 500);
+            }, 2000);
+        }
+
+        function renderGraduation() {
+            return `
+                <div class="glass-panel p-8 md:p-12 fade-in flex flex-col items-center w-full text-center">
+                    <div class="text-6xl mb-6">🎓</div>
+                    <span class="font-bold text-xs tracking-widest text-brand-slate uppercase bg-white px-3 py-1 rounded-full border-2 border-brand-navy shadow-[2px_2px_0px_#141B2D] mb-4">AGE ${18 + state.selectedPath.years}</span>
+                    
+                    <h2 class="font-serif text-4xl md:text-6xl mb-2 text-brand-navy">WELCOME TO THE REAL WORLD</h2>
+                    <p class="text-brand-slate text-lg mb-10 max-w-xl mx-auto font-medium">
+                        Congratulations! You are officially a ${state.selectedCareer.title}. Before we look at your final lifestyle, let's see how well you understand the debt you signed up for.
+                    </p>
+
+                    <button onclick="setStage('budget_predict')" class="btn-retro px-10 py-4 text-xl">
+                        CHECK YOUR FINANCES ➔
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderBudgetPredict() {
+            // Slider setup
+            const maxPredict = Math.max(state.monthlyNetIncome, 4000);
+            const startEstimate = Math.round(maxPredict / 2);
+
+            return `
+                <div class="glass-panel p-6 md:p-10 fade-in flex flex-col items-center w-full">
+                    <div class="w-full flex justify-between items-center border-b-2 border-brand-navy/10 pb-4 mb-6">
+                        <span class="font-bold text-sm tracking-widest text-brand-slate uppercase">The Monthly Budget</span>
+                        <span class="font-mono text-xs bg-brand-navy text-white px-3 py-1 rounded-full font-bold shadow-[2px_2px_0px_#6C88C4]">FINAL STEP</span>
+                    </div>
+
+                    <h2 class="font-serif text-4xl mb-4 text-center leading-tight text-brand-navy">PREDICT YOUR PAYMENT</h2>
+                    <p class="text-brand-slate mb-8 text-center max-w-lg font-medium text-lg">
+                        You graduated with <strong class="text-danger-red">${formatMoney(state.totalDebt)}</strong> in student loans. <br><br>Predict exactly how much your student loan bill will cost you <em>every single month</em> for the next 10 years.
+                    </p>
+
+                    <div class="w-full max-w-xl mb-12 bg-white p-6 rounded-xl border-2 border-brand-navy shadow-[4px_4px_0px_#141B2D]">
+                        <div class="flex justify-between font-mono text-sm mb-4 font-bold items-end">
+                            <span class="text-brand-slate">$0</span>
+                            <span class="text-danger-red text-4xl" id="predict-display">${formatMoney(startEstimate)}</span>
+                            <span class="text-brand-slate">${formatMoney(maxPredict)}</span>
+                        </div>
+                        <input type="range" id="predict-slider" min="0" max="${maxPredict}" value="${startEstimate}" step="50">
+                    </div>
+
+                    <button onclick="setStage('budget_reveal')" class="btn-retro px-8 py-4 text-lg">
+                        REVEAL THE TRUTH ➔
+                    </button>
+                </div>
+            `;
+        }
+
+        function setupSliderListener() {
+            const slider = document.getElementById('predict-slider');
+            const display = document.getElementById('predict-display');
+            
+            if(slider && display) {
+                slider.addEventListener('input', (e) => {
+                    display.innerText = formatMoney(e.target.value);
+                    state.predictedLoanPayment = parseInt(e.target.value);
+                });
+                state.predictedLoanPayment = parseInt(slider.value);
+            }
+        }
+
+        function renderBudgetReveal() {
+            const leftover = state.monthlyNetIncome - LIVING_EXPENSES - state.monthlyLoanPayment;
+            const diff = Math.abs(state.predictedLoanPayment - state.monthlyLoanPayment);
+            
+            let predictionMsg = "You were pretty close!";
+            if (diff > 500) predictionMsg = "You were way off. It's a shock the first time you see the real bill.";
+
+            let resultStatus = "";
+            let resultColor = "";
+            let lesson = "";
+
+            if (leftover < 0) {
+                resultStatus = "DROWNING IN DEBT";
+                resultColor = "text-danger-red";
+                lesson = `You built a timeline with massive debt (${formatMoney(state.totalDebt)}) but entered a career that doesn't pay enough to support it. You are immediately living beyond your means. <strong>This is a negative ROI (Return on Investment).</strong>`;
+            } else if (leftover < 500) {
+                resultStatus = "PAYCHECK TO PAYCHECK";
+                resultColor = "text-warning-amber";
+                lesson = `You survived the month, but barely. Your massive student loan payment takes up almost all your disposable income. You have nothing left for emergencies, investing, or travel. Your lifestyle choices in college directly restricted your freedom today.`;
+            } else {
+                resultStatus = "COMFORTABLE LIFESTYLE";
+                resultColor = "text-brand-primary";
+                lesson = `Great job. The math worked out! By balancing the cost of your education with the expected salary of your career, your student loan payment is manageable. You have cash left over to invest and enjoy your life.`;
+            }
+
+            return `
+                <div class="glass-panel p-8 md:p-10 fade-in flex flex-col items-center w-full">
+                    <h2 class="font-serif text-4xl md:text-5xl mb-8 text-brand-navy">THE REALITY CHECK</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl mb-10">
+                        <div class="border-2 border-brand-navy p-6 rounded-xl bg-white shadow-[4px_4px_0px_#141B2D] flex flex-col justify-center items-center opacity-70">
+                            <h3 class="font-bold text-sm tracking-widest text-brand-slate uppercase mb-2">YOUR PREDICTION</h3>
+                            <div class="font-mono font-bold text-3xl text-brand-slate">${formatMoney(state.predictedLoanPayment)}</div>
+                        </div>
+                        <div class="border-2 border-danger-red p-6 rounded-xl bg-red-50 shadow-[4px_4px_0px_#E53E3E] flex flex-col justify-center items-center">
+                            <h3 class="font-bold text-sm tracking-widest text-danger-red uppercase mb-2">ACTUAL MONTHLY BILL</h3>
+                            <div class="font-mono font-bold text-5xl text-danger-red">${formatMoney(state.monthlyLoanPayment)}</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-[#FEFCBF] border-2 border-[#D69E2E] p-4 rounded-lg mb-8 max-w-2xl w-full text-center">
+                        <p class="text-lg font-medium italic text-brand-navy">"${predictionMsg}"</p>
+                    </div>
+
+                    <div class="w-full max-w-3xl bg-white border-2 border-brand-navy rounded-xl p-6 md:p-8 mb-10 shadow-[4px_4px_0px_#141B2D]">
+                        <h3 class="font-serif text-2xl mb-4 border-b-2 border-brand-bg-dark pb-3 text-brand-navy">MONTHLY CASH FLOW</h3>
+                        <div class="space-y-4 font-mono font-medium text-sm md:text-base">
+                            <div class="flex justify-between items-center"><span class="text-brand-slate">Net Income (Take-Home):</span> <span class="bg-green-50 text-success-green px-2 py-1 rounded border border-green-200 font-bold">${formatMoney(state.monthlyNetIncome)}</span></div>
+                            <div class="flex justify-between items-center text-brand-slate"><span>Basic Living Expenses (Rent, Food, etc.):</span> <span>- ${formatMoney(LIVING_EXPENSES)}</span></div>
+                            <div class="flex justify-between items-center text-danger-red font-bold"><span>Student Loan Payment:</span> <span>- ${formatMoney(state.monthlyLoanPayment)}</span></div>
+                            
+                            <div class="flex justify-between items-center font-bold text-lg md:text-xl pt-4 border-t-2 border-brand-bg-dark text-brand-navy mt-2">
+                                <span>LEFTOVER CASH:</span> <span class="${leftover < 0 ? 'text-danger-red' : 'text-brand-primary'} text-2xl">${formatMoney(leftover)}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="font-mono text-2xl md:text-3xl font-bold ${resultColor} mb-8 uppercase tracking-widest text-center border-b-2 border-gray-200 pb-4 w-full">
+                        STATUS: ${resultStatus}
+                    </div>
+
+                    <div class="bg-[#EBF8FF] border-2 border-brand-primary p-6 rounded-xl max-w-3xl w-full mb-10 text-left">
+                        <h3 class="font-bold text-sm tracking-widest text-brand-primary uppercase mb-2 flex items-center gap-2">
+                            🎓 The Market Minds Lesson
+                        </h3>
+                        <p class="text-brand-navy font-medium text-lg leading-relaxed">
+                            ${lesson} <br><br>
+                            <strong>The Core Principle:</strong> There is no "wrong" college, extracurricular activity, or career, but there is <em>bad math</em>. Borrowing heavily for prestige or joining expensive social organizations is only a good idea if your resulting career pays enough to cover the massive debt. You have to evaluate the tradeoffs before you sign the paperwork.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button onclick="resetGame()" class="btn-retro px-8 py-3">
+                            BUILD A NEW TIMELINE 🔄
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function setStage(newStage) {
+            state.stage = newStage;
+            render();
+        }
+
+        function resetGame() {
+            state = {
+                stage: 'intro',
+                totalDebt: 0,
+                networkScore: 10,
+                gpa: 3.2,
+                selectedPath: null,
+                selectedExp: null,
+                selectedCareer: null,
+                rejectedCareer: null,
+                monthlyLoanPayment: 0,
+                monthlyNetIncome: 0,
+                predictedLoanPayment: 0
+            };
+            render();
+        }
+
+        // Initialize App on load
+        window.onload = () => {
+            render();
+        };
+    </script>
+</body>
+</html>

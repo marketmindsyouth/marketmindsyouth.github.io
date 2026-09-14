@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paycheck Paradox | Market Minds</title>
+    
+    <!-- Circular Favicon -->
+    <link rel="icon" href="https://lh3.googleusercontent.com/pw/AP1GczM9ixFMsp95jjxMuOg9RPqWXqj7ZmOx1eTTx4sjxv3sZnda7Di2Z7KxzRyRqWwgkrMr8H9uv8Lpj95ZmEV7Pzxoh-A-_iW8H9m-_DPmlgwFvleZwW6Gp_jnjwPv2VQd5Erk8WzNIgsTRNsKLyTLGd6I=w1000-h1000-s-no-gm?authuser=0" type="image/jpeg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-bg-light': '#F0F4F9',
+                        'brand-bg-dark': '#E4ECF5',
+                        'brand-primary': '#6C88C4',
+                        'brand-primary-hover': '#4A607A',
+                        'brand-navy': '#141B2D',
+                        'brand-slate': '#4A5568',
+                        'danger-red': '#E53E3E',
+                        'success-green': '#38A169',
+                        'warning-amber': '#D69E2E',
+                    },
+                    fontFamily: {
+                        serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+                        sans: ['"Inter"', 'sans-serif'],
+                        mono: ['"Space Mono"', 'monospace'], 
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-gradient-start: #F0F4F9;
+            --bg-gradient-end: #E4ECF5;
+            --brand-primary: #6C88C4;
+            --brand-primary-hover: #4A607A;
+            --text-navy: #141B2D;
+            --text-slate: #4A5568;
+            --glass-white: rgba(255, 255, 255, 0.88);
+            --danger-red: #E53E3E;
+            --success-green: #38A169;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            color: var(--text-navy);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .serif-font {
+            font-family: 'Instrument Serif', Georgia, serif;
+            letter-spacing: 0.02em;
+            color: var(--text-navy);
+            text-transform: uppercase;
+        }
+
+        /* Glassmorphic Panel */
+        .glass-panel {
+            background: var(--glass-white);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid var(--text-navy);
+            border-radius: 16px;
+            box-shadow: 4px 4px 0px var(--text-navy);
+        }
+
+        /* Artistic Retro-Tech Buttons */
+        .btn-retro {
+            background-color: var(--brand-primary);
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 14px 28px;
+            border: 2px solid var(--text-navy);
+            border-radius: 12px;
+            box-shadow: 4px 4px 0px var(--text-navy);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+
+        .btn-retro:hover:not(:disabled) {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--brand-primary-hover);
+            background-color: var(--brand-primary-hover);
+        }
+
+        .btn-retro:active:not(:disabled) {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--text-navy);
+        }
+
+        .btn-retro:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background-color: #A0AEC0;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background-color: #FFFFFF;
+            color: var(--text-navy);
+        }
+        
+        .btn-secondary:hover:not(:disabled) {
+            background-color: #F8FAFC;
+        }
+
+        /* Header Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(240, 244, 249, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--text-navy);
+            padding: 12px 24px;
+        }
+
+        .nav-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-logo-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+        
+        .brand-logo-wrap:hover {
+            transform: scale(1.02);
+        }
+
+        .brand-logo {
+            height: 44px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        /* Layout Structure */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            width: 100%;
+        }
+
+        #app-container {
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+        }
+
+        /* Animations */
+        .slide-up { animation: slideUp 0.5s ease-out forwards; }
+        .fade-in { animation: fadeIn 0.4s ease-in-out forwards; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .money-machine-display {
+            background-color: var(--text-navy);
+            color: #4ade80;
+            border-radius: 12px;
+            border: 4px solid #4A5568;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 4px 4px 0px var(--text-navy);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .money-machine-display::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .money-drop {
+            color: #ef4444; 
+            animation: dropDown 1s ease-in-out forwards;
+        }
+
+        @keyframes dropDown {
+            0% { transform: translateY(-15px); opacity: 0; }
+            20% { transform: translateY(0); opacity: 1; }
+            80% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(15px); opacity: 0; }
+        }
+
+        /* Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 28px;
+            width: 28px;
+            border-radius: 50%;
+            background: var(--brand-primary);
+            cursor: pointer;
+            margin-top: -10px;
+            border: 3px solid var(--text-navy);
+            box-shadow: 2px 2px 0px var(--text-navy);
+            transition: transform 0.1s;
+        }
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 10px;
+            cursor: pointer;
+            background: var(--text-navy);
+            border-radius: 5px;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        /* Choice Card Selection */
+        .choice-card {
+            border: 2px solid var(--text-navy);
+            border-radius: 12px;
+            padding: 16px;
+            background: #FFFFFF;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 4px 4px 0px var(--text-navy);
+            text-align: left;
+        }
+        .choice-card:hover {
+            background: var(--brand-bg-light);
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--brand-primary-hover);
+        }
+        .choice-card.selected {
+            background: var(--brand-navy);
+            color: white;
+            box-shadow: 2px 2px 0px var(--text-navy);
+            transform: translate(2px, 2px);
+        }
+        .choice-card.selected .text-brand-slate {
+            color: #A0AEC0;
+        }
+
+        /* Footer */
+        .site-footer {
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 0.95rem;
+            color: var(--text-slate);
+            font-weight: 500;
+            margin-top: auto;
+        }
+
+        .site-footer a {
+            color: var(--brand-primary);
+            font-weight: 800;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .site-footer a:hover {
+            border-bottom-color: var(--brand-primary);
+        }
+
+        .score-pill {
+            background: var(--brand-navy);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: bold;
+            box-shadow: 2px 2px 0px var(--brand-primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="https://marketmindsyouth.org/" target="_blank" rel="noopener noreferrer" class="brand-logo-wrap" title="Visit Market Minds">
+                <img src="https://lh3.googleusercontent.com/pw/AP1GczM6nrmaHQ4cGTx0z-eOJM-fqo-K9rlJ8ojBBZzrEbzDUyR90feZLpnA2En6xjx3_1rSjeM8v-qB7QUd_JqBKZ4mgvWHxDj62tt8F06I31teXwAyQi0llvvQ7kfJLdJDAEBvU4LZepCDmdjuNUKhKrLC=w1000-h347-s-no-gm?authuser=0" alt="Market Minds Logo" class="brand-logo">
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <div id="app-container">
+            <!-- Dynamic Content injected here by JS -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        This is a free educational resource provided by <br class="sm:hidden block">
+        <a href="https://marketmindsyouth.org/" target="_blank" rel="noopener noreferrer">Market Minds</a>
+    </footer>
+
+    <script>
+        // Core Data
+        const JOBS = {
+            teacher: { title: "Teacher", salary: 48000, emoji: "👩‍🏫" },
+            electrician: { title: "Electrician", salary: 64000, emoji: "⚡" },
+            nurse: { title: "Nurse", salary: 72000, emoji: "🩺" },
+            developer: { title: "Software Developer", salary: 90000, emoji: "💻" }
+        };
+
+        const SAME_SALARY_PROFILES = [
+            { id: 'A', name: "Player A", emoji: "👷‍♀️", location: "Texas (No State Tax)", taxRate: 0.18, retirement: 0.03, benefits: 100 },
+            { id: 'B', name: "Player B", emoji: "👩‍🍳", location: "California (High Tax)", taxRate: 0.24, retirement: 0.00, benefits: 250 },
+            { id: 'C', name: "Player C", emoji: "👮‍♀️", location: "Ohio (Avg Tax)", taxRate: 0.21, retirement: 0.10, benefits: 150 }
+        ];
+
+        // Global State
+        let state = {
+            stage: 'intro', 
+            // sequence: intro -> select_job -> estimate -> machine_run -> reveal -> same_salary -> same_salary_reveal -> random_event -> random_event_reveal -> boss_intro -> boss_build -> boss_estimate -> boss_reveal -> rewind
+            
+            job: null,
+            
+            // Financials for main job
+            grossPay: 0, taxes: 0, benefits: 0, retirementAmount: 0, netPay: 0,
+            
+            // Estimates & Inputs
+            estimates: {
+                initial: 0,
+                sameSalaryWinner: null,
+                raiseIncrease: 0,
+                boss: 0
+            },
+            
+            // Boss Level Specifics
+            boss: {
+                salary: 45000,
+                benefitsTier: 'standard', // standard (100), premium (250)
+                retirementRate: 0,
+                netPay: 0,
+                retirementAmount: 0
+            },
+            
+            // Scores
+            scores: {
+                accuracyPoints: 0, // max 300
+                knowledgePoints: 0, // max 200
+                planningPoints: 0   // max 100
+            }
+        };
+
+        const appContainer = document.getElementById('app-container');
+
+        const formatMoney = (amount) => {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(amount);
+        };
+
+        // Calculates monthly breakdown
+        const calculateDeductions = (annualSalary, stateFedTaxRate = 0.20, retirementPct = 0.03, benefitsCost = 150) => {
+            const monthlyGross = annualSalary / 12;
+            const taxes = monthlyGross * stateFedTaxRate; // simplified tax bite
+            const retirement = monthlyGross * retirementPct;
+            const net = monthlyGross - taxes - benefitsCost - retirement;
+
+            return {
+                gross: monthlyGross,
+                taxes: taxes,
+                benefits: benefitsCost,
+                retirement: retirement,
+                net: net
+            };
+        };
+
+        // Accuracy calculator (0-100 points based on % error)
+        const calculateAccuracyScore = (guess, actual) => {
+            const error = Math.abs(guess - actual) / actual;
+            if (error === 0) return 100;
+            if (error >= 0.5) return 0;
+            return Math.round((1 - (error * 2)) * 100);
+        };
+
+        function render() {
+            appContainer.innerHTML = ''; 
+            let content = '';
+            
+            // Generate a persistent score header if not in intro
+            let scoreHeader = '';
+            if (state.stage !== 'intro' && state.stage !== 'select_job') {
+                const totalAcc = state.scores.accuracyPoints;
+                const totalKnow = state.scores.knowledgePoints;
+                scoreHeader = `
+                    <div class="absolute -top-12 left-0 w-full flex justify-center gap-4 z-10 fade-in">
+                        <div class="score-pill">🎯 ACCURACY: ${totalAcc}</div>
+                        <div class="score-pill">🧠 KNOWLEDGE: ${totalKnow}</div>
+                    </div>
+                `;
+            }
+
+            switch(state.stage) {
+                case 'intro': content = renderIntro(); break;
+                case 'select_job': content = renderJobSelection(); break;
+                case 'estimate': content = renderInitialEstimate(); break;
+                case 'machine_run': content = renderMachineRun('initial'); break;
+                case 'reveal': content = renderRevealInitial(); break;
+                case 'same_salary': content = renderSameSalary(); break;
+                case 'same_salary_reveal': content = renderSameSalaryReveal(); break;
+                case 'random_event': content = renderRandomEvent(); break;
+                case 'random_event_reveal': content = renderRandomEventReveal(); break;
+                case 'boss_intro': content = renderBossIntro(); break;
+                case 'boss_build': content = renderBossBuild(); break;
+                case 'boss_estimate': content = renderBossEstimate(); break;
+                case 'boss_reveal': content = renderBossReveal(); break;
+                case 'rewind': content = renderRewind(); break;
+            }
+
+            appContainer.innerHTML = scoreHeader + content;
+            
+            // Post-render setup
+            if (state.stage === 'estimate') setupSliderListener('estimate-slider', 'estimate-display', 'initial');
+            if (state.stage === 'random_event') setupSliderListener('raise-slider', 'raise-display', 'raiseIncrease');
+            if (state.stage === 'boss_estimate') setupSliderListener('boss-slider', 'boss-display', 'boss');
+            if (state.stage === 'machine_run') runMachineAnimation();
+        }
+
+        function renderIntro() {
+            return `
+                <div class="glass-panel p-8 md:p-12 text-center slide-up">
+                    <div class="text-6xl mb-6">🏭</div>
+                    
+                    <h1 class="font-serif text-5xl md:text-7xl mb-6 leading-none">PAYCHECK PARADOX</h1>
+                    
+                    <p class="text-xl mb-8 max-w-2xl mx-auto text-brand-slate font-medium">
+                        You receive a job offer showing a massive salary. But how much of that money actually reaches your bank account?
+                    </p>
+                    
+                    <div class="bg-brand-bg-light border-2 border-brand-navy p-6 rounded-xl mb-10 max-w-md mx-auto transform -rotate-1 shadow-[4px_4px_0px_#141B2D]">
+                        <h3 class="font-serif text-2xl mb-3 border-b-2 border-brand-navy pb-2">THE MISSION</h3>
+                        <p class="text-left font-sans text-brand-slate font-medium">Predict your take-home pay, run it through the "Money Machine", and solve the mystery of where every dollar goes before it hits your wallet.</p>
+                    </div>
+
+                    <button onclick="setStage('select_job')" class="btn-retro px-10 py-4 text-xl">
+                        ENTER THE FACTORY
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderJobSelection() {
+            let jobCards = Object.keys(JOBS).map(key => {
+                const job = JOBS[key];
+                return `
+                    <button onclick="selectJob('${key}')" class="btn-retro btn-secondary flex flex-col items-center p-8 h-full w-full group">
+                        <span class="text-5xl mb-3 group-hover:scale-110 transition-transform">${job.emoji}</span>
+                        <span class="font-serif text-2xl mb-1">${job.title}</span>
+                        <span class="font-mono font-bold text-brand-primary text-lg">${formatMoney(job.salary)} / yr</span>
+                    </button>
+                `;
+            }).join('');
+
+            return `
+                <div class="glass-panel p-8 md:p-10 slide-up flex flex-col items-center mt-8">
+                    <div class="w-full flex justify-between items-center border-b-2 border-brand-navy/10 pb-4 mb-6">
+                        <span class="font-bold text-sm tracking-widest text-brand-slate uppercase">Station 1: The Offer</span>
+                        <span class="font-mono text-xs bg-brand-navy text-white px-3 py-1 rounded-full font-bold shadow-[2px_2px_0px_#6C88C4]">STEP 1</span>
+                    </div>
+                    
+                    <h2 class="font-serif text-4xl md:text-5xl mb-3 text-center">CHOOSE YOUR CAREER</h2>
+                    <p class="text-brand-slate mb-8 text-center text-lg font-medium">Select a job offer to process through the factory.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl">
+                        ${jobCards}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderInitialEstimate() {
+            const job = JOBS[state.job];
+            const maxMonthly = Math.round(job.salary / 12);
+            const startEstimate = Math.round(maxMonthly * 0.75);
+            state.estimates.initial = startEstimate;
+
+            return `
+                <div class="glass-panel p-8 md:p-10 slide-up flex flex-col items-center w-full mt-8">
+                    <div class="w-full flex justify-between items-center border-b-2 border-brand-navy/10 pb-4 mb-6">
+                        <span class="font-bold text-sm tracking-widest text-brand-slate uppercase">Station 2: The Prediction</span>
+                    </div>
+
+                    <div class="bg-white border-2 border-brand-navy p-6 rounded-xl mb-8 w-full max-w-2xl text-center shadow-[4px_4px_0px_#141B2D]">
+                        <div class="text-4xl mb-3">${job.emoji}</div>
+                        <h3 class="font-serif text-3xl mb-1">${job.title}</h3>
+                        <p class="font-sans text-brand-slate font-medium text-lg mt-2">Gross Monthly Income: 
+                            <span class="font-mono font-bold text-brand-navy text-xl bg-brand-bg-light px-2 py-1 rounded border border-gray-200">${formatMoney(maxMonthly)}</span>
+                        </p>
+                    </div>
+
+                    <h2 class="font-serif text-3xl md:text-4xl mb-4 text-center leading-tight">PREDICT YOUR TAKE-HOME PAY</h2>
+                    <p class="text-brand-slate mb-10 text-center max-w-lg font-medium text-lg">You are making ${formatMoney(job.salary)} a year. How much do you think will actually reach your bank account each month after taxes and deductions?</p>
+
+                    <div class="w-full max-w-xl mb-12 bg-brand-bg-light p-6 rounded-xl border-2 border-brand-navy shadow-inner">
+                        <div class="flex justify-between font-mono text-sm mb-4 font-bold items-end">
+                            <span class="text-brand-slate">$0</span>
+                            <span class="text-brand-primary text-4xl" id="estimate-display">${formatMoney(startEstimate)}</span>
+                            <span class="text-brand-slate">${formatMoney(maxMonthly)}</span>
+                        </div>
+                        <input type="range" id="estimate-slider" min="0" max="${maxMonthly}" value="${startEstimate}" step="50">
+                    </div>
+
+                    <button onclick="setStage('machine_run')" class="btn-retro px-8 py-4 text-lg">
+                        LOCK IN ESTIMATE & RUN MACHINE
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderMachineRun(type) {
+            let startingAmount = (type === 'initial') ? state.grossPay : state.boss.grossPay;
+            
+            return `
+                <div class="glass-panel p-8 md:p-10 slide-up flex flex-col items-center w-full mt-8 min-h-[500px]">
+                    <h2 class="font-serif text-4xl mb-8">PROCESSING PAYCHECK...</h2>
+                    
+                    <div class="money-machine-display w-full max-w-2xl h-72 flex flex-col items-center justify-center p-6 relative">
+                        <div class="absolute top-4 left-4 flex gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
+                        </div>
+                        
+                        <div class="text-sm font-mono text-green-400/70 mb-3 uppercase tracking-widest mt-6" id="machine-status">INITIATING FACTORY PROTOCOL</div>
+                        <div class="font-mono text-6xl md:text-8xl font-bold tracking-tighter" id="machine-amount" style="text-shadow: 0 0 10px rgba(74, 222, 128, 0.4);">
+                            ${formatMoney(startingAmount)}
+                        </div>
+                        <div class="h-10 mt-6 font-mono text-2xl font-bold" id="machine-deduction"></div>
+                    </div>
+
+                    <div class="w-full max-w-2xl mt-10 flex justify-between px-2 text-brand-slate font-sans font-bold text-xs md:text-sm opacity-50 transition-all duration-300" id="machine-steps">
+                        <span id="step-gross" class="text-brand-navy opacity-100 bg-white px-3 py-1 rounded border-2 border-brand-navy shadow-[2px_2px_0px_#141B2D]">GROSS</span>
+                        <span class="self-center">➔</span>
+                        <span id="step-tax" class="px-2 py-1 rounded">TAXES</span>
+                        <span class="self-center">➔</span>
+                        <span id="step-ben" class="px-2 py-1 rounded">BENEFITS</span>
+                        <span class="self-center">➔</span>
+                        <span id="step-ret" class="px-2 py-1 rounded">RETIREMENT</span>
+                        <span class="self-center">➔</span>
+                        <span id="step-net" class="px-2 py-1 rounded">NET PAY</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderRevealInitial() {
+            // Calculate score for the first time
+            const accuracyScore = calculateAccuracyScore(state.estimates.initial, state.netPay);
+            state.scores.accuracyPoints += accuracyScore;
+            
+            let message = "Not bad! You have a decent grasp on standard deductions.";
+            if (accuracyScore > 90) message = "Incredible accuracy! You know exactly where your money goes.";
+            if (accuracyScore < 50) message = "A bit off. It's a shock the first time you see how much is taken out!";
+
+            return `
+                <div class="glass-panel p-8 md:p-10 slide-up flex flex-col items-center w-full mt-8">
+                    <h2 class="font-serif text-4xl md:text-5xl mb-8">THE REALITY CHECK</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl mb-10">
+                        <div class="border-2 border-brand-navy p-6 rounded-xl bg-white shadow-[4px_4px_0px_#141B2D] flex flex-col justify-center items-center">
+                            <h3 class="font-bold text-sm tracking-widest text-brand-slate uppercase mb-2">YOUR ESTIMATE</h3>
+                            <div class="font-mono font-bold text-4xl text-brand-slate">${formatMoney(state.estimates.initial)}</div>
+                        </div>
+                        <div class="border-2 border-brand-navy p-6 rounded-xl bg-brand-bg-light shadow-[4px_4px_0px_#6C88C4] flex flex-col justify-center items-center">
+                            <h3 class="font-bold text-sm tracking-widest text-brand-primary uppercase mb-2">ACTUAL TAKE-HOME</h3>
+                            <div class="font-mono font-bold text-5xl text-brand-navy">${formatMoney(state.netPay)}</div>
+                        </div>
+                    </div>
+
+                    <div class="w-full max-w-3xl bg-white border-2 border-brand-navy rounded-xl p-6 md:p-8 mb-6 shadow-[4px_4px_0px_rgba(20,27,45,0.05)]">
+                        <h3 class="font-serif text-2xl mb-4 border-b-2 border-brand-bg-dark pb-3">WHERE DID IT GO? (MONTHLY)</h3>
+                        <div class="space-y-4 font-mono font-medium text-sm md:text-base">
+                            <div class="flex justify-between items-center"><span class="text-brand-slate">Gross Pay:</span> <span class="bg-gray-100 px-2 py-1 rounded">${formatMoney(state.grossPay)}</span></div>
+                            <div class="flex justify-between items-center text-danger-red"><span>Taxes (Fed/State/FICA):</span> <span>- ${formatMoney(state.taxes)}</span></div>
+                            <div class="flex justify-between items-center text-danger-red"><span>Health Benefits:</span> <span>- ${formatMoney(state.benefits)}</span></div>
+                            <div class="flex justify-between items-center text-brand-primary"><span>Retirement (To yourself):</span> <span>- ${formatMoney(state.retirementAmount)}</span></div>
+                            <div class="flex justify-between items-center font-bold text-lg md:text-xl pt-4 border-t-2 border-brand-bg-dark text-brand-navy mt-2">
+                                <span>NET PAY:</span> <span class="text-success-green">${formatMoney(state.netPay)}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8 font-bold text-brand-primary">🎯 Accuracy Points Earned: +${accuracyScore}</div>
+
+                    <button onclick="setStage('same_salary')" class="btn-retro px-8 py-3">
+                        NEXT LEVEL ➔
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderSameSalary() {
+            const cards = SAME_SALARY_PROFILES.map(p => `
+                <div class="choice-card flex flex-col items-center text-center p-6" onclick="selectSameSalaryWinner('${p.id}')" id="profile-${p.id}">
+                    <div class="text-5xl mb-3">${p.emoji}</div>
+                    <div class="font-serif text-2xl mb-1">${p.name}</div>
+                    <div class="text-sm font-bold text-brand-primary mb-4">${p.location}</div>
+                    
+                    <div class="w-full space-y-2 text-sm text-brand-slate font-medium bg-gray-50 p-3 rounded border border-gray-200">
+                        <div class="flex justify-between"><span>Salary:</span> <span class="font-mono font-bold">$60,000</span></div>
+                        <div class="flex justify-between"><span>Retirement:</span> <span class="font-mono">${p.retirement * 100}%</span></div>
+                        <div class="flex justify-between"><span>Benefits:</span> <span class="font-mono">$${p.benefits}/mo</span></div>
+                    </div>
+                </div>
+            `).join('');
+
+            return `
+                <div class="glass-panel p-8 md:p-10 slide-up flex flex-col items-center w-full mt-8">
+                    <div class="w-full flex justify-between items-center border-b-2 border-brand-navy/10 pb-4 mb-6">
+                        <span class="font-bold text-sm tracking-widest text-brand-slate uppercase">Station 3: The Comparison</span>
+                    </div>
+
+                    <h2 class="font-serif text-3xl md:text-4xl mb-4 text-center leading-tight">SAME SALARY, DIFFERENT PAYCHECK</h2>
+                    <p class="text-brand-slate mb-8 text-center max-w-2xl font-medium text-lg">These three people all make exactly $60,000 a year. But due to taxes, benefits, and retirement choices, their paychecks look totally different.</p>
+                    
+                    <div class="bg-brand-bg-light border-2 border-brand-navy p-4 rounded-xl mb-8 font-bold text-brand-navy shadow-sm">
+                        🔍 MISSION: Click the person you predict will have the HIGHEST monthly take-home pay.
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl mb-8">
+                        ${cards}
+                    </div>
+                    
+                    <button id="btn-submit-same" onclick="setStage('same_salary_reveal')" class="btn-retro px-8 py-3 w-full max-w-md" disabled>
+                        SUBMIT PREDICTION
+                    </button>
+                </div>
+            `;
+        }
+
+        function selectSameSalaryWinner(id) {
+            state.estimates.sameSalaryWinner = id;
+            SAME_SALARY_PROFILES.forEach(p => {
+                document.getElementById(`profile-${p.id}`).classList.remove('selected');
+            });
+            document.getElementById(`profile-${id}`).classList.add('selected');
+            document.getElementById('btn-submit-same').disabled = false;
+        }
+
+        function renderSameSalaryReveal() {
+            // Calculate actuals
+            const results = SAME_SALARY_PROFILES.map(p => {
+                const fin = calculateDeductions(60000, p.taxRate, p.retirement, p.benefits);
+                return { ...p, net: fin.net };
+            }).sort((a, b) => b.net - a.net); // Highest first
+
+            const winner = results[0];
+            const isCorrect = state.estimates.sameSalaryWinner === winner.id;
+            
+            if(isCorrect) state.scores.knowledgePoints += 100;
+
+            const cardsHtml = results.map((p, i) => `
+                <div class="flex items-center justify-between p-4 border-2 ${i === 0 ? 'border-success-green bg-green-50' : 'border-gray-200 bg-white'} rounded-xl mb-3">
+                    <div class="flex items-center gap-4">
+                        <span class="text-3xl">${p.emoji}</span>
+                        <div>
+                            <div class="font-bold text-brand-navy">${p.name} <span class="text-sm font-normal text-brand-slate ml-2">(${p.location})</span></div>
+                            <div class="text-xs text-brand-slate">Retirement: ${p.retirement*100}%, Ben: $${p.benefits}</div>
+                        </div>
+                    </div>
+                    <div class="font-mono font-bold text-xl ${i === 0 ? 'text-success-green' : 'text-brand-slate'}">
+                        ${formatMoney(p.net)}
+                    </div>
+                </div>
+            `).join('');
+
+            return `
+                <div class="glass-panel p-8 md:p-10 slide-up flex flex-col items-center w-full mt-8">
+                    <h2 class="font-serif text-4xl mb-6 text-center">THE RESULTS</h2>
+                    
+                    <div class="bg-${isCorrect ? 'green' : 'red'}-100 border-2 border-${isCorrect ? 'green' : 'red'}-500 text-${isCorrect ? 'green' : 'red'}-800 p-4 rounded-xl w-full max-w-2xl text-center font-bold mb-8">
+                        ${isCorrect ? '🎉 Correct! You earned +100 Knowledge Points.' : '❌ Incorrect. Let\'s see why...'}
+                    </div>
+
+                    <div class="w-full max-w-2xl mb-8">
+                        ${cardsHtml}
+                    </div>
+                    
+                    <div class="bg-white border-2 border-brand-navy p-6 rounded-xl max-w-2xl w-full mb-8 shadow-[4px_4px_0px_#141B2D]">
+                        <h3 class="font-serif text-2xl mb-3 text-brand-primary">The Market Minds Lesson</h3>
+                        <p class="text-base text-brand-slate font-medium leading-relaxed">
+                            Even with the exact same salary, location and personal choices drastically change your lifestyle. Player A took home the most because they lived in a tax-free state and contributed very little to retirement. However, Player C is building massive long-term wealth despite having a lower take-home pay today.
+                        </p>
+                    </div>
+
+                    <button onclick="setStage('random_event')" class="btn-retro px-8 py-3">
+                        CONTINUE SHIFT ➔
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderRandomEvent() {
+            // Setup math for the raise
+            const baseSalary = 60000;
+            const newSalary = 65000;
+            const baseFin = calculateDeductions(baseSalary, 0.20, 0.05, 150);
+            const newFin = calculateDeductions(newSalary, 0.20, 0.05, 150);
+            
+            const trueIncrease = Math.round(newFin.net - baseFin.net); // Around 287
+            const grossIncrease = Math.round(5000 / 12); // 416
+            
+            // Save to state for scoring
+            state.estimates.trueRaiseIncrease = trueIncrease;
+
+            return `
+                <div class="glass-panel p-8 md:p-10 slide-up flex flex-col items-center w-full mt-8">
+                    <div class="bg-warning-amber text-white font-bold px-4 py-1 rounded-full mb-6 font-mono text-sm border-2 border-yellow-800 shadow-[2px_2px_0px_#854d0e]">RANDOM EVENT</div>
+                    
+                    <h2 class="font-serif text-4xl md:text-5xl mb-4 text-center">YOU GOT A RAISE!</h2>
+                    <p class="text-brand-slate mb-8 text-center max-w-xl text-lg font-medium">
+                        Great news! Your boss just increased your salary from $60,000 to <span class="font-bold text-brand-navy bg-brand-bg-dark px-2 py-1 rounded">$65,000</span> a year.
+                    </p>
+                    
+                    <div class="border-2 border-brand-navy p-6 rounded-xl bg-white shadow-[4px_4px_0px_#141B2D] mb-8 w-full max-w-2xl text-center">
+                        <p class="mb-4 text-lg">A $5,000 raise equals an extra <strong class="text-success-green font-mono">${formatMoney(grossIncrease)}</strong> in gross pay per month.</p>
+                        <h3 class="font-bold text-xl text-brand-primary uppercase">How much will your monthly take-home pay ACTUALLY increase?</h3>
+                        
+                        <div class="w-full mt-8 bg-brand-bg-light p-6 rounded-xl border-2 border-brand-navy shadow-inner">
+                            <div class="flex justify-between font-mono text-sm mb-4 font-bold items-end">
+                                <span class="text-brand-slate">$0</span>
+                                <span class="text-brand-primary text-4xl">+$<span id="raise-display">${Math.round(grossIncrease/2)}</span></span>
+                                <span class="text-brand-slate">${formatMoney(grossIncrease)}</span>
+                            </div>
+                            <input type="range" id="raise-slider" min="0" max="${grossIncrease}" value="${Math.round(grossIncrease/2)}" step="5">
+                        </div>
+                    </div>
+
+                    <button onclick="setStage('random_event_reveal')" class="btn-retro px-8 py-3">
+                        SUBMIT PREDICTION
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderRandomEventReveal() {
+            const guess = state.estimates.raiseIncrease;
+            const actual = state.estimates.trueRaiseIncrease;
+            const accuracy = calculateAccuracyScore(guess, actual);
+            
+            state.scores.accuracyPoints += accuracy;
+
+            return `
+                <div class="glass-panel p-8 md:p-10 slide-up flex flex-col items-center w-full mt-8">
+                    <h2 class="font-serif text-4xl mb-8 text-center">THE RAISE REALITY</h2>
+                    
+                    <div class="flex flex-col md:flex-row gap-6 items-center justify-center w-full mb-10">
+                        <div class="text-center p-6 border-2 border-gray-300 rounded-xl bg-gray-50 w-full md:w-auto">
+                            <div class="text-xs font-bold tracking-widest text-brand-slate uppercase mb-2">YOUR PREDICTION</div>
+                            <div class="font-mono text-3xl text-brand-slate">+${formatMoney(guess)}</div>
+                        </div>
+                        <div class="text-center p-6 border-2 border-brand-primary rounded-xl bg-brand-bg-light shadow-[4px_4px_0px_#6C88C4] w-full md:w-auto">
+                            <div class="text-xs font-bold tracking-widest text-brand-primary uppercase mb-2">ACTUAL INCREASE</div>
+                            <div class="font-mono text-4xl font-bold text-brand-navy">+${formatMoney(actual)}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8 font-bold text-brand-primary">🎯 Accuracy Points Earned: +${accuracy}</div>
+
+                    <div class="bg-white border-2 border-brand-navy p-6 rounded-xl max-w-2xl w-full mb-10 shadow-[4px_4px_0px_#141B2D]">
+                        <h3 class="font-serif text-2xl mb-3 text-brand-primary">The Market Minds Lesson</h3>
+                        <p class="text-base text-brand-slate font-medium leading-relaxed">
+                            Your gross monthly income went up by $416, but your net pay only went up by <strong>${formatMoney(actual)}</strong>. Why? Because higher income means higher taxes, and if you contribute a percentage to retirement (like 5%), it takes a bigger slice out of the new, larger paycheck. <strong>Always calculate the net before spending a raise!</strong>
+                        </p>
+                    </div>
+
+                    <button onclick="setStage('boss_intro')" class="btn-retro px-8 py-3">
+                        PROCEED TO FINAL LEVEL ➔
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderBossIntro() {
+            return `
+                <div class="glass-panel p-8 md:p-12 slide-up flex flex-col items-center w-full mt-8 text-center">
+                    <div class="text-6xl mb-6">👩‍💼</div>
+                    <span class="font-mono font-bold text-xs bg-brand-navy text-white px-4 py-2 rounded-full mb-6 shadow-[2px_2px_0px_#6C88C4]">FINAL LEVEL</span>
+                    <h2 class="font-serif text-5xl md:text-6xl mb-6">THE FIRST REAL JOB</h2>
+                    
+                    <p class="text-xl mb-6 max-w-2xl text-brand-slate font-medium">
+                        You've landed an entry-level role. 
+                    </p>
+                    
+                    <div class="bg-white border-2 border-brand-navy px-8 py-4 rounded-xl mb-8 shadow-[4px_4px_0px_#141B2D]">
+                        <span class="text-sm font-bold tracking-widest text-brand-slate block mb-1 uppercase">Starting Salary</span>
+                        <strong class="font-mono text-brand-navy text-4xl">$45,000 / yr</strong>
+                    </div>
+
+                    <p class="mb-10 max-w-xl text-brand-slate text-lg">
+                        This time, you must manually build your paycheck by choosing your benefits and retirement contributions. Once built, you'll make one final prediction.
+                    </p>
+
+                    <button onclick="setStage('boss_build')" class="btn-retro px-10 py-4 text-xl">
+                        BUILD PAYCHECK
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderBossBuild() {
+            return `
+                <div class="glass-panel p-8 md:p-10 slide-up flex flex-col w-full mt-8">
+                    <h2 class="font-serif text-4xl mb-8 text-center">CONFIGURE DEDUCTIONS</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-4xl mx-auto">
+                        
+                        <!-- Benefits Selection -->
+                        <div class="flex flex-col gap-4">
+                            <h3 class="font-bold text-sm tracking-widest text-brand-primary uppercase border-b-2 border-brand-bg-dark pb-3">1. Health Benefits</h3>
+                            
+                            <label class="border-2 border-brand-navy p-5 rounded-xl cursor-pointer hover:bg-gray-50 flex items-start gap-4 transition-all ${state.boss.benefitsTier === 'standard' ? 'bg-brand-bg-light shadow-[4px_4px_0px_#141B2D] transform -translate-y-1' : 'bg-white'}">
+                                <input type="radio" name="benefits" value="standard" class="mt-1.5 w-4 h-4 text-brand-primary" onchange="updateBossState('benefits', 'standard')" ${state.boss.benefitsTier === 'standard' ? 'checked' : ''}>
+                                <div>
+                                    <div class="font-bold text-brand-navy text-lg">Standard Plan</div>
+                                    <div class="text-sm text-brand-slate font-medium mt-1">Higher deductibles, lower monthly cost.</div>
+                                    <div class="font-mono font-bold text-danger-red mt-2 bg-red-50 inline-block px-2 py-1 rounded">-$100 / month</div>
+                                </div>
+                            </label>
+                            
+                            <label class="border-2 border-brand-navy p-5 rounded-xl cursor-pointer hover:bg-gray-50 flex items-start gap-4 transition-all ${state.boss.benefitsTier === 'premium' ? 'bg-brand-bg-light shadow-[4px_4px_0px_#141B2D] transform -translate-y-1' : 'bg-white'}">
+                                <input type="radio" name="benefits" value="premium" class="mt-1.5 w-4 h-4 text-brand-primary" onchange="updateBossState('benefits', 'premium')" ${state.boss.benefitsTier === 'premium' ? 'checked' : ''}>
+                                <div>
+                                    <div class="font-bold text-brand-navy text-lg">Premium Plan</div>
+                                    <div class="text-sm text-brand-slate font-medium mt-1">Lower deductibles, covers more, costs more.</div>
+                                    <div class="font-mono font-bold text-danger-red mt-2 bg-red-50 inline-block px-2 py-1 rounded">-$250 / month</div>
+                                </div>
+                            </label>
+                        </div>
+
+                        <!-- Retirement Selection -->
+                        <div class="flex flex-col gap-4">
+                            <h3 class="font-bold text-sm tracking-widest text-brand-primary uppercase border-b-2 border-brand-bg-dark pb-3">2. Retirement 401(k)</h3>
+                            <p class="text-sm text-brand-slate font-medium mb-2">Employer matches your contribution up to 3%.</p>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                ${[0, 0.03, 0.05, 0.10].map(rate => `
+                                    <button onclick="updateBossState('retirement', ${rate})" class="border-2 border-brand-navy p-4 rounded-xl font-mono text-xl font-bold transition-all ${state.boss.retirementRate === rate ? 'bg-brand-navy text-white shadow-[4px_4px_0px_#6C88C4] transform -translate-y-1' : 'bg-white hover:bg-gray-50 text-brand-navy'}">
+                                        ${rate * 100}%
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <div class="mt-4 text-sm text-brand-slate bg-[#EBF8FF] p-4 border-2 border-brand-primary rounded-xl font-medium">
+                                💡 Reminder: This is money you are paying to your future self, but you can't spend it today.
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-12 flex justify-center">
+                        <button onclick="setStage('boss_estimate')" class="btn-retro px-10 py-4 text-lg">
+                            NEXT: FINAL PREDICTION ➔
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderBossEstimate() {
+            const maxMonthly = Math.round(state.boss.salary / 12);
+            const startEstimate = Math.round(maxMonthly * 0.75);
+            state.estimates.boss = startEstimate;
+            
+            // Calculate actual now to prep for run
+            const bCost = state.boss.benefitsTier === 'standard' ? 100 : 250;
+            const fin = calculateDeductions(state.boss.salary, 0.18, state.boss.retirementRate, bCost);
+            
+            state.boss.grossPay = fin.gross;
+            state.boss.taxes = fin.taxes;
+            state.boss.benefitsAmount = fin.benefits;
+            state.boss.retirementAmount = fin.retirement;
+            state.boss.netPay = fin.net;
+
+            return `
+                <div class="glass-panel p-8 md:p-10 slide-up flex flex-col items-center w-full mt-8">
+                    <h2 class="font-serif text-3xl md:text-4xl mb-4 text-center leading-tight">ONE FINAL PREDICTION</h2>
+                    <p class="text-brand-slate mb-10 text-center max-w-lg font-medium text-lg">You selected your benefits and retirement. Now, based on everything you've learned, predict your final take-home pay.</p>
+
+                    <div class="w-full max-w-xl mb-12 bg-brand-bg-light p-6 rounded-xl border-2 border-brand-navy shadow-inner">
+                        <div class="flex justify-between font-mono text-sm mb-4 font-bold items-end">
+                            <span class="text-brand-slate">$0</span>
+                            <span class="text-brand-primary text-4xl" id="boss-display">${formatMoney(startEstimate)}</span>
+                            <span class="text-brand-slate">${formatMoney(maxMonthly)}</span>
+                        </div>
+                        <input type="range" id="boss-slider" min="0" max="${maxMonthly}" value="${startEstimate}" step="50">
+                    </div>
+
+                    <button onclick="setStage('machine_run_boss')" class="btn-retro px-8 py-4 text-lg">
+                        PROCESS FINAL PAYCHECK ➔
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderBossReveal() {
+            // Final Scoring Logic
+            const accScore = calculateAccuracyScore(state.estimates.boss, state.boss.netPay);
+            state.scores.accuracyPoints += accScore;
+            
+            let scorePlanning = 60;
+            if (state.boss.retirementRate >= 0.03) scorePlanning += 20; // Hit the match
+            if (state.boss.retirementRate > 0.03) scorePlanning += 10;  // Saved extra
+            if (state.boss.benefitsTier === 'standard' && state.boss.retirementRate > 0) scorePlanning += 10; // Balanced approach
+            
+            state.scores.planningPoints = scorePlanning;
+            
+            // Total Grade
+            const totalScore = state.scores.accuracyPoints + state.scores.knowledgePoints + state.scores.planningPoints;
+            let rank = "PAYCHECK ROOKIE";
+            if(totalScore >= 400) rank = "SAVVY SAVER";
+            if(totalScore >= 500) rank = "PAYCHECK PRO";
+
+            return `
+                <div class="glass-panel p-8 md:p-10 slide-up flex flex-col items-center w-full mt-8">
+                    <div class="text-5xl mb-4">🏆</div>
+                    <h2 class="font-serif text-4xl md:text-5xl mb-8">FINAL SCORE</h2>
+                    
+                    <div class="w-full max-w-2xl bg-brand-navy text-white rounded-xl p-8 mb-8 border-2 border-brand-navy shadow-[8px_8px_0px_#4A607A]">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 font-mono">
+                            <div class="bg-white/10 p-4 rounded border border-white/20">
+                                <div class="text-brand-accent text-xs font-bold tracking-widest uppercase mb-2">Final Take-Home Pay</div>
+                                <div class="text-3xl font-bold text-success-green">${formatMoney(state.boss.netPay)}</div>
+                            </div>
+                            <div class="bg-white/10 p-4 rounded border border-white/20">
+                                <div class="text-brand-accent text-xs font-bold tracking-widest uppercase mb-2">Your Final Estimate</div>
+                                <div class="text-3xl">${formatMoney(state.estimates.boss)}</div>
+                            </div>
+                            <div class="md:col-span-2 bg-brand-primary/20 p-4 rounded border border-brand-primary/50 text-center">
+                                <div class="text-brand-accent text-xs font-bold tracking-widest uppercase mb-2">Retirement Saved (Monthly)</div>
+                                <div class="text-2xl">${formatMoney(state.boss.retirementAmount)} <span class="text-sm font-sans font-normal opacity-70 ml-2">(${(state.boss.retirementRate*100).toFixed(0)}% contribution)</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-2xl mb-12 text-center font-sans">
+                        <div class="border-2 border-brand-navy p-4 rounded-xl bg-white shadow-[2px_2px_0px_#141B2D]">
+                            <div class="text-brand-slate text-xs font-bold tracking-widest uppercase mb-2">Total Accuracy</div>
+                            <div class="font-mono font-bold text-2xl">${Math.round((state.scores.accuracyPoints/200)*100)}%</div>
+                        </div>
+                        <div class="border-2 border-brand-navy p-4 rounded-xl bg-white shadow-[2px_2px_0px_#141B2D]">
+                            <div class="text-brand-slate text-xs font-bold tracking-widest uppercase mb-2">Planning</div>
+                            <div class="font-mono font-bold text-2xl">${state.scores.planningPoints}%</div>
+                        </div>
+                        <div class="border-2 border-brand-primary p-4 rounded-xl bg-brand-bg-light shadow-[2px_2px_0px_#6C88C4]">
+                            <div class="text-brand-primary text-xs font-bold tracking-widest uppercase mb-2">Final Rank</div>
+                            <div class="font-serif text-2xl text-brand-navy">${rank}</div>
+                        </div>
+                    </div>
+
+                    <h3 class="font-serif text-3xl mb-4 border-t-2 border-gray-200 pt-8 w-full text-center">THE REWIND</h3>
+                    <p class="text-center text-brand-slate max-w-xl mb-8 font-medium text-lg">
+                        What if you went back and changed your retirement contribution? See how giving up a little today changes your future.
+                    </p>
+
+                    <button onclick="setStage('rewind')" class="btn-retro btn-secondary px-8 py-3">
+                        ACTIVATE REWIND ↺
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderRewind() {
+            const bCost = state.boss.benefitsTier === 'standard' ? 100 : 250;
+            const origRate = state.boss.retirementRate;
+            let newRate = origRate === 0.10 ? 0.05 : 0.10; // Bump up, or down if already max
+            
+            const orig = calculateDeductions(state.boss.salary, 0.18, origRate, bCost);
+            const alt = calculateDeductions(state.boss.salary, 0.18, newRate, bCost);
+            
+            const diffNet = Math.abs(orig.net - alt.net);
+            const diffRet = Math.abs(orig.retirement - alt.retirement);
+
+            return `
+                <div class="glass-panel p-8 md:p-10 slide-up flex flex-col items-center w-full mt-8">
+                    <h2 class="font-serif text-4xl md:text-5xl mb-10">TIMELINE ALTERED</h2>
+                    
+                    <div class="flex flex-col md:flex-row gap-6 w-full max-w-4xl mb-10">
+                        <!-- Original -->
+                        <div class="flex-1 border-2 border-gray-300 p-6 rounded-xl bg-gray-50 opacity-80">
+                            <h3 class="font-bold text-xs tracking-widest text-brand-slate uppercase mb-4 border-b border-gray-300 pb-2">BEFORE (${(origRate*100).toFixed(0)}% RETIREMENT)</h3>
+                            <div class="space-y-3 font-mono text-lg">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-sans font-medium text-brand-slate">Take-Home:</span> 
+                                    <span class="font-bold text-brand-navy">${formatMoney(orig.net)}</span>
+                                </div>
+                                <div class="flex justify-between items-center text-brand-primary">
+                                    <span class="text-sm font-sans font-medium text-brand-slate">Retirement:</span> 
+                                    <span>${formatMoney(orig.retirement)}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-center">
+                            <div class="bg-brand-navy text-white text-sm font-bold tracking-widest px-3 py-1 rounded-full uppercase">VS</div>
+                        </div>
+
+                        <!-- Altered -->
+                        <div class="flex-1 border-2 border-brand-navy p-6 rounded-xl bg-brand-bg-light shadow-[4px_4px_0px_#141B2D]">
+                            <h3 class="font-bold text-xs tracking-widest text-brand-primary uppercase mb-4 border-b-2 border-brand-navy pb-2">AFTER (${(newRate*100).toFixed(0)}% RETIREMENT)</h3>
+                            <div class="space-y-3 font-mono text-lg">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-sans font-medium text-brand-slate">Take-Home:</span> 
+                                    <span class="font-bold text-brand-navy">${formatMoney(alt.net)}</span>
+                                </div>
+                                <div class="flex justify-between items-center font-bold text-brand-primary">
+                                    <span class="text-sm font-sans font-medium text-brand-slate">Retirement:</span> 
+                                    <span class="bg-blue-100 px-2 py-1 rounded">${formatMoney(alt.retirement)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-[#EBF8FF] border-2 border-brand-primary p-6 rounded-xl max-w-2xl text-center mb-10 w-full">
+                        <p class="font-serif text-3xl text-brand-navy leading-tight">
+                            "You gave up <span class="text-danger-red font-mono">${formatMoney(diffNet)}</span> today to put <span class="text-success-green font-mono">${formatMoney(diffRet)}</span> more toward your future."
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button onclick="window.location.reload()" class="btn-retro">
+                            PLAY AGAIN 🔄
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function setStage(newStage) {
+            if(newStage === 'machine_run_boss') {
+                state.stage = 'machine_run';
+                render();
+                runMachineAnimation('boss');
+                return;
+            }
+            state.stage = newStage;
+            render();
+        }
+
+        function selectJob(jobKey) {
+            state.job = jobKey;
+            
+            const salary = JOBS[jobKey].salary;
+            const financials = calculateDeductions(salary, 0.20, 0.05, 150); 
+            
+            state.grossPay = financials.gross;
+            state.taxes = financials.taxes;
+            state.benefits = financials.benefits;
+            state.retirementAmount = financials.retirement;
+            state.netPay = financials.net;
+
+            setStage('estimate');
+        }
+
+        function setupSliderListener(sliderId, displayId, stateKey) {
+            const slider = document.getElementById(sliderId);
+            const display = document.getElementById(displayId);
+            
+            if(slider && display) {
+                slider.addEventListener('input', (e) => {
+                    display.innerText = formatMoney(e.target.value).replace('$', '');
+                    state.estimates[stateKey] = parseInt(e.target.value);
+                });
+                state.estimates[stateKey] = parseInt(slider.value);
+            }
+        }
+
+        function updateBossState(type, value) {
+            if(type === 'benefits') state.boss.benefitsTier = value;
+            if(type === 'retirement') state.boss.retirementRate = value;
+            renderBossBuild(); 
+        }
+
+        function runMachineAnimation(type = 'initial') {
+            const amountEl = document.getElementById('machine-amount');
+            const statusEl = document.getElementById('machine-status');
+            const deductionEl = document.getElementById('machine-deduction');
+            
+            let currentDisplayAmount = (type === 'initial') ? state.grossPay : state.boss.grossPay;
+            
+            let taxAmt = (type === 'initial') ? state.taxes : state.boss.taxes;
+            let benAmt = (type === 'initial') ? state.benefits : state.boss.benefitsAmount;
+            let retAmt = (type === 'initial') ? state.retirementAmount : state.boss.retirementAmount;
+
+            const stages = [
+                { delay: 1200, status: "APPLYING TAXES (FED, STATE, FICA)", deduct: taxAmt, stepId: "step-tax" },
+                { delay: 2800, status: "PAYING HEALTH INSURANCE", deduct: benAmt, stepId: "step-ben" },
+                { delay: 4400, status: "CONTRIBUTING TO 401(K)", deduct: retAmt, stepId: "step-ret" },
+                { delay: 6000, status: "FINALIZING TRANSFER", deduct: 0, stepId: "step-net" }
+            ];
+
+            stages.forEach(stage => {
+                setTimeout(() => {
+                    document.querySelectorAll('#machine-steps span').forEach(el => {
+                        el.classList.remove('text-brand-navy', 'opacity-100', 'bg-white', 'border-2', 'border-brand-navy', 'shadow-[2px_2px_0px_#141B2D]');
+                        if(el.id && el.id !== 'step-gross' && el.id !== 'step-tax' && el.id !== 'step-ben' && el.id !== 'step-ret' && el.id !== 'step-net') return;
+                    });
+                    
+                    const stepEl = document.getElementById(stage.stepId);
+                    if(stepEl) stepEl.classList.add('text-brand-navy', 'opacity-100', 'bg-white', 'border-2', 'border-brand-navy', 'shadow-[2px_2px_0px_#141B2D]');
+
+                    statusEl.innerText = stage.status;
+                    
+                    if (stage.deduct > 0) {
+                        deductionEl.innerHTML = `<span class="money-drop">- ${formatMoney(stage.deduct)}</span>`;
+                        currentDisplayAmount -= stage.deduct;
+                        amountEl.innerText = formatMoney(currentDisplayAmount);
+                        
+                        amountEl.style.color = '#ef4444';
+                        amountEl.style.textShadow = '0 0 10px rgba(239, 68, 68, 0.4)';
+                        setTimeout(() => {
+                            amountEl.style.color = '#4ade80';
+                            amountEl.style.textShadow = '0 0 10px rgba(74, 222, 128, 0.4)';
+                        }, 250);
+                    } else {
+                        deductionEl.innerHTML = "";
+                        statusEl.innerText = "TRANSFER READY";
+                        statusEl.style.color = '#6C88C4';
+                        setTimeout(() => {
+                            setStage(type === 'initial' ? 'reveal' : 'boss_reveal');
+                        }, 1800);
+                    }
+                }, stage.delay);
+            });
+        }
+
+        // Boot
+        window.onload = () => {
+            render();
+        };
+    </script>
+</body>
+</html>
