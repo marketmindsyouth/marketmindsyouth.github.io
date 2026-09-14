@@ -22,7 +22,6 @@
             --bg-end: #E4ECF5;
             --accent-primary: #6C88C4;
             --accent-dark: #4A607A;
-            --accent-brand-blue: #729aad;
             --text-dark: #141B2D;
             --text-muted: #4A5568;
             --glass-bg: rgba(255, 255, 255, 0.92);
@@ -41,9 +40,6 @@
             min-height: 100vh;
         }
 
-        /* ==========================================================================
-           CONSISTENT HEADINGS
-           ========================================================================== */
         h1, h2, h3, .heading-serif {
             font-family: var(--font-serif);
             text-transform: uppercase;
@@ -95,7 +91,6 @@
             color: var(--text-dark);
         }
 
-        /* GLASSMORPHISM CONTAINERS */
         .glass-panel {
             background: var(--glass-bg);
             backdrop-filter: blur(24px);
@@ -112,7 +107,6 @@
             border-bottom: 1px solid var(--glass-border);
         }
 
-        /* Rectangular Pill Badges */
         .resource-badge {
             display: inline-block;
             background-color: #ffffff;
@@ -126,7 +120,6 @@
             letter-spacing: 0.06em;
         }
 
-        /* Full Bleed Band Section */
         .full-bleed-section {
             width: 100vw;
             position: relative;
@@ -139,7 +132,6 @@
             z-index: 20;
         }
 
-        /* Resource Card Style */
         .resource-card {
             background: white;
             border: 2px solid var(--text-dark);
@@ -156,18 +148,15 @@
 </head>
 <body class="antialiased">
 
-    <!-- SECTION 1: Navigation Header -->
     <nav class="glass-nav fixed w-full top-0 z-50 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             
-            <!-- Brand Logo -->
             <a href="index.html" class="flex items-center">
                 <img src="https://lh3.googleusercontent.com/pw/AP1GczNsoqlPUEDJuh6m6J5ROUJS5meKcDo2Lu7D2LH93YTpEQpL7jF4X4-HvoKSn3blk9gKJHwWo5b6U0ODJ8ef518iTImmMffKDjDJzIJEsSkgtwrvqNcYY6Ginzh5f4uqKyu-U9rZFuxbSD8ejhHzzax2=w964-h190-s-no-gm?authuser=0" 
                      alt="Market Minds Logo" 
                      class="h-8 md:h-10 w-auto object-contain">
             </a>
             
-            <!-- Desktop Links -->
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="index.html" class="text-[#141B2D] font-bold text-sm tracking-wider hover:text-[#6C88C4] transition-colors">HOME</a>
                 <a href="about.html" class="text-[#141B2D] font-bold text-sm tracking-wider hover:text-[#6C88C4] transition-colors">ABOUT US</a>
@@ -176,7 +165,6 @@
                 <a href="index.html#get-involved" class="btn-retro btn-primary px-6 py-2" style="padding: 0.5rem 1.25rem;">GET INVOLVED</a>
             </div>
             
-            <!-- Mobile Menu Button -->
             <button id="mobile-menu-btn" class="md:hidden text-[#141B2D] p-1 focus:outline-none" aria-label="Toggle Menu">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
@@ -184,7 +172,6 @@
             </button>
         </div>
 
-        <!-- Mobile Dropdown Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-md border-b-2 border-[#141B2D] px-6 py-4 space-y-3">
             <a href="index.html" class="block text-[#141B2D] font-bold text-sm hover:text-[#6C88C4]">HOME</a>
             <a href="about.html" class="block text-[#141B2D] font-bold text-sm hover:text-[#6C88C4]">ABOUT US</a>
@@ -194,41 +181,27 @@
         </div>
     </nav>
 
-    <!-- CONTENT WRAPPER -->
     <div class="pt-28 pb-0 px-4 sm:px-6 max-w-7xl mx-auto space-y-10">
 
-        <!-- PAGE HERO HEADER -->
         <header class="glass-panel p-8 sm:p-12 text-center max-w-3xl mx-auto mt-6">
-            <h1 class="text-4xl sm:text-6xl md:text-7xl mb-4 hero-title max-w-2xl mx-auto">FREE RESOURCES &amp; MATERIALS</h1>
+            <h1 class="text-4xl sm:text-6xl md:text-7xl mb-4 hero-title max-w-2xl mx-auto">FREE RESOURCES &amp; GAMES</h1>
             <p class="text-base sm:text-lg text-[#4A5568] font-medium leading-relaxed">
-                Everything we build at Market Minds is 100% free and open to students, chapter leaders, and educators. Explore our interactive workshop games, lesson decks, and newsletter archives below.
+                Everything we build at Market Minds is completely free and open to students, chapter leaders, and educators. Explore our workshop games, chapter guides, and study tools below.
             </p>
         </header>
 
-        <!-- IN PROGRESS NOTICE BANNER (CLEAN & SIMPLE) -->
-        <div class="max-w-4xl mx-auto bg-white p-6 rounded-2xl border-2 border-[#141B2D] shadow-[4px_4px_0px_#141B2D] text-center sm:text-left">
-            <div class="flex items-center justify-center sm:justify-start gap-2 mb-1.5">
-                <span class="w-2.5 h-2.5 rounded-full bg-[#6C88C4] animate-pulse"></span>
-                <span class="text-xs font-extrabold uppercase tracking-widest text-[#141B2D]">DIGITAL ARCHIVE IN PROGRESS</span>
-            </div>
-            <p class="text-xs sm:text-sm text-[#4A5568] font-medium leading-relaxed">
-                Our team is actively formatting and uploading full PDF slide decks and workshop workbooks. Check out our interactive workshop games below while more slide downloads are released!
-            </p>
-        </div>
-
-        <!-- QUICK JUMP BUTTONS -->
         <section class="max-w-4xl mx-auto pb-2">
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <a href="#workshop-activities" class="btn-retro btn-primary py-3 text-xs sm:text-xs md:text-sm flex items-center justify-between">
+                <a href="#workshop-activities" class="btn-retro btn-primary py-3 text-xs flex items-center justify-between">
                     <span>WORKSHOP GAMES</span>
                     <span>&rarr;</span>
                 </a>
-                <a href="#lesson-decks" class="btn-retro btn-outline py-3 text-xs sm:text-xs md:text-sm flex items-center justify-between">
-                    <span>LESSON DECKS</span>
+                <a href="#chapter-resources" class="btn-retro btn-outline py-3 text-xs flex items-center justify-between">
+                    <span>CHAPTER RESOURCES</span>
                     <span>&rarr;</span>
                 </a>
-                <a href="#newsletter-archive" class="btn-retro btn-outline py-3 text-xs sm:text-xs md:text-sm flex items-center justify-between">
-                    <span>NEWSLETTER ARCHIVE</span>
+                <a href="#study-tools" class="btn-retro btn-outline py-3 text-xs flex items-center justify-between">
+                    <span>STUDY TOOLS</span>
                     <span>&rarr;</span>
                 </a>
             </div>
@@ -236,77 +209,162 @@
 
     </div>
 
-    <!-- SECTION 1: INTERACTIVE WORKSHOP ACTIVITIES & SIMULATORS -->
     <section id="workshop-activities" class="full-bleed-section bg-white py-16 sm:py-20 px-4 sm:px-6 relative z-20 mt-12">
-        <div class="max-w-6xl mx-auto space-y-10">
+        <div class="max-w-6xl mx-auto space-y-16">
             
             <div class="text-center max-w-3xl mx-auto space-y-3">
-                <span class="resource-badge">READY-TO-RUN CLASSROOM TOOLS</span>
-                <h2 class="text-3xl sm:text-5xl text-[#141B2D]">WORKSHOP ACTIVITIES &amp; SIMULATORS</h2>
+                <span class="resource-badge">READY-TO-RUN ACTIVITIES</span>
+                <h2 class="text-3xl sm:text-5xl text-[#141B2D]">WORKSHOP GAMES &amp; ACTIVITIES</h2>
                 <p class="text-[#4A5568] text-sm sm:text-base font-medium">
-                    Gamified web tools and interactive simulations designed for educators and chapter leaders to run directly during youth financial literacy workshops.
+                    Gamified web tools and activities designed to be fun, accessible, and perfect for running during youth financial literacy workshops.
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- High School Games -->
+            <div>
+                <h3 class="text-2xl text-[#141B2D] border-b-2 border-[#141B2D] pb-2 mb-6">HIGH SCHOOL</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <div class="resource-card p-6 flex flex-col justify-between h-full bg-[#F0F4F9]/40">
+                        <div>
+                            <h3 class="text-3xl text-[#141B2D] font-bold mb-3 heading-serif">TIME HEIST</h3>
+                            <p class="text-sm text-[#4A5568] font-medium leading-relaxed mb-6">
+                                Make tough choices about how you spend your time and see the financial and personal impact.
+                            </p>
+                        </div>
+                        <div class="pt-4 mt-auto border-t border-[#141B2D]/10">
+                            <a href="https://marketmindsyouth.org/time_heist" class="btn-retro btn-primary w-full text-center text-xs py-3">PLAY GAME &rarr;</a>
+                        </div>
+                    </div>
+
+                    <div class="resource-card p-6 flex flex-col justify-between h-full bg-[#F0F4F9]/40">
+                        <div>
+                            <h3 class="text-3xl text-[#141B2D] font-bold mb-3 heading-serif">DEGREE DILEMMA</h3>
+                            <p class="text-sm text-[#4A5568] font-medium leading-relaxed mb-6">
+                                Navigate the costs and long-term benefits of different higher education and career paths.
+                            </p>
+                        </div>
+                        <div class="pt-4 mt-auto border-t border-[#141B2D]/10">
+                            <a href="https://marketmindsyouth.org/degree_dilemma" class="btn-retro btn-primary w-full text-center text-xs py-3">PLAY GAME &rarr;</a>
+                        </div>
+                    </div>
+
+                    <div class="resource-card p-6 flex flex-col justify-between h-full bg-[#F0F4F9]/40">
+                        <div>
+                            <h3 class="text-3xl text-[#141B2D] font-bold mb-3 heading-serif">PAYCHECK PARADOX</h3>
+                            <p class="text-sm text-[#4A5568] font-medium leading-relaxed mb-6">
+                                Try to manage a starting salary, taxes, and unexpected real-world expenses without going broke.
+                            </p>
+                        </div>
+                        <div class="pt-4 mt-auto border-t border-[#141B2D]/10">
+                            <a href="https://marketmindsyouth.org/paycheck_paradox" class="btn-retro btn-primary w-full text-center text-xs py-3">PLAY GAME &rarr;</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Middle School Games -->
+            <div>
+                <h3 class="text-2xl text-[#141B2D] border-b-2 border-[#141B2D] pb-2 mb-6">MIDDLE SCHOOL</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <div class="resource-card p-6 flex flex-col justify-between h-full bg-[#F0F4F9]/40">
+                        <div>
+                            <h3 class="text-3xl text-[#141B2D] font-bold mb-3 heading-serif">CREDIT SCORE SIMULATOR</h3>
+                            <p class="text-sm text-[#4A5568] font-medium leading-relaxed mb-6">
+                                Make real-life choices—like paying bills and taking loans—to see how your credit score reacts in real time.
+                            </p>
+                        </div>
+                        <div class="pt-4 mt-auto border-t border-[#141B2D]/10">
+                            <a href="credit_score_simulator.html" class="btn-retro btn-primary w-full text-center text-xs py-3">PLAY GAME &rarr;</a>
+                        </div>
+                    </div>
+
+                    <div class="resource-card p-6 flex flex-col justify-between h-full bg-[#F0F4F9]/40">
+                        <div>
+                            <h3 class="text-3xl text-[#141B2D] font-bold mb-3 heading-serif">SPOT THE SCAM</h3>
+                            <p class="text-sm text-[#4A5568] font-medium leading-relaxed mb-6">
+                                Analyze suspicious messages and online fraud tricks to protect your information.
+                            </p>
+                        </div>
+                        <div class="pt-4 mt-auto border-t border-[#141B2D]/10">
+                            <a href="spot_the_scam_game.html" class="btn-retro btn-primary w-full text-center text-xs py-3">PLAY GAME &rarr;</a>
+                        </div>
+                    </div>
+
+                    <div class="resource-card p-6 flex flex-col justify-between h-full bg-[#F0F4F9]/40">
+                        <div>
+                            <h3 class="text-3xl text-[#141B2D] font-bold mb-3 heading-serif">VALUE AUCTION</h3>
+                            <p class="text-sm text-[#4A5568] font-medium leading-relaxed mb-6">
+                                A bidding game where you allocate limited tokens toward personal values and financial goals.
+                            </p>
+                        </div>
+                        <div class="pt-4 mt-auto border-t border-[#141B2D]/10">
+                            <a href="value_auction_game.html" class="btn-retro btn-primary w-full text-center text-xs py-3">PLAY GAME &rarr;</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Elementary School Games -->
+            <div>
+                <h3 class="text-2xl text-[#141B2D] border-b-2 border-[#141B2D] pb-2 mb-6">ELEMENTARY SCHOOL</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <div class="resource-card p-6 flex flex-col justify-between h-full bg-[#F0F4F9]/40">
+                        <div>
+                            <h3 class="text-3xl text-[#141B2D] font-bold mb-3 heading-serif">LEMONADE STAND</h3>
+                            <p class="text-sm text-[#4A5568] font-medium leading-relaxed mb-6">
+                                Learn the difference between needs and wants by running your very own lemonade stand business.
+                            </p>
+                        </div>
+                        <div class="pt-4 mt-auto border-t border-[#141B2D]/10">
+                            <a href="https://marketmindsyouth.org/lemonade_stand" class="btn-retro btn-primary w-full text-center text-xs py-3">PLAY GAME &rarr;</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="chapter-resources" class="full-bleed-section bg-gradient-to-r from-[#F0F4F9] to-[#E4ECF5] py-16 sm:py-20 px-4 sm:px-6 relative z-20" style="border-top: none;">
+        <div class="max-w-6xl mx-auto space-y-10">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <span class="resource-badge">STARTING A CHAPTER</span>
+                <h2 class="text-3xl sm:text-5xl text-[#141B2D]">CHAPTER RESOURCES</h2>
+                <p class="text-[#4A5568] text-sm sm:text-base font-medium">
+                    Everything you need to successfully launch and run a Market Minds chapter at your own school.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 
-                <!-- Game 1: Credit Score Simulator -->
-                <div class="resource-card p-6 flex flex-col justify-between h-full bg-[#F0F4F9]/40">
+                <div class="resource-card p-8 flex flex-col justify-between h-full">
                     <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-[10px] font-extrabold text-[#6C88C4] uppercase tracking-widest">INTERACTIVE SIMULATOR</span>
-                            <span class="text-[10px] font-extrabold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded border border-emerald-300">READY TO PLAY</span>
-                        </div>
-                        <h3 class="text-xl text-[#141B2D] font-bold mb-2">CREDIT SCORE SIMULATOR</h3>
-                        <p class="text-xs text-[#4A5568] font-medium leading-relaxed mb-6">
-                            An interactive simulator where students make real-life choices—paying bills on time, credit card limits, and taking loans—to see their credit score react in real time.
+                        <h3 class="text-3xl text-[#141B2D] font-bold mb-3 heading-serif">MEETING GUIDES HUB</h3>
+                        <p class="text-base text-[#4A5568] font-medium leading-relaxed mb-6">
+                            Complete guides, slide decks, and agendas for running successful, zero-intimidation Market Minds chapter meetings.
                         </p>
                     </div>
-                    <div class="pt-4 border-t border-[#141B2D]/15 flex items-center justify-between">
-                        <span class="text-[11px] font-bold text-[#141B2D]">ONLINE TOOL</span>
-                        <a href="credit_score_simulator.html" class="btn-retro btn-primary text-xs px-4 py-2" style="font-size: 0.75rem; padding: 0.4rem 0.9rem;">
-                            LAUNCH TOOL &rarr;
-                        </a>
+                    <div class="pt-4 mt-auto border-t border-[#141B2D]/10">
+                        <a href="https://marketmindsyouth.org/meeting_guides_hub" class="btn-retro btn-outline w-full text-center text-xs py-3">ACCESS HUB &rarr;</a>
                     </div>
                 </div>
 
-                <!-- Game 2: Spot the Scam Game -->
-                <div class="resource-card p-6 flex flex-col justify-between h-full bg-[#F0F4F9]/40">
+                <div class="resource-card p-8 flex flex-col justify-between h-full">
                     <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-[10px] font-extrabold text-[#6C88C4] uppercase tracking-widest">SCENARIO QUIZ GAME</span>
-                            <span class="text-[10px] font-extrabold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded border border-emerald-300">READY TO PLAY</span>
-                        </div>
-                        <h3 class="text-xl text-[#141B2D] font-bold mb-2">SPOT THE SCAM GAME</h3>
-                        <p class="text-xs text-[#4A5568] font-medium leading-relaxed mb-6">
-                            Puts students in scenario-based challenges to analyze suspicious messages, phishing emails, and online fraud tricks before making a decision.
+                        <h3 class="text-3xl text-[#141B2D] font-bold mb-3 heading-serif">FACILITATOR MASTER DOC</h3>
+                        <p class="text-base text-[#4A5568] font-medium leading-relaxed mb-6">
+                            The ultimate handbook for chapter leaders. Everything you need to know about leading discussions, answering questions, and keeping students engaged.
                         </p>
                     </div>
-                    <div class="pt-4 border-t border-[#141B2D]/15 flex items-center justify-between">
-                        <span class="text-[11px] font-bold text-[#141B2D]">ONLINE TOOL</span>
-                        <a href="spot_the_scam_game.html" class="btn-retro btn-primary text-xs px-4 py-2" style="font-size: 0.75rem; padding: 0.4rem 0.9rem;">
-                            LAUNCH TOOL &rarr;
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Game 3: Value Auction Game -->
-                <div class="resource-card p-6 flex flex-col justify-between h-full bg-[#F0F4F9]/40">
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-[10px] font-extrabold text-[#6C88C4] uppercase tracking-widest">CLASSROOM ACTIVITY</span>
-                            <span class="text-[10px] font-extrabold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded border border-emerald-300">READY TO PLAY</span>
-                        </div>
-                        <h3 class="text-xl text-[#141B2D] font-bold mb-2">VALUE AUCTION GAME</h3>
-                        <p class="text-xs text-[#4A5568] font-medium leading-relaxed mb-6">
-                            A bidding game where students allocate limited budget tokens toward personal values and financial goals to discover spending priorities.
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-[#141B2D]/15 flex items-center justify-between">
-                        <span class="text-[11px] font-bold text-[#141B2D]">ONLINE TOOL</span>
-                        <a href="value_auction_game.html" class="btn-retro btn-primary text-xs px-4 py-2" style="font-size: 0.75rem; padding: 0.4rem 0.9rem;">
-                            LAUNCH TOOL &rarr;
-                        </a>
+                    <div class="pt-4 mt-auto border-t border-[#141B2D]/10">
+                        <a href="https://marketmindsyouth.org/facilitator_master_doc" class="btn-retro btn-outline w-full text-center text-xs py-3">READ MASTER DOC &rarr;</a>
                     </div>
                 </div>
 
@@ -315,135 +373,28 @@
         </div>
     </section>
 
-    <!-- SECTION 2: LESSON DECKS & TOOLKITS (SIGNATURE ICE BLUE BAND) -->
-    <section id="lesson-decks" class="full-bleed-section bg-gradient-to-r from-[#F0F4F9] to-[#E4ECF5] py-16 sm:py-20 px-4 sm:px-6 relative z-20" style="border-top: none;">
+    <section id="study-tools" class="full-bleed-section bg-gradient-to-r from-[#D0E2EE] to-[#A3C2D4] py-16 sm:py-20 px-4 sm:px-6 relative z-20" style="border-top: none;">
         <div class="max-w-6xl mx-auto space-y-10">
             
             <div class="text-center max-w-3xl mx-auto space-y-3">
-                <span class="resource-badge">CHAPTER &amp; WORKSHOP MATERIALS</span>
-                <h2 class="text-3xl sm:text-5xl text-[#141B2D]">LESSON DECKS &amp; TOOLKITS</h2>
+                <span class="resource-badge">ACADEMIC TOOLS</span>
+                <h2 class="text-3xl sm:text-5xl text-[#141B2D]">STUDY TOOLS</h2>
                 <p class="text-[#4A5568] text-sm sm:text-base font-medium">
-                    Turnkey presentation slides and discussion guides created by our education team for high school club meetings and youth workshops.
+                    Resources to help you build a stronger understanding of the world, economics, and geography.
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 
-                <!-- Deck 1 -->
-                <div class="resource-card p-6 flex flex-col justify-between h-full">
+                <div class="resource-card p-8 flex flex-col justify-between h-full bg-white">
                     <div>
-                        <span class="text-[10px] font-extrabold text-[#6C88C4] uppercase tracking-widest block mb-2">CHAPTER MATERIALS</span>
-                        <h3 class="text-xl text-[#141B2D] font-bold mb-2">INTRO TO STOCKS &amp; MARKET SIMULATIONS</h3>
-                        <p class="text-xs text-[#4A5568] font-medium leading-relaxed mb-4">
-                            A breakdown of stock market basics, ticker symbols, risk management, and how to run a zero-risk paper trading challenge in your club.
+                        <h3 class="text-3xl text-[#141B2D] font-bold mb-3 heading-serif">WORLD MAP STUDY TOOL</h3>
+                        <p class="text-base text-[#4A5568] font-medium leading-relaxed mb-6">
+                            Understanding global economics starts with knowing the world map. This interactive game helps you learn where countries are located—perfect for AP Human Geography students!
                         </p>
                     </div>
-                    <div class="pt-4 border-t border-[#141B2D]/15 flex items-center justify-between">
-                        <span class="text-[11px] font-bold text-[#141B2D] bg-[#F0F4F9] px-2.5 py-1 rounded border border-[#141B2D]">SLIDE DECK (PDF)</span>
-                        <span class="text-xs font-bold text-[#6C88C4]">COMING SOON</span>
-                    </div>
-                </div>
-
-                <!-- Deck 2 -->
-                <div class="resource-card p-6 flex flex-col justify-between h-full">
-                    <div>
-                        <span class="text-[10px] font-extrabold text-[#6C88C4] uppercase tracking-widest block mb-2">WORKSHOP MATERIALS</span>
-                        <h3 class="text-xl text-[#141B2D] font-bold mb-2">BUDGETING &amp; SAVINGS BASICS</h3>
-                        <p class="text-xs text-[#4A5568] font-medium leading-relaxed mb-4">
-                            Interactive activity sheets and slides designed for middle school workshops. Teaches needs vs. wants, saving goals, and compounding interest simply.
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-[#141B2D]/15 flex items-center justify-between">
-                        <span class="text-[11px] font-bold text-[#141B2D] bg-[#F0F4F9] px-2.5 py-1 rounded border border-[#141B2D]">WORKBOOK (PDF)</span>
-                        <span class="text-xs font-bold text-[#6C88C4]">COMING SOON</span>
-                    </div>
-                </div>
-
-                <!-- Deck 3 -->
-                <div class="resource-card p-6 flex flex-col justify-between h-full">
-                    <div>
-                        <span class="text-[10px] font-extrabold text-[#6C88C4] uppercase tracking-widest block mb-2">LAUNCH TOOLKIT</span>
-                        <h3 class="text-xl text-[#141B2D] font-bold mb-2">CHAPTER LEADER LAUNCH KIT</h3>
-                        <p class="text-xs text-[#4A5568] font-medium leading-relaxed mb-4">
-                            Everything you need to start a Market Minds chapter at your high school: faculty advisor email templates, meeting agendas, and flyer graphics.
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-[#141B2D]/15 flex items-center justify-between">
-                        <span class="text-[11px] font-bold text-[#141B2D] bg-[#F0F4F9] px-2.5 py-1 rounded border border-[#141B2D]">TOOLKIT ZIP</span>
-                        <span class="text-xs font-bold text-[#6C88C4]">COMING SOON</span>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-    </section>
-
-    <!-- SECTION 3: NEWSLETTER ARCHIVE (SOFT SLATE BLUE GRADIENT) -->
-    <section id="newsletter-archive" class="full-bleed-section bg-gradient-to-r from-[#D0E2EE] to-[#A3C2D4] py-16 sm:py-20 px-4 sm:px-6 relative z-20" style="border-top: none;">
-        <div class="max-w-6xl mx-auto space-y-10">
-            
-            <div class="text-center max-w-3xl mx-auto space-y-3">
-                <span class="resource-badge">MONTHLY PUBLICATIONS</span>
-                <h2 class="text-3xl sm:text-5xl text-[#141B2D]">NEWSLETTER ARCHIVE</h2>
-                <p class="text-[#4A5568] text-sm sm:text-base font-medium">
-                    Our editorial team breaks down real student perspectives on money, career shifts, and real-world economics in easy-to-read monthly releases.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                
-                <!-- Edition 1 -->
-                <div class="resource-card p-6 flex flex-col justify-between h-full">
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-[10px] font-extrabold text-[#6C88C4] uppercase tracking-widest">EDITION 01</span>
-                            <span class="text-[10px] font-bold text-[#4A5568] uppercase">UPCOMING</span>
-                        </div>
-                        <h3 class="text-xl text-[#141B2D] font-bold mb-2">WHY GEN Z IS REDEFINING SUCCESS</h3>
-                        <p class="text-xs text-[#4A5568] font-medium leading-relaxed mb-4">
-                            Exploring how young people are shifting priorities toward financial independence, work-life flexibility, and personal growth beyond traditional career metrics.
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-[#141B2D]/15 flex items-center justify-between">
-                        <span class="text-xs font-bold text-[#141B2D]">MARKET MINDS EDITORIAL</span>
-                        <span class="text-xs font-extrabold text-[#6C88C4]">RELEASE SOON</span>
-                    </div>
-                </div>
-
-                <!-- Edition 2 -->
-                <div class="resource-card p-6 flex flex-col justify-between h-full">
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-[10px] font-extrabold text-[#6C88C4] uppercase tracking-widest">EDITION 02</span>
-                            <span class="text-[10px] font-bold text-[#4A5568] uppercase">UPCOMING</span>
-                        </div>
-                        <h3 class="text-xl text-[#141B2D] font-bold mb-2">HOW AI IS RESHAPING CAREERS &amp; THE WORKFORCE</h3>
-                        <p class="text-xs text-[#4A5568] font-medium leading-relaxed mb-4">
-                            Examining how technology is transforming early career paths, key digital skills to build early, and how students can adapt to the future of work.
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-[#141B2D]/15 flex items-center justify-between">
-                        <span class="text-xs font-bold text-[#141B2D]">MARKET MINDS EDITORIAL</span>
-                        <span class="text-xs font-extrabold text-[#6C88C4]">RELEASE SOON</span>
-                    </div>
-                </div>
-
-                <!-- Edition 3 -->
-                <div class="resource-card p-6 flex flex-col justify-between h-full">
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-[10px] font-extrabold text-[#6C88C4] uppercase tracking-widest">EDITION 03</span>
-                            <span class="text-[10px] font-bold text-[#4A5568] uppercase">UPCOMING</span>
-                        </div>
-                        <h3 class="text-xl text-[#141B2D] font-bold mb-2">STUDENT FOUNDERS: BUILDING PROJECTS THAT MATTER</h3>
-                        <p class="text-xs text-[#4A5568] font-medium leading-relaxed mb-4">
-                            Highlighting young creators taking initiative, launching student organizations, and applying leadership skills to solve real community needs.
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-[#141B2D]/15 flex items-center justify-between">
-                        <span class="text-xs font-bold text-[#141B2D]">MARKET MINDS EDITORIAL</span>
-                        <span class="text-xs font-extrabold text-[#6C88C4]">RELEASE SOON</span>
+                    <div class="pt-4 mt-auto border-t border-[#141B2D]/10">
+                        <a href="https://marketmindsyouth.org/map_study_tool.html" class="btn-retro btn-primary w-full text-center text-xs py-3">OPEN MAP TOOL &rarr;</a>
                     </div>
                 </div>
 
@@ -476,7 +427,6 @@
         </div>
     </section>
 
-    <!-- SECTION 5: Footer -->
     <footer class="w-full bg-white/80 backdrop-blur-md py-12 relative z-20">
         <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="md:col-span-1">
@@ -504,8 +454,8 @@
                 <h4 class="font-extrabold text-[#141B2D] mb-4 uppercase text-xs tracking-widest">Resources</h4>
                 <ul class="space-y-2 text-[#4A5568] text-xs font-medium">
                     <li><a href="resources.html#workshop-activities" class="hover:text-[#6C88C4] transition-colors">Workshop Simulators &amp; Games</a></li>
-                    <li><a href="resources.html#newsletter-archive" class="hover:text-[#6C88C4] transition-colors">Newsletter Archive</a></li>
-                    <li><a href="resources.html#lesson-decks" class="hover:text-[#6C88C4] transition-colors">Lesson Decks</a></li>
+                    <li><a href="resources.html#chapter-resources" class="hover:text-[#6C88C4] transition-colors">Chapter Resources</a></li>
+                    <li><a href="resources.html#study-tools" class="hover:text-[#6C88C4] transition-colors">Study Tools</a></li>
                 </ul>
             </div>
 
@@ -523,10 +473,8 @@
         </div>
     </footer>
 
-    <!-- MOBILE MENU SCRIPT & FORM HANDLING -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // Mobile Menu Toggle
             const mobileBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
             if (mobileBtn && mobileMenu) {
@@ -535,7 +483,6 @@
                 });
             }
 
-            // AJAX Newsletter Form Submission via FormSubmit.co
             const newsletterForm = document.getElementById('newsletter-form');
             const newsletterSuccess = document.getElementById('newsletter-success');
             
