@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earn Volunteer Hours | Market Minds</title>
+    
+    <!-- Invisible Meta Tags for Search Engines -->
+    <meta name="author" content="Annie Shi">
+    <meta name="description" content="Earn verified volunteer hours on your own time with Market Minds. Create educational content and help teach youth about financial literacy.">
+
+    <!-- Browser Tab Brand Favicon -->
+    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/pw/AP1GczM7dpwqAoD3jtUidsgOIQFPZDEIKJ7EGbftLFTFiav-DhaJgi0Q11HiGT4W356SuFpAhDLxDeVI4xhP1eEt8IeylLovcNhQXZ90Rw_q2fkQpnOo6JsnYH42l8TxXwCZ4WtBqKrM7AHyn1ozyKZBnQSq=w992-h992-s-no-gm?authuser=0">
+
+    <!-- Google Fonts: Instrument Serif & Playfair Display (Headings) & Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --bg-start: #F0F4F9;
+            --bg-end: #E4ECF5;
+            --accent-primary: #6C88C4;
+            --accent-dark: #4A607A;
+            --accent-brand-blue: #729aad;
+            --text-dark: #141B2D;
+            --text-muted: #4A5568;
+            --glass-bg: rgba(255, 255, 255, 0.92);
+            --glass-border: rgba(255, 255, 255, 0.75);
+            --font-serif: 'Instrument Serif', 'Playfair Display', serif;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: linear-gradient(to bottom, var(--bg-start), var(--bg-end));
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, .heading-serif {
+            font-family: var(--font-serif);
+            text-transform: uppercase;
+            letter-spacing: 0.015em;
+            line-height: 1.08;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: 0.01em;
+            text-shadow: 0 1px 2px rgba(20, 27, 45, 0.05);
+        }
+
+        .btn-retro {
+            border: 2px solid var(--text-dark);
+            border-radius: 12px;
+            box-shadow: 4px 4px 0px var(--text-dark);
+            transition: all 0.2s ease;
+            font-family: var(--font-sans);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .btn-retro:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--accent-dark);
+        }
+
+        .btn-primary {
+            background-color: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-outline {
+            background-color: white;
+            color: var(--text-dark);
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 2px solid var(--text-dark);
+            border-radius: 24px;
+            box-shadow: 4px 4px 0px var(--text-dark);
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .stat-card {
+            background: white;
+            border: 2px solid var(--text-dark);
+            border-radius: 16px;
+            box-shadow: 4px 4px 0px var(--text-dark);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--accent-primary);
+        }
+
+        /* Image styling for interactivity section */
+        .photo-box {
+            border: 2px solid var(--text-dark);
+            border-radius: 16px;
+            box-shadow: 4px 4px 0px var(--text-dark);
+            overflow: hidden;
+            position: relative;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="glass-nav fixed w-full top-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            
+            <a href="index.html" class="flex items-center">
+                <img src="https://lh3.googleusercontent.com/pw/AP1GczNsoqlPUEDJuh6m6J5ROUJS5meKcDo2Lu7D2LH93YTpEQpL7jF4X4-HvoKSn3blk9gKJHwWo5b6U0ODJ8ef518iTImmMffKDjDJzIJEsSkgtwrvqNcYY6Ginzh5f4uqKyu-U9rZFuxbSD8ejhHzzax2=w964-h190-s-no-gm?authuser=0" 
+                     alt="Market Minds logo" 
+                     class="h-8 md:h-10 w-auto object-contain">
+            </a>
+            
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="about.html" class="text-[#141B2D] font-bold text-sm tracking-wider hover:text-[#6C88C4] transition-colors">ABOUT US</a>
+                <a href="programs.html" class="text-[#141B2D] font-bold text-sm tracking-wider hover:text-[#6C88C4] transition-colors">PROGRAMS</a>
+                <a href="resources.html" class="text-[#141B2D] font-bold text-sm tracking-wider hover:text-[#6C88C4] transition-colors">RESOURCES</a>
+                <a href="index.html#get-involved" class="btn-retro btn-primary px-6 py-2" style="padding: 0.5rem 1.25rem;">GET INVOLVED</a>
+            </div>
+            
+            <button id="mobile-menu-btn" class="md:hidden text-[#141B2D] p-1 focus:outline-none" aria-label="Toggle Menu">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-md border-b-2 border-[#141B2D] px-6 py-4 space-y-3">
+            <a href="index.html" class="block text-[#141B2D] font-bold text-sm hover:text-[#6C88C4]">HOME</a>
+            <a href="about.html" class="block text-[#141B2D] font-bold text-sm hover:text-[#6C88C4]">ABOUT US</a>
+            <a href="programs.html" class="block text-[#141B2D] font-bold text-sm hover:text-[#6C88C4]">PROGRAMS</a>
+            <a href="resources.html" class="block text-[#141B2D] font-bold text-sm hover:text-[#6C88C4]">RESOURCES</a>
+            <a href="index.html#get-involved" class="btn-retro btn-primary w-full text-center py-2 text-xs">GET INVOLVED</a>
+        </div>
+    </nav>
+
+    <main class="pt-28 pb-16">
+        
+        <!-- SECTION 1: The Hook / Hero Section -->
+        <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+            <header class="glass-panel p-8 sm:p-10 md:p-12 text-center mt-6 md:mt-10">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl mb-6 hero-title">
+                    EARN VOLUNTEER HOURS ON YOUR OWN TIME.
+                </h1>
+                <p class="text-base sm:text-lg text-[#4A5568] max-w-2xl mx-auto leading-relaxed font-medium mb-8">
+                    We know high school schedules are packed. As an official 501(c)(3) nonprofit, Market Minds offers flexible, remote volunteer opportunities. Earn verified hours for graduation or NHS simply by helping us build educational resources that teach youth about financial literacy.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="#how-to-apply" class="btn-retro btn-primary w-full sm:w-auto text-xs sm:text-sm">VIEW CONTENT BOARD</a>
+                    <a href="#interactivity-rule" class="btn-retro btn-outline w-full sm:w-auto text-xs sm:text-sm">THE INTERACTIVITY RULE</a>
+                </div>
+            </header>
+        </section>
+
+        <!-- SECTION 2: The Core Roles -->
+        <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl text-[#141B2D]">CHOOSE YOUR ROLE</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Role 1: Content Writers -->
+                <div class="stat-card p-8 flex flex-col relative h-full">
+                    <div class="w-12 h-12 bg-[#6C88C4] rounded-xl border-2 border-[#141B2D] flex items-center justify-center mb-6 absolute -top-6 -left-4 shadow-[2px_2px_0px_#141B2D]">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl mb-1 mt-2 text-[#141B2D]">CONTENT WRITERS</h3>
+                    <p class="text-[#6C88C4] font-bold mb-4 uppercase text-xs tracking-wider border-b-2 border-gray-100 pb-2">The Publication Team</p>
+                    <p class="text-[#4A5568] font-medium text-sm leading-relaxed flex-grow">
+                        Write short, digestible articles or "crash courses" on financial basics. Break down complex topics into language that high schoolers actually understand.
+                    </p>
+                </div>
+
+                <!-- Role 2: Curriculum Designers -->
+                <div class="stat-card p-8 flex flex-col relative h-full">
+                    <div class="w-12 h-12 bg-[#6C88C4] rounded-xl border-2 border-[#141B2D] flex items-center justify-center mb-6 absolute -top-6 -left-4 shadow-[2px_2px_0px_#141B2D]">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl mb-1 mt-2 text-[#141B2D]">RESOURCE DESIGNERS</h3>
+                    <p class="text-[#6C88C4] font-bold mb-4 uppercase text-xs tracking-wider border-b-2 border-gray-100 pb-2">Visual Education</p>
+                    <p class="text-[#4A5568] font-medium text-sm leading-relaxed flex-grow">
+                        Turn written financial concepts into engaging visual resources. Build infographics, worksheets, or interactive carousel posts for our community.
+                    </p>
+                </div>
+
+                <!-- Role 3: Digital Educators -->
+                <div class="stat-card p-8 flex flex-col relative h-full">
+                    <div class="w-12 h-12 bg-[#6C88C4] rounded-xl border-2 border-[#141B2D] flex items-center justify-center mb-6 absolute -top-6 -left-4 shadow-[2px_2px_0px_#141B2D]">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl mb-1 mt-2 text-[#141B2D]">DIGITAL EDUCATORS</h3>
+                    <p class="text-[#6C88C4] font-bold mb-4 uppercase text-xs tracking-wider border-b-2 border-gray-100 pb-2">Short-Form Media</p>
+                    <p class="text-[#4A5568] font-medium text-sm leading-relaxed flex-grow">
+                        Record 30-60 second short-form videos explaining a single financial concept. Connect with students directly on Reels and TikTok to reach them where they already are.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: The "How to Apply" Workflow -->
+        <section id="how-to-apply" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
+            <div class="glass-panel p-8 md:p-12">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl text-[#141B2D]">HOW TO EARN YOUR HOURS</h2>
+                    <p class="text-[#4A5568] font-medium mt-3">Follow these steps carefully to ensure your work is approved and verified.</p>
+                </div>
+                
+                <div class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-1 before:bg-[#141B2D] before:z-0">
+                    
+                    <!-- Step 1 -->
+                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-full border-2 border-[#141B2D] bg-[#6C88C4] text-white font-bold font-sans shadow-[2px_2px_0px_#141B2D] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                            1
+                        </div>
+                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 stat-card">
+                            <h3 class="text-2xl mb-2 text-[#141B2D]">CHECK THE CONTENT BOARD</h3>
+                            <p class="text-[#4A5568] text-sm font-medium mb-4 leading-relaxed">View our live list of needed resources. Find an "Open" topic that interests you, type your name in, and claim it. Please only claim one topic at a time!</p>
+                            <a href="https://docs.google.com/spreadsheets/d/16ibuqsMvGbPE5g9fiLfpRXi93-7tYLycI99942wVDvI/edit?usp=sharing" target="_blank" class="btn-retro btn-outline text-xs w-full sm:w-auto">OPEN CONTENT BOARD</a>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-full border-2 border-[#141B2D] bg-white text-[#141B2D] font-bold font-sans shadow-[2px_2px_0px_#141B2D] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                            2
+                        </div>
+                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 stat-card">
+                            <h3 class="text-2xl mb-2 text-[#141B2D]">FOLLOW THE QUALITY GUIDE</h3>
+                            <p class="text-[#4A5568] text-sm font-medium leading-relaxed">Create your resource. Pay strict attention to the Interactivity Rule below. We want students actively engaging with the material, not just reading definitions.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-full border-2 border-[#141B2D] bg-[#6C88C4] text-white font-bold font-sans shadow-[2px_2px_0px_#141B2D] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                            3
+                        </div>
+                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 stat-card">
+                            <h3 class="text-2xl mb-2 text-[#141B2D]">SUBMIT YOUR WORK</h3>
+                            <p class="text-[#4A5568] text-sm font-medium mb-4 leading-relaxed">Once finished, drop your link into our Volunteer Portal. Our team will review it for accuracy and interactivity before verifying your hours.</p>
+                            <a href="https://forms.gle/DbJSRzibts6W3Kcp8" target="_blank" class="btn-retro btn-primary text-xs w-full sm:w-auto">SUBMIT TO PORTAL</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: The Interactivity Rule (Quality Guide) -->
+        <section id="interactivity-rule" class="w-full bg-gradient-to-r from-[#D0E2EE] to-[#A3C2D4] border-t-2 border-b-2 border-[#141B2D] py-16 sm:py-24 px-4 sm:px-6 relative z-20">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16 max-w-3xl mx-auto">
+                    <div class="inline-flex items-center justify-center bg-white px-4 py-1.5 rounded-lg border-2 border-[#141B2D] shadow-[3px_3px_0px_#141B2D] mb-6">
+                        <svg class="w-4 h-4 mr-2 text-[#141B2D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        <span class="font-bold text-xs uppercase tracking-wider text-[#141B2D]">Crucial Guideline</span>
+                    </div>
+                    <h2 class="text-4xl sm:text-5xl mb-4 text-[#141B2D]">THE INTERACTIVITY RULE</h2>
+                    <p class="text-[#4A5568] text-base sm:text-lg font-medium">
+                        To get your hours approved, your resource MUST be interactive. We do not want boring textbooks. We want to see students making choices, solving problems, and applying knowledge. Here is what we expect:
+                    </p>
+                </div>
+                
+                <div class="space-y-12 sm:space-y-16">
+                    <!-- Writers -->
+                    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                        <div class="w-full md:w-1/2 order-2 md:order-1">
+                            <div class="bg-white p-8 stat-card relative">
+                                <span class="absolute -top-4 -left-4 bg-[#141B2D] text-white font-bold px-4 py-1.5 rounded-lg border-2 border-white shadow-md text-xs uppercase tracking-wider">For Writers</span>
+                                <h3 class="text-2xl mb-3 text-[#141B2D]">MAKE THEM THINK</h3>
+                                <p class="text-[#4A5568] font-medium text-sm leading-relaxed">
+                                    Don't just list definitions. Frame your concepts around real people. Include a mini "Case Study" (e.g., <em>Meet Sarah, she has $500 to invest...</em>), build a "Myth vs. Fact" section, or write out a scenario where the reader has to pause and make a financial choice.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/2 order-1 md:order-2">
+                            <div class="photo-box aspect-[4/3] bg-white">
+                                <!-- Mentorship photo from index.html pool -->
+                                <img src="https://lh3.googleusercontent.com/d/1wTdXJkncRmC1hGv9Xx9_PVi8J28FZYLb" alt="Student studying on laptop" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Designers -->
+                    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                        <div class="w-full md:w-1/2">
+                            <div class="photo-box aspect-[4/3] bg-white">
+                                <!-- Poster presentation photo from index.html pool -->
+                                <img src="https://lh3.googleusercontent.com/d/1fWTbjXYxYTR5OeG9kcZGhNkTRvQvSPWP" alt="Student showing visual poster" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/2">
+                            <div class="bg-white p-8 stat-card relative">
+                                <span class="absolute -top-4 -right-4 bg-[#141B2D] text-white font-bold px-4 py-1.5 rounded-lg border-2 border-white shadow-md text-xs uppercase tracking-wider">For Designers</span>
+                                <h3 class="text-2xl mb-3 text-[#141B2D]">CREATE USABLE TOOLS</h3>
+                                <p class="text-[#4A5568] font-medium text-sm leading-relaxed">
+                                    Don't just make a poster full of text. Design something chapters can actually use! Think printable budgeting templates, a "Financial Bingo" card, an intuitive flowchart, or a fill-in-the-blank worksheet that students can complete during meetings.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Video Creators -->
+                    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                        <div class="w-full md:w-1/2 order-2 md:order-1">
+                            <div class="bg-white p-8 stat-card relative">
+                                <span class="absolute -top-4 -left-4 bg-[#141B2D] text-white font-bold px-4 py-1.5 rounded-lg border-2 border-white shadow-md text-xs uppercase tracking-wider">For Video Creators</span>
+                                <h3 class="text-2xl mb-3 text-[#141B2D]">DRIVE ENGAGEMENT</h3>
+                                <p class="text-[#4A5568] font-medium text-sm leading-relaxed">
+                                    Ask a question at the very beginning of the video for the viewer to answer in their head. Do a "Put a finger down if..." financial edition, or present a money dilemma and ask the audience to vote in the comments. Keep the energy high!
+                                </p>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/2 order-1 md:order-2">
+                            <div class="photo-box aspect-[4/3] bg-white">
+                                <!-- Student presentation photo from index.html pool -->
+                                <img src="https://lh3.googleusercontent.com/d/1uPrth46bKom9KZcelc65mo7fjNempKLL" alt="Student presenting to camera" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: Why Get Involved & On-the-Ground Work -->
+        <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl text-[#141B2D] mb-4">WHY GET INVOLVED?</h2>
+                <p class="text-[#4A5568] font-medium max-w-2xl mx-auto">This isn't just about checking a box for graduation. Here is what you get out of volunteering with Market Minds.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="bg-white p-6 rounded-2xl border-2 border-transparent">
+                    <h3 class="text-xl text-[#141B2D] mb-2 font-serif font-bold tracking-wide">REAL-WORLD IMPACT</h3>
+                    <p class="text-[#4A5568] text-sm font-medium">Your resources don't sit in a folder. They are distributed to real chapters across 7 states and featured on our social channels.</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border-2 border-transparent">
+                    <h3 class="text-xl text-[#141B2D] mb-2 font-serif font-bold tracking-wide">FLEXIBLE SCHEDULE</h3>
+                    <p class="text-[#4A5568] text-sm font-medium">No mandatory Saturday morning zooms. Pick up a task from the Content Board whenever you have free time.</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border-2 border-transparent">
+                    <h3 class="text-xl text-[#141B2D] mb-2 font-serif font-bold tracking-wide">BUILD YOUR RESUME</h3>
+                    <p class="text-[#4A5568] text-sm font-medium">Gain verified hours for a registered 501(c)(3) nonprofit and build a portfolio of published writing, design, or video work.</p>
+                </div>
+            </div>
+
+            <!-- Custom Projects Callout -->
+            <div class="mt-16 bg-white p-8 md:p-10 stat-card max-w-4xl mx-auto">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div class="md:w-2/3">
+                        <h2 class="text-2xl text-[#141B2D] mb-2">DOING ON-THE-GROUND WORK?</h2>
+                        <p class="text-[#4A5568] text-sm font-medium leading-relaxed">
+                            Already running a chapter? If you are hosting local youth financial literacy workshops or working directly with your community using our resources, we want to hear from you. Just fill out the exact same form to verify hours for your specific community projects!
+                        </p>
+                        <p class="text-[#4A5568] text-xs font-medium mt-3">
+                            Have questions? Contact us at marketmindsyouth@gmail.com
+                        </p>
+                    </div>
+                    <div class="md:w-1/3 text-center md:text-right w-full">
+                        <a href="https://forms.gle/DbJSRzibts6W3Kcp8" target="_blank" class="btn-retro btn-primary w-full md:w-auto text-xs">SUBMIT TO PORTAL</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- SECTION 6: Footer -->
+    <footer class="w-full bg-white/80 backdrop-blur-md py-12 border-t-2 border-[#141B2D] relative z-20">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="md:col-span-1">
+                <img src="https://lh3.googleusercontent.com/pw/AP1GczNsoqlPUEDJuh6m6J5ROUJS5meKcDo2Lu7D2LH93YTpEQpL7jF4X4-HvoKSn3blk9gKJHwWo5b6U0ODJ8ef518iTImmMffKDjDJzIJEsSkgtwrvqNcYY6Ginzh5f4uqKyu-U9rZFuxbSD8ejhHzzax2=w964-h190-s-no-gm?authuser=0" 
+                     alt="Market Minds logo - Founded by Annie Shi in Brookline, MA" 
+                     class="h-8 w-auto mb-4 object-contain filter grayscale contrast-200">
+                <p class="text-[#4A5568] text-xs font-medium leading-relaxed mb-3">
+                    Empowering young people with the financial knowledge, confidence, and community needed to navigate their futures.
+                </p>
+                <a href="about.html" class="text-xs font-bold text-[#141B2D] underline hover:text-[#6C88C4] transition-colors uppercase tracking-wider">
+                    Learn About Us →
+                </a>
+            </div>
+            
+            <div>
+                <h4 class="font-extrabold text-[#141B2D] mb-4 uppercase text-xs tracking-widest">Programs</h4>
+                <ul class="space-y-2 text-[#4A5568] text-xs font-medium">
+                    <li><a href="programs.html#chapters" class="hover:text-[#6C88C4] transition-colors">High School Chapters</a></li>
+                    <li><a href="programs.html#workshops" class="hover:text-[#6C88C4] transition-colors">Youth Workshops</a></li>
+                    <li><a href="programs.html#connect-series" class="hover:text-[#6C88C4] transition-colors">Connect Series</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-extrabold text-[#141B2D] mb-4 uppercase text-xs tracking-widest">Resources</h4>
+                <ul class="space-y-2 text-[#4A5568] text-xs font-medium">
+                    <li><a href="resources.html" class="hover:text-[#6C88C4] transition-colors">Newsletter Archive</a></li>
+                    <li><a href="resources.html" class="hover:text-[#6C88C4] transition-colors">Lesson Decks</a></li>
+                    <li><a href="about.html" class="hover:text-[#6C88C4] transition-colors">About Our Story</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-extrabold text-[#141B2D] mb-4 uppercase text-xs tracking-widest">Connect</h4>
+                <ul class="space-y-2 text-[#4A5568] text-xs font-medium">
+                    <li><a href="https://instagram.com/marketmindsyouth" target="_blank" class="hover:text-[#6C88C4] transition-colors">Instagram (@marketmindsyouth)</a></li>
+                    <li><a href="https://tiktok.com/@marketmindsyouth" target="_blank" class="hover:text-[#6C88C4] transition-colors">TikTok (@marketmindsyouth)</a></li>
+                    <li><a href="https://youtube.com/@marketmindsyouth" target="_blank" class="hover:text-[#6C88C4] transition-colors">YouTube (@marketmindsyouth)</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 mt-12 pt-6 border-t border-gray-300 text-center md:text-left text-[#4A5568] font-medium text-xs">
+            <p>© 2026 Market Minds Organization. Student-Led Nonprofit Organization Founded by Annie Shi (Brookline, MA). All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
