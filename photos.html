@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Portraits for Youth Financial Literacy | Market Minds × Annie Shi Productions</title>
+    
+    <!-- Market Minds Circular Favicon -->
+    <link rel="icon" href="https://lh3.googleusercontent.com/pw/AP1GczM9ixFMsp95jjxMuOg9RPqWXqj7ZmOx1eTTx4sjxv3sZnda7Di2Z7KxzRyRqWwgkrMr8H9uv8Lpj95ZmEV7Pzxoh-A-_iW8H9m-_DPmlgwFvleZwW6Gp_jnjwPv2VQd5Erk8WzNIgsTRNsKLyTLGd6I=w1000-h1000-s-no-gm?authuser=0" type="image/jpeg">
+
+    <!-- Google Fonts matching Market Minds -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-gradient-start: #F0F4F9;
+            --bg-gradient-end: #E4ECF5;
+            --brand-primary: #6C88C4;
+            --brand-primary-hover: #4A607A;
+            --text-navy: #141B2D;
+            --text-slate: #4A5568;
+            --glass-white: rgba(255, 255, 255, 0.90);
+            --accent-tint: #EEF2FA;
+            --warning-bg: #FFFBEB;
+            --warning-border: #D69E2E;
+            --success-green: #38A169;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            color: var(--text-navy);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+        }
+
+        /* Typography */
+        h1, h2, h3, .serif-font {
+            font-family: 'Instrument Serif', Georgia, serif;
+            letter-spacing: 0.01em;
+            color: var(--text-navy);
+        }
+
+        /* Glassmorphic Retro Card */
+        .glass-panel {
+            background: var(--glass-white);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid var(--text-navy);
+            border-radius: 16px;
+            box-shadow: 4px 4px 0px var(--text-navy);
+        }
+
+        /* Buttons */
+        .btn-retro {
+            background-color: var(--brand-primary);
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 14px 28px;
+            border: 2px solid var(--text-navy);
+            border-radius: 12px;
+            box-shadow: 4px 4px 0px var(--text-navy);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-retro:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--brand-primary-hover);
+            background-color: var(--brand-primary-hover);
+        }
+
+        .btn-retro:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--text-navy);
+        }
+
+        .btn-secondary {
+            background-color: #FFFFFF;
+            color: var(--text-navy);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--accent-tint);
+            color: var(--text-navy);
+            box-shadow: 6px 6px 0px var(--text-navy);
+        }
+
+        /* Sticky Header Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(240, 244, 249, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--text-navy);
+            padding: 12px 24px;
+        }
+
+        .nav-container {
+            max-width: 920px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .brand-logo-wrap {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+
+        .brand-logo-wrap:hover {
+            transform: scale(1.02);
+        }
+
+        .brand-logo {
+            height: 38px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .collab-x {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.5rem;
+            color: var(--text-slate);
+            font-weight: 400;
+        }
+
+        .collab-partner {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.55rem;
+            color: var(--text-navy);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .collab-partner:hover {
+            color: var(--brand-primary);
+        }
+
+        /* Main Layout */
+        main {
+            max-width: 900px;
+            width: 92%;
+            margin: 36px auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        /* Hero / Flyer Details Section */
+        .hero-card {
+            padding: 40px 32px;
+            text-align: center;
+        }
+
+        .collab-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-slate);
+            margin-bottom: 12px;
+            letter-spacing: 0.03em;
+        }
+
+        .hero-title {
+            font-size: 3.6rem;
+            line-height: 1;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .hero-subtitle {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-style: italic;
+            font-size: 2rem;
+            color: var(--text-navy);
+            margin-bottom: 20px;
+        }
+
+        .cause-banner {
+            display: inline-block;
+            background-color: var(--accent-tint);
+            border: 2px solid var(--brand-primary);
+            color: var(--brand-primary);
+            font-weight: 800;
+            font-size: 0.95rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 10px 22px;
+            border-radius: 10px;
+            margin-bottom: 28px;
+        }
+
+        /* Flyer Details Grid */
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            max-width: 720px;
+            margin: 0 auto 28px;
+            text-align: left;
+        }
+
+        .detail-item {
+            background: #FFFFFF;
+            border: 1.5px solid var(--text-navy);
+            border-radius: 12px;
+            padding: 14px 18px;
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--brand-primary);
+            margin-bottom: 2px;
+        }
+
+        .detail-value {
+            font-size: 0.98rem;
+            font-weight: 600;
+            color: var(--text-navy);
+        }
+
+        .detail-sub {
+            font-size: 0.85rem;
+            color: var(--text-slate);
+            margin-top: 2px;
+        }
+
+        /* Important Payment Rule Notice */
+        .policy-notice {
+            background: var(--warning-bg);
+            border: 2px solid var(--warning-border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            max-width: 720px;
+            margin: 0 auto 28px;
+            font-size: 0.95rem;
+            color: var(--text-navy);
+            text-align: left;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .policy-icon {
+            font-size: 1.3rem;
+            line-height: 1.2;
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        /* Booking & Payment Step Cards */
+        .step-card {
+            overflow: hidden;
+        }
+
+        .step-header {
+            background: var(--text-navy);
+            color: #FFFFFF;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .step-badge {
+            background: var(--brand-primary);
+            color: #FFFFFF;
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-right: 10px;
+        }
+
+        .step-title {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.75rem;
+            color: #FFFFFF;
+            letter-spacing: 0.02em;
+        }
+
+        .step-body {
+            padding: 24px;
+            background: #FAFBFD;
+        }
+
+        .step-instructions {
+            font-size: 1rem;
+            color: var(--text-slate);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        /* Calendar Embed Container */
+        .calendar-embed-wrap {
+            background: #FFFFFF;
+            border: 2px solid var(--text-navy);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .calendar-embed-wrap iframe {
+            display: block;
+            width: 100%;
+            height: 620px;
+            border: 0;
+        }
+
+        /* Payment Section (Stripe Checkout Portal) */
+        .payment-box {
+            background: #FFFFFF;
+            border: 2px solid var(--text-navy);
+            border-radius: 12px;
+            padding: 32px 24px;
+            text-align: center;
+        }
+
+        .payment-amount {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 2.8rem;
+            line-height: 1.1;
+            color: var(--text-navy);
+            margin-bottom: 6px;
+        }
+
+        .payment-desc {
+            color: var(--text-slate);
+            font-size: 1rem;
+            max-width: 540px;
+            margin: 0 auto 24px;
+        }
+
+        .payment-reminder {
+            display: inline-block;
+            background: var(--accent-tint);
+            color: var(--text-navy);
+            font-size: 0.88rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 8px;
+            margin-bottom: 22px;
+            border: 1px solid #CBD5E0;
+        }
+
+        /* About / External Links Section */
+        .links-section {
+            padding: 32px 24px;
+            text-align: center;
+        }
+
+        .links-title {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .links-desc {
+            color: var(--text-slate);
+            max-width: 560px;
+            margin: 0 auto 24px;
+            font-size: 0.98rem;
+        }
+
+        .external-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        /* Footer */
+        .site-footer {
+            text-align: center;
+            padding: 28px 20px;
+            margin-top: 12px;
+            font-size: 0.92rem;
+            color: var(--text-slate);
+            font-weight: 500;
+        }
+
+        .site-footer a {
+            color: var(--brand-primary);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .site-footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 680px) {
+            .hero-card { padding: 28px 20px; }
+            .hero-title { font-size: 2.7rem; }
+            .hero-subtitle { font-size: 1.65rem; }
+            .details-grid { grid-template-columns: 1fr; }
+            .step-body { padding: 16px; }
+            .calendar-embed-wrap iframe { height: 560px; }
+            .btn-retro { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <header>
+        <div class="nav-container">
+            <a href="https://marketmindsyouth.org/" target="_blank" rel="noopener noreferrer" class="brand-logo-wrap" title="Market Minds">
+                <img src="https://lh3.googleusercontent.com/pw/AP1GczM6nrmaHQ4cGTx0z-eOJM-fqo-K9rlJ8ojBBZzrEbzDUyR90feZLpnA2En6xjx3_1rSjeM8v-qB7QUd_JqBKZ4mgvWHxDj62tt8F06I31teXwAyQi0llvvQ7kfJLdJDAEBvU4LZepCDmdjuNUKhKrLC=w1000-h347-s-no-gm?authuser=0" alt="Market Minds Logo" class="brand-logo">
+            </a>
+            <span class="collab-x">×</span>
+            <a href="https://annieshiproductions.github.io/" target="_blank" rel="noopener noreferrer" class="collab-partner">
+                Annie Shi Productions
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <!-- FLYER OVERVIEW / HERO SECTION -->
+        <section class="glass-panel hero-card">
+            <div class="collab-eyebrow">
+                <span>Market Minds</span>
+                <span>×</span>
+                <span>Annie Shi Productions</span>
+            </div>
+
+            <h1 class="hero-title">Mini Sessions</h1>
+            <p class="hero-subtitle">Seniors, Couples, and Families</p>
+
+            <div class="cause-banner">
+                100% of Proceeds Support Youth Financial Literacy
+            </div>
+
+            <!-- Session Details from Flyer -->
+            <div class="details-grid">
+                <div class="detail-item">
+                    <div class="detail-label">Package &amp; Turnaround</div>
+                    <div class="detail-value">15-Minute Portrait Session</div>
+                    <div class="detail-sub">Includes 10 high-res edited digital photos (1–2 week turnaround)</div>
+                </div>
+
+                <div class="detail-item">
+                    <div class="detail-label">Price &amp; Donation</div>
+                    <div class="detail-value">$80 + Optional Tip / Donation</div>
+                    <div class="detail-sub">Optional tax-deductible donation goes directly to Market Minds</div>
+                </div>
+
+                <div class="detail-item">
+                    <div class="detail-label">Location</div>
+                    <div class="detail-value">Griggs Park, Brookline MA</div>
+                    <div class="detail-sub">Exact meeting spot &amp; prep details sent upon confirmation</div>
+                </div>
+
+                <div class="detail-item">
+                    <div class="detail-label">Dates</div>
+                    <div class="detail-value">Saturday, Nov 21st &amp; Nov 28th</div>
+                    <div class="detail-sub">15-minute slots with 5-minute buffers</div>
+                </div>
+            </div>
+
+            <!-- 1-Hour Payment Policy -->
+            <div class="policy-notice">
+                <span class="policy-icon">⏳</span>
+                <div>
+                    <strong>How Booking Works:</strong> Select your time slot in <strong>Step 1</strong> below, then scroll down to <strong>Step 2</strong> to submit your payment. <strong>Please send your payment within 1 hour of booking</strong> on Google Calendar, or your reserved time slot will be released.
+                </div>
+            </div>
+
+            <!-- Primary CTA Buttons -->
+            <div class="hero-actions">
+                <a href="#step-1-book" class="btn-retro">
+                    1. Book Your Time Slot ↓
+                </a>
+                <a href="#step-2-pay" class="btn-retro btn-secondary">
+                    2. Scroll Down to Send Payment ↓
+                </a>
+            </div>
+        </section>
+
+        <!-- STEP 1: GOOGLE CALENDAR BOOKING EMBED -->
+        <section id="step-1-book" class="glass-panel step-card">
+            <div class="step-header">
+                <div>
+                    <span class="step-badge">Step 1</span>
+                    <span class="step-title">Select Your 15-Minute Time Slot</span>
+                </div>
+                <a href="#step-2-pay" style="color: #E2E8F0; font-size: 0.88rem; font-weight: 600; text-decoration: underline;">
+                    Done booking? Scroll down to pay ↓
+                </a>
+            </div>
+
+            <div class="step-body">
+                <div class="step-instructions">
+                    <span>Choose an available time slot at <strong>Griggs Park</strong> below. Once confirmed, scroll down to complete payment within 1 hour.</span>
+                </div>
+
+                <div class="calendar-embed-wrap">
+                    <!-- Google Calendar Appointment Scheduling begin -->
+                    <iframe src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3p6UMamJxBdrMGpVwoIfHnRXxToIfPNO1E-m-VSEP3Gw9T8Heh-T4UbSPk1t9geci2afBseFU1?gv=true" width="100%" height="600" frameborder="0" title="Book Portrait Mini Session"></iframe>
+                    <!-- end Google Calendar Appointment Scheduling -->
+                </div>
+            </div>
+        </section>
+
+        <!-- STEP 2: STRIPE PAYMENT SECTION -->
+        <section id="step-2-pay" class="glass-panel step-card">
+            <div class="step-header">
+                <div>
+                    <span class="step-badge">Step 2</span>
+                    <span class="step-title">Send Your Session Payment</span>
+                </div>
+                <span style="font-size: 0.85rem; color: #CBD5E0; font-weight: 600;">Secured by Stripe</span>
+            </div>
+
+            <div class="step-body">
+                <div class="payment-box">
+                    <div class="payment-amount">$80 + Optional Donation</div>
+                    <p class="payment-desc">
+                        Complete your payment via our official Stripe checkout link below to lock in your spot. You can add an optional tax-deductible tip/donation at checkout—100% supports youth financial literacy!
+                    </p>
+
+                    <div class="payment-reminder">
+                        ⚠️ Please submit payment within <strong>1 hour</strong> of reserving your Google Calendar slot so your booking isn't removed.
+                    </div>
+
+                    <div>
+                        <a href="https://book.stripe.com/fZu00i5dH1iB9LJem5fw400" target="_blank" rel="noopener noreferrer" class="btn-retro" style="font-size: 1.05rem; padding: 16px 34px;">
+                            Complete Payment on Stripe ➔
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEARN MORE / PARTNER LINKS -->
+        <section class="glass-panel links-section">
+            <h2 class="links-title">About This Collaboration</h2>
+            <p class="links-desc">
+                Every portrait session directly funds free financial literacy workshops and educational resources for youth.
+            </p>
+            <div class="external-buttons">
+                <a href="https://marketmindsyouth.org/" target="_blank" rel="noopener noreferrer" class="btn-retro">
+                    Learn More About Market Minds ↗
+                </a>
+                <a href="https://annieshiproductions.github.io/" target="_blank" rel="noopener noreferrer" class="btn-retro btn-secondary">
+                    See More From Annie Shi Productions ↗
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        A charity fundraiser by <a href="https://marketmindsyouth.org/" target="_blank" rel="noopener noreferrer">Market Minds</a> × <a href="https://annieshiproductions.github.io/" target="_blank" rel="noopener noreferrer">Annie Shi Productions</a>
+    </footer>
+
+</body>
+</html>
